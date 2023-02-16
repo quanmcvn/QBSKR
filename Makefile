@@ -1,7 +1,9 @@
 #OBJS specifies which files to compile as part of the project
 OBJS = src/main.cpp \
+       src/math/vector.cpp \
        src/qbskr/main.cpp \
-       src/math/vector.cpp
+       src/util/log.cpp \
+       src/util/unique_name.cpp
 
 #CC specifies which compiler we're using
 CC = g++
