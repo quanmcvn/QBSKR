@@ -1,11 +1,16 @@
 #OBJS specifies which files to compile as part of the project
 OBJS = src/main.cpp \
+       src/math/anchor_point.cpp \
+       src/math/rect.cpp \
+       src/math/rectf.cpp \
+       src/math/size.cpp \
+       src/math/sizef.cpp \
        src/math/vector.cpp \
        src/qbskr/main.cpp \
        src/util/log.cpp \
        src/util/unique_name.cpp \
        src/util/uid.cpp \
-       src/util/uid_generator.cpp
+       src/util/uid_generator.cpp \
 
 #CC specifies which compiler we're using
 CC = g++

@@ -26,12 +26,12 @@ Vector& Vector::operator-=(const Vector& other) {
 	return *this;
 }
 
-Vector Vector::operator-() const {
-	return Vector(-x, -y);
+bool Vector::operator==(const Vector& other) const  {
+	return (x == other.x && y == other.y);
 }
 
-float dot(const Vector& lhs, const Vector& rhs) {
-	return lhs.x * rhs.x + lhs.y * rhs.y;
+Vector Vector::operator-() const {
+	return Vector(-x, -y);
 }
 
 float Vector::length() const {
@@ -41,3 +41,13 @@ float Vector::length() const {
 std::ostream& operator<<(std::ostream& os, const Vector& other) {
 	return os << "[" << other.x << ", " << other.y << "]";
 }
+
+namespace math {
+	float dot(const Vector& lhs, const Vector& rhs) {
+		return lhs.x * rhs.x + lhs.y * rhs.y;
+	}
+
+	float distance(const Vector& lhs, const Vector& rhs) {
+		return sqrt((rhs.x - lhs.x) * (rhs.x - lhs.x) + (rhs.y - lhs.y) * (rhs.y - lhs.y));
+	}
+} // namespace math
