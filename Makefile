@@ -1,12 +1,13 @@
 #OBJS specifies which files to compile as part of the project
 OBJS = src/main.cpp \
+       src/qbskr/main.cpp \
        src/math/anchor_point.cpp \
        src/math/rect.cpp \
        src/math/rectf.cpp \
        src/math/size.cpp \
        src/math/sizef.cpp \
        src/math/vector.cpp \
-       src/qbskr/main.cpp \
+       src/object/player.cpp \
        src/util/log.cpp \
        src/util/unique_name.cpp \
        src/util/uid.cpp \
@@ -27,7 +28,7 @@ LIBRARY_PATHS = -LD:\Libraries\SDL2\x86_64-w64-mingw32\lib \
 #COMPILER_FLAGS specifies the additional compilation options we're using
 # -w suppresses all warnings
 # -Wl,-subsystem,windows gets rid of the console window
-COMPILER_FLAGS = -Wl,-subsystem,windows
+COMPILER_FLAGS = 
 
 #LINKER_FLAGS specifies the libraries we're linking against
 LINKER_FLAGS = -lmingw32 \

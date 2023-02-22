@@ -1,23 +1,14 @@
 #include "qbskr/main.hpp"
-#include <SDL.h>
+
 #include <SDL_image.h>
 #include <string>
 #include <iostream>
 
+#include "math/rect.hpp"
+#include "util/log.hpp"
+
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
-
-//Starts up SDL and creates window
-bool init();
-
-//Loads media
-bool loadMedia();
-
-//Frees media and shuts down SDL
-void close();
-
-//Loads individual image as texture
-SDL_Texture* loadTexture(std::string path);
 
 //The window we'll be rendering to
 SDL_Window* gWindow = NULL;
@@ -25,8 +16,7 @@ SDL_Window* gWindow = NULL;
 //The window renderer
 SDL_Renderer* gRenderer = NULL;
 
-//Current displayed texture
-SDL_Texture* gTexture = NULL;
+Player player;
 
 bool init() {
 	//Initialization flag
@@ -73,14 +63,16 @@ bool init() {
 	return success;
 }
 
-bool loadMedia() {
+
+bool loadMedia()
+{
 	//Loading success flag
 	bool success = true;
 
 	//Load PNG texture
-	gTexture = loadTexture("data/img/texture.png");
-	if (gTexture == NULL) {
-		printf("Failed to load texture image!\n");
+	player.m_texture = loadTexture( "data/images/creatures/knight/idle0.png");
+	if( player.m_texture == NULL ) {
+		log_warning << "Failed to load texture image!\n";
 		success = false;
 	}
 
@@ -88,10 +80,6 @@ bool loadMedia() {
 }
 
 void close() {
-	//Free loaded image
-	SDL_DestroyTexture(gTexture);
-	gTexture = NULL;
-
 	//Destroy window	
 	SDL_DestroyRenderer(gRenderer);
 	SDL_DestroyWindow(gWindow);
@@ -143,18 +131,61 @@ int Main::run(int argc, char** argv) {
 	//While application is running
 	while (!quit) {
 		//Handle events on queue
+		// I REALLY hate this current event processing though
+		// will probably touch it next
+		int dir[2] = {0, 0};
 		while (SDL_PollEvent(&e) != 0) {
 			//User requests quit
 			if (e.type == SDL_QUIT) {
 				quit = true;
+				break;
+			}
+			if (e.type == SDL_KEYDOWN) {
+				dir[0] = dir[1] = 0;
+				const Uint8* keystates = SDL_GetKeyboardState(nullptr);
+				
+				if(keystates[SDL_SCANCODE_A]) {
+					dir[0] -= 1;
+				} 
+				if(keystates[SDL_SCANCODE_D]) {
+					dir[0] += 1;
+				}
+
+				if(keystates[SDL_SCANCODE_W]) {
+					dir[1] -= 1;
+				} 
+				if(keystates[SDL_SCANCODE_S]) {
+					dir[1] += 1;
+				}
+			}
+			if (e.type == SDL_KEYUP) {
+				const Uint8* keystates = SDL_GetKeyboardState(nullptr);
+				
+				if(keystates[SDL_SCANCODE_A]) {
+					dir[0] -= 1;
+				} 
+				if(keystates[SDL_SCANCODE_D]) {
+					dir[0] += 1;
+				}
+
+				if(keystates[SDL_SCANCODE_W]) {
+					dir[1] -= 1;
+				} 
+				if(keystates[SDL_SCANCODE_S]) {
+					dir[1] += 1;
+				}
 			}
 		}
+
+		player.set_movement(Vector(dir[0] * 8, dir[1] * 8));
+		player.update();
 
 		//Clear screen
 		SDL_RenderClear(gRenderer);
 
 		//Render texture to screen
-		SDL_RenderCopy(gRenderer, gTexture, NULL, NULL);
+		SDL_Rect* temp = new SDL_Rect((Rect(Rectf(player.m_pos, Sizef(player.m_texture_size)))).to_sdl());
+		SDL_RenderCopy(gRenderer, player.m_texture, nullptr, temp);
 
 		//Update screen
 		SDL_RenderPresent(gRenderer);

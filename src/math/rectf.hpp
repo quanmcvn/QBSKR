@@ -1,5 +1,5 @@
-#ifndef HEADER_QBMG_MATH_RECTF_HPP
-#define HEADER_QBMG_MATH_RECTF_HPP
+#ifndef HEADER_QBSKR_MATH_RECTF_HPP
+#define HEADER_QBSKR_MATH_RECTF_HPP
 
 #include <assert.h>
 #include <iosfwd>

@@ -1,5 +1,5 @@
-#ifndef HEADER_QBMG_MATH_SIZEF_HPP
-#define HEADER_QBMG_MATH_SIZEF_HPP
+#ifndef HEADER_QBSKR_MATH_SIZEF_HPP
+#define HEADER_QBSKR_MATH_SIZEF_HPP
 
 #include <iosfwd>
 #include "math/vector.hpp"

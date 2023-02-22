@@ -1,5 +1,5 @@
-#ifndef HEADER_QBMG_MATH_SIZE_HPP
-#define HEADER_QBMG_MATH_SIZE_HPP
+#ifndef HEADER_QBSKR_MATH_SIZE_HPP
+#define HEADER_QBSKR_MATH_SIZE_HPP
 
 #include <iosfwd>
 

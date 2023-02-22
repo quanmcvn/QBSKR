@@ -1,5 +1,5 @@
-#ifndef HEADER_QBMG_MATH_RECT_HPP
-#define HEADER_QBMG_MATH_RECT_HPP
+#ifndef HEADER_QBSKR_MATH_RECT_HPP
+#define HEADER_QBSKR_MATH_RECT_HPP
 
 #include <iosfwd>
 
