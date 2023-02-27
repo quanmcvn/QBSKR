@@ -1,9 +1,13 @@
 #include "qbskr/main.hpp"
 
+
 #include <SDL_image.h>
 #include <string>
 #include <iostream>
 
+#include "control/input_manager.hpp"
+#include "control/keyboard_config.hpp"
+#include "control/mouse_button_config.hpp"
 #include "math/rect.hpp"
 #include "util/log.hpp"
 
@@ -70,7 +74,10 @@ bool loadMedia()
 	bool success = true;
 
 	//Load PNG texture
-	player.m_texture = loadTexture( "data/images/creatures/knight/idle0.png");
+	// This is really bad but 
+	// 1) Currently I don't have a way to fix it and 
+	// 2) Not on my priorities now 
+	player.m_texture = loadTexture( "../data/images/creatures/knight/idle0.png");
 	if( player.m_texture == NULL ) {
 		log_warning << "Failed to load texture image!\n";
 		success = false;
@@ -124,60 +131,35 @@ int Main::run(int argc, char** argv) {
 	}
 
 	bool quit = false;
-
-	//Event handler
-	SDL_Event e;
+	KeyboardConfig keyboard_config;
+	MouseButtonConfig mouse_button_config;
+	std::unique_ptr<InputManager> input_manager(new InputManager(keyboard_config, mouse_button_config));
 
 	//While application is running
 	while (!quit) {
 		//Handle events on queue
-		// I REALLY hate this current event processing though
-		// will probably touch it next
-		int dir[2] = {0, 0};
-		while (SDL_PollEvent(&e) != 0) {
-			//User requests quit
-			if (e.type == SDL_QUIT) {
-				quit = true;
-				break;
-			}
-			if (e.type == SDL_KEYDOWN) {
-				dir[0] = dir[1] = 0;
-				const Uint8* keystates = SDL_GetKeyboardState(nullptr);
-				
-				if(keystates[SDL_SCANCODE_A]) {
-					dir[0] -= 1;
-				} 
-				if(keystates[SDL_SCANCODE_D]) {
-					dir[0] += 1;
+		{
+			SDL_Event event;
+			while (SDL_PollEvent(&event) != 0) {
+				//User requests quit
+				if (event.type == SDL_QUIT) {
+					quit = true;
+					break;
 				}
-
-				if(keystates[SDL_SCANCODE_W]) {
-					dir[1] -= 1;
-				} 
-				if(keystates[SDL_SCANCODE_S]) {
-					dir[1] += 1;
-				}
-			}
-			if (e.type == SDL_KEYUP) {
-				const Uint8* keystates = SDL_GetKeyboardState(nullptr);
-				
-				if(keystates[SDL_SCANCODE_A]) {
-					dir[0] -= 1;
-				} 
-				if(keystates[SDL_SCANCODE_D]) {
-					dir[0] += 1;
-				}
-
-				if(keystates[SDL_SCANCODE_W]) {
-					dir[1] -= 1;
-				} 
-				if(keystates[SDL_SCANCODE_S]) {
-					dir[1] += 1;
-				}
+				InputManager::current()->process_event(event);
 			}
 		}
 
-		player.set_movement(Vector(dir[0] * 8, dir[1] * 8));
+		int dir[2] = {0, 0};
+
+		dir[0] += static_cast<int>(InputManager::current()->get_controller(0).hold(Control::RIGHT));
+		dir[0] -= static_cast<int>(InputManager::current()->get_controller(0).hold(Control::LEFT));
+
+		dir[1] += static_cast<int>(InputManager::current()->get_controller(0).hold(Control::DOWN)); 
+		dir[1] -= static_cast<int>(InputManager::current()->get_controller(0).hold(Control::UP));
+
+		player.set_movement(Vector(dir[0] * 4, dir[1] * 4));
+
 		player.update();
 
 		//Clear screen
@@ -189,6 +171,8 @@ int Main::run(int argc, char** argv) {
 
 		//Update screen
 		SDL_RenderPresent(gRenderer);
+
+		SDL_Delay(20);
 	}
 
 	close();

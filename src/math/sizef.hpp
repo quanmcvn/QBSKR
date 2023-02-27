@@ -2,6 +2,7 @@
 #define HEADER_QBSKR_MATH_SIZEF_HPP
 
 #include <iosfwd>
+
 #include "math/vector.hpp"
 
 class Size;

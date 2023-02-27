@@ -1,5 +1,12 @@
 #OBJS specifies which files to compile as part of the project
 OBJS = src/main.cpp \
+       src/control/controller.cpp \
+       src/control/input_manager.cpp \
+       src/control/keyboard_config.cpp \
+       src/control/keyboard_manager.cpp \
+       src/control/mouse_button_config.cpp \
+       src/control/mouse_button_manager.cpp \
+       src/control/mouse_motion_manager.cpp \
        src/qbskr/main.cpp \
        src/math/anchor_point.cpp \
        src/math/rect.cpp \
