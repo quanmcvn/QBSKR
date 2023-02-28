@@ -5,9 +5,11 @@
 KeyboardManager::KeyboardManager(InputManager* parent,
                                  KeyboardConfig& keyboard_config) :
 	m_parent(parent),
-	m_keyboard_config(keyboard_config) {}
+	m_keyboard_config(keyboard_config)
+{}
 
-void KeyboardManager::process_key_event(const SDL_KeyboardEvent& event) {
+void KeyboardManager::process_key_event(const SDL_KeyboardEvent& event)
+{
 	auto key_mapping = m_keyboard_config.m_keymap.find(event.keysym.sym);
 
 	if (key_mapping == m_keyboard_config.m_keymap.end()) return;

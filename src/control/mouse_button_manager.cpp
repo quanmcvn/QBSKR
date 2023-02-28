@@ -3,11 +3,13 @@
 #include "control/input_manager.hpp"
 
 MouseButtonManager::MouseButtonManager(InputManager* parent,
-                           MouseButtonConfig& mouse_button_config) :
+                                       MouseButtonConfig& mouse_button_config) :
 	m_parent(parent),
-	m_mouse_button_config(mouse_button_config) {}
+	m_mouse_button_config(mouse_button_config)
+{}
 
-void MouseButtonManager::process_button_event(const SDL_MouseButtonEvent& event) {
+void MouseButtonManager::process_button_event(const SDL_MouseButtonEvent& event)
+{
 	auto button_mapping = m_mouse_button_config.m_mouse_button_map.find(event.button);
 
 	if (button_mapping == m_mouse_button_config.m_mouse_button_map.end()) return;

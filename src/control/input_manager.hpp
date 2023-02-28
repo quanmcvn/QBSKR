@@ -15,7 +15,7 @@ class MouseButtonManager;
 class MouseButtonConfig;
 class MouseMotionManager;
 
-class InputManager final: public Currenton<InputManager> {
+class InputManager final : public Currenton<InputManager> {
 public:
 	~InputManager() override;
 

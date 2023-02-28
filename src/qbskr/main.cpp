@@ -22,7 +22,8 @@ SDL_Renderer* gRenderer = NULL;
 
 Player player;
 
-bool init() {
+bool init()
+{
 	//Initialization flag
 	bool success = true;
 
@@ -30,8 +31,7 @@ bool init() {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 		printf("SDL could not initialize! SDL Error: %s\n", SDL_GetError());
 		success = false;
-	}
-	else {
+	} else {
 		//Set texture filtering to linear
 		if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1")) {
 			printf("Warning: Linear texture filtering not enabled!");
@@ -42,15 +42,13 @@ bool init() {
 		if (gWindow == NULL) {
 			printf("Window could not be created! SDL Error: %s\n", SDL_GetError());
 			success = false;
-		}
-		else {
+		} else {
 			//Create renderer for window
 			gRenderer = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_ACCELERATED);
 			if (gRenderer == NULL) {
 				printf("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
 				success = false;
-			}
-			else {
+			} else {
 				//Initialize renderer color
 				SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
 
@@ -77,8 +75,8 @@ bool loadMedia()
 	// This is really bad but 
 	// 1) Currently I don't have a way to fix it and 
 	// 2) Not on my priorities now 
-	player.m_texture = loadTexture( "../data/images/creatures/knight/idle0.png");
-	if( player.m_texture == NULL ) {
+	player.m_texture = loadTexture("../data/images/creatures/knight/idle0.png");
+	if (player.m_texture == NULL) {
 		log_warning << "Failed to load texture image!\n";
 		success = false;
 	}
@@ -86,7 +84,8 @@ bool loadMedia()
 	return success;
 }
 
-void close() {
+void close()
+{
 	//Destroy window	
 	SDL_DestroyRenderer(gRenderer);
 	SDL_DestroyWindow(gWindow);
@@ -98,7 +97,8 @@ void close() {
 	SDL_Quit();
 }
 
-SDL_Texture* loadTexture(std::string path) {
+SDL_Texture* loadTexture(std::string path)
+{
 	//The final texture
 	SDL_Texture* newTexture = NULL;
 
@@ -106,8 +106,7 @@ SDL_Texture* loadTexture(std::string path) {
 	SDL_Surface* loadedSurface = IMG_Load(path.c_str());
 	if (loadedSurface == NULL) {
 		printf("Unable to load image %s! SDL_image Error: %s\n", path.c_str(), IMG_GetError());
-	}
-	else {
+	} else {
 		//Create texture from surface pixels
 		newTexture = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
 		if (newTexture == NULL) {
@@ -121,7 +120,8 @@ SDL_Texture* loadTexture(std::string path) {
 	return newTexture;
 }
 
-int Main::run(int argc, char** argv) {
+int Main::run(int argc, char** argv)
+{
 	if (!init()) {
 		std::cout << "couldn't init\n";
 		return 1;
@@ -150,12 +150,12 @@ int Main::run(int argc, char** argv) {
 			}
 		}
 
-		int dir[2] = {0, 0};
+		int dir[2] = { 0, 0 };
 
 		dir[0] += static_cast<int>(InputManager::current()->get_controller(0).hold(Control::RIGHT));
 		dir[0] -= static_cast<int>(InputManager::current()->get_controller(0).hold(Control::LEFT));
 
-		dir[1] += static_cast<int>(InputManager::current()->get_controller(0).hold(Control::DOWN)); 
+		dir[1] += static_cast<int>(InputManager::current()->get_controller(0).hold(Control::DOWN));
 		dir[1] -= static_cast<int>(InputManager::current()->get_controller(0).hold(Control::UP));
 
 		player.set_movement(Vector(dir[0] * 4, dir[1] * 4));
