@@ -14,8 +14,8 @@ Rect::Rect(const Rectf& other) :
 std::ostream& operator<<(std::ostream& out, const Rect& rect)
 {
 	out << "Rect("
-		<< rect.left << ", " << rect.top << ", "
-		<< rect.right << ", " << rect.bottom
-		<< ")";
+	    << rect.left << ", " << rect.top << ", "
+	    << rect.right << ", " << rect.bottom
+	    << ")";
 	return out;
 }

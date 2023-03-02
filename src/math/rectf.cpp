@@ -14,8 +14,8 @@ Rectf::Rectf(const Rect& rect) :
 std::ostream& operator<<(std::ostream& out, const Rectf& rect)
 {
 	out << "Rectf("
-		<< rect.get_left() << ", " << rect.get_top() << ", "
-		<< rect.get_right() << ", " << rect.get_bottom()
-		<< ")";
+	    << rect.get_left() << ", " << rect.get_top() << ", "
+	   << rect.get_right() << ", " << rect.get_bottom()
+	    << ")";
 	return out;
 }

@@ -120,7 +120,7 @@ SDL_Texture* loadTexture(std::string path)
 	return newTexture;
 }
 
-int Main::run(int argc, char** argv)
+int Main::run([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
 {
 	if (!init()) {
 		std::cout << "couldn't init\n";
@@ -133,7 +133,7 @@ int Main::run(int argc, char** argv)
 	bool quit = false;
 	KeyboardConfig keyboard_config;
 	MouseButtonConfig mouse_button_config;
-	std::unique_ptr<InputManager> input_manager(new InputManager(keyboard_config, mouse_button_config));
+	std::unique_ptr<InputManager> input_manager = std::make_unique<InputManager>(keyboard_config, mouse_button_config);
 
 	//While application is running
 	while (!quit) {
@@ -166,7 +166,9 @@ int Main::run(int argc, char** argv)
 		SDL_RenderClear(gRenderer);
 
 		//Render texture to screen
+		// only temporary
 		SDL_Rect* temp = new SDL_Rect((Rect(Rectf(player.m_pos, Sizef(player.m_texture_size)))).to_sdl());
+		
 		SDL_RenderCopy(gRenderer, player.m_texture, nullptr, temp);
 
 		//Update screen

@@ -16,42 +16,45 @@ private:
 	Vector m_p1;
 	Sizef m_size;
 public:
-	static Rectf from_center(const Vector& center, const Sizef& size) {
+	static Rectf from_center(const Vector& center, const Sizef& size)
+	{
 		return Rectf(center.x - size.width / 2.0f,
-		             center.y - size.height / 2.0f,
-		             center.x + size.width / 2.0f,
-		             center.y + size.height / 2.0f);
+                     center.y - size.height / 2.0f,
+                     center.x + size.width / 2.0f,
+                     center.y + size.height / 2.0f);
 	}
 
 public:
-	Rectf():
+	Rectf() :
 		m_p1(0.0f, 0.0f),
-		m_size() {}
+		m_size()
+	{}
 
 	Rectf(const Rectf& rhs) = default;
 	Rectf& operator=(const Rectf& rhs) = default;
 
-	Rectf(const Vector& np1, const Vector& np2):
-		m_p1(np1), m_size(np2.x - np1.x, np2.y - np1.y) {
-		assert(m_size.width >= 0 &&
-		       m_size.height >= 0);
+	Rectf(const Vector& np1, const Vector& np2) :
+		m_p1(np1), m_size(np2.x - np1.x, np2.y - np1.y)
+	{
+		assert(m_size.width >= 0 && m_size.height >= 0);
 	}
 
-	Rectf(float x1, float y1, float x2, float y2):
-		m_p1(x1, y1), m_size(x2 - x1, y2 - y1) {
-		assert(m_size.width >= 0 &&
-		       m_size.height >= 0);
+	Rectf(float x1, float y1, float x2, float y2) :
+		m_p1(x1, y1), m_size(x2 - x1, y2 - y1)
+	{
+		assert(m_size.width >= 0 && m_size.height >= 0);
 	}
 
-	Rectf(const Vector& p1, const Sizef& size):
+	Rectf(const Vector& p1, const Sizef& size) :
 		m_p1(p1),
-		m_size(size) {}
+		m_size(size)
+	{}
 
 	Rectf(const Rect& rect);
 
-	bool operator==(const Rectf& other) const {
-		return (m_p1 == other.m_p1 &&
-		        m_size == other.m_size);
+	bool operator==(const Rectf& other) const
+	{
+		return (m_p1 == other.m_p1 && m_size == other.m_size);
 	}
 
 	float get_left() const { return m_p1.x; }
@@ -68,9 +71,9 @@ public:
 	void set_top(float v) { m_size.height -= v - m_p1.y; m_p1.y = v; }
 	void set_bottom(float v) { m_size.height += v - get_bottom(); }
 
-	Vector get_middle() const {
-		return Vector(m_p1.x + m_size.width / 2.0f,
-		              m_p1.y + m_size.height / 2.0f);
+	Vector get_middle() const
+	{
+		return Vector(m_p1.x + m_size.width / 2.0f, m_p1.y + m_size.height / 2.0f);
 	}
 
 	void set_pos(const Vector& v) { m_p1 = v; }
@@ -83,43 +86,49 @@ public:
 	void move(const Vector& v) { m_p1 += v; }
 	Rectf moved(const Vector& v) const { return Rectf(m_p1 + v, m_size); }
 
-	bool contains(const Vector& v) const {
+	bool contains(const Vector& v) const
+	{
 		return get_left() <= v.x && v.x < get_right() && get_top() <= v.y && v.y < get_bottom();
 	}
 
-	bool contains(const Rectf& other) const {
+	bool contains(const Rectf& other) const
+	{
 		return (get_left() <= other.get_left() && other.get_right() <= get_right() &&
 		        get_top() <= other.get_top() && other.get_bottom() <= get_bottom());
 	}
 
-	float distance(const Vector& other, AnchorPoint ap = ANCHOR_MIDDLE) const {
+	float distance(const Vector& other, AnchorPoint ap = ANCHOR_MIDDLE) const
+	{
 		Vector v = get_anchor_pos(*this, ap);
 		return math::distance(v, other);
 	}
 
-	float distance(const Rectf& other, AnchorPoint ap = ANCHOR_MIDDLE) const {
+	float distance(const Rectf& other, AnchorPoint ap = ANCHOR_MIDDLE) const
+	{
 		Vector v1 = get_anchor_pos(*this, ap);
 		Vector v2 = get_anchor_pos(other, ap);
 
 		return math::distance(v1, v2);
 	}
 
-	Rectf grown(float border) const {
-		return Rectf(m_p1.x - border, m_p1.y - border,
-			get_right() + border, get_bottom() + border);
+	Rectf grown(float border) const
+	{
+		return Rectf(m_p1.x - border, m_p1.y - border, 
+		             get_right() + border, get_bottom() + border);
 	}
 
 	Vector p1() const { return m_p1; }
 	Vector p2() const { return Vector(m_p1.x + m_size.width, m_p1.y + m_size.height); }
 
-	void set_p1(const Vector& p) {
+	void set_p1(const Vector& p)
+	{
 		m_size = Sizef(m_size.width + (m_p1.x - p.x),
 		               m_size.height + (m_p1.y - p.y));
 		m_p1 = p;
 	}
-	void set_p2(const Vector& p) {
-		m_size = Sizef(p.x - m_p1.x,
-		               p.y - m_p1.y);
+	void set_p2(const Vector& p)
+	{
+		m_size = Sizef(p.x - m_p1.x, p.y - m_p1.y);
 	}
 };
 

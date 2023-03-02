@@ -24,18 +24,18 @@ OBJS = src/main.cpp                            \
 CC = g++
 
 #INCLUDE_PATHS specifies the additional include paths we'll need
-INCLUDE_PATHS = -ID:\Libraries\SDL2\x86_64-w64-mingw32\include\SDL2          \
-                -ID:\Libraries\SDL2_image\x86_64-w64-mingw32\include\SDL2    \
+INCLUDE_PATHS = -ID:/Libraries/SDL2/x86_64-w64-mingw32/include/SDL2          \
+                -ID:/Libraries/SDL2_image/x86_64-w64-mingw32/include/SDL2    \
                 -I./src                                                      \
 
 #LIBRARY_PATHS specifies the additional library paths we'll need
-LIBRARY_PATHS = -LD:\Libraries\SDL2\x86_64-w64-mingw32\lib                   \
-                -LD:\Libraries\SDL2_image\x86_64-w64-mingw32\lib             \
+LIBRARY_PATHS = -LD:/Libraries/SDL2/x86_64-w64-mingw32/lib                   \
+                -LD:/Libraries/SDL2_image/x86_64-w64-mingw32/lib             \
 
 #COMPILER_FLAGS specifies the additional compilation options we're using
 # -w suppresses all warnings
 # -Wl,-subsystem,windows gets rid of the console window
-COMPILER_FLAGS = 
+COMPILER_FLAGS = -std=c++17 -Wall -Wextra
 
 #LINKER_FLAGS specifies the libraries we're linking against
 LINKER_FLAGS = -lmingw32           \

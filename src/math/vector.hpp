@@ -8,15 +8,18 @@ public:
 	float x, y;
 public:
 	Vector() :
-		x(0), y(0) {}
+		x(0), y(0)
+	{}
 
 	Vector(const Vector& other) :
-		x(other.x), y(other.y) {}
+		x(other.x), y(other.y)
+	{}
 
 	Vector& operator=(const Vector& other);
 public:
 	Vector(float x_, float y_) :
-		x(x_), y(y_) {}
+		x(x_), y(y_)
+	{}
 
 public:
 	Vector operator+(const Vector& other) const;

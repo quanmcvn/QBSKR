@@ -1,17 +1,21 @@
 #include "object/player.hpp"
 
-Player::Player() : 
-	m_pos(0, 0), m_movement(0, 0), m_texture_size(24, 42) {}
+Player::Player() :
+	m_pos(0, 0), m_texture_size(24, 42), m_movement(0, 0)
+{}
 
-Player::~Player() {
+Player::~Player()
+{
 	SDL_DestroyTexture(m_texture);
 }
 
-void Player::set_movement(const Vector movement) {
+void Player::set_movement(const Vector movement)
+{
 	m_movement = movement;
 }
 
-void Player::update() {
+void Player::update()
+{
 	m_pos += m_movement;
 	m_movement = Vector();
 }

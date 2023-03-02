@@ -8,9 +8,9 @@
 InputManager::InputManager(KeyboardConfig& keyboard_config,
                            MouseButtonConfig& mouse_button_config) :
 	m_controllers(),
-	keyboard_manager(new KeyboardManager(this, keyboard_config)),
-	mouse_button_manager(new MouseButtonManager(this, mouse_button_config)),
-	mouse_motion_manager(new MouseMotionManager(this))
+	keyboard_manager(std::make_unique<KeyboardManager>(this, keyboard_config)),
+	mouse_button_manager(std::make_unique<MouseButtonManager>(this, mouse_button_config)),
+	mouse_motion_manager(std::make_unique<MouseMotionManager>(this))
 {
 	m_controllers.push_back(std::make_unique<Controller>());
 }
