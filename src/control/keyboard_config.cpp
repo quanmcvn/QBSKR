@@ -15,9 +15,9 @@ KeyboardConfig::KeyboardConfig() :
 
 SDL_Keycode KeyboardConfig::reversemap_key(int player, Control control) const
 {
-	for (const auto& i : m_keymap) {
-		if (i.second == PlayerControl{player, control}) {
-			return i.first;
+	for (const auto& ctrl : m_keymap) {
+		if (ctrl.second == PlayerControl{player, control}) {
+			return ctrl.first;
 		}
 	}
 

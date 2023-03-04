@@ -39,13 +39,13 @@ public:
 
 	void set_mouse_pos(Vector mouse_pos);
 	
-	/** returns true if the control is pressed down */
+	// returns true if the control is pressed down
 	bool hold(Control control) const;
 
-	/** returns true if the control has just been pressed down this frame */
+	// returns true if the control has just been pressed down this frame
 	bool pressed(Control control) const;
 
-	/** returns true if the control has just been released this frame */
+	// returns true if the control has just been released this frame
 	bool released(Control control) const;
 
 	Vector get_mouse_pos() const;
@@ -53,10 +53,10 @@ public:
 	void reset();
 
 protected:
-	/** current control status */
+	// current control status
 	bool m_controls[static_cast<int>(Control::CONTROLCOUNT)];
 
-	/** control status at last frame */
+	// control status at last frame
 	bool m_old_controls[static_cast<int>(Control::CONTROLCOUNT)];
 
 	/** 

@@ -18,6 +18,7 @@ public:
 	public:
 		int player;
 		Control control;
+
 	public:
 		inline bool operator==(const PlayerControl& other) const {
 			return player == other.player && control == other.control;
