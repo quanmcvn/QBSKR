@@ -7,18 +7,6 @@
 #include "video/texture_manager.hpp"
 #include "video/video_system.hpp"
 
-// //Starts up SDL and creates window
-// bool init();
-
-// //Loads media
-// bool loadMedia();
-
-// //Frees media and shuts down SDL
-// void close();
-
-// //Loads individual image as texture
-// SDL_Texture* loadTexture(std::string path);
-
 class SDLSubSystem final {
 public:
 	SDLSubSystem();
