@@ -18,8 +18,6 @@
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 
-Player player;
-
 SDLSubSystem::SDLSubSystem() 
 {
 	Uint32 flags = SDL_INIT_VIDEO;
@@ -60,6 +58,7 @@ int Main::run([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
 	m_input_manager = std::make_unique<InputManager>(g_config->keyboard_config, g_config->mouse_button_config);
 	m_video_system = VideoSystem::create(VideoSystem::VIDEO_SDL);
 
+	Player player;
 	player.m_texture = TextureManager::current()->get("../data/images/creatures/knight/idle0.png");
 
 	bool quit = false;
