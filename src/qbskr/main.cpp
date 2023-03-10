@@ -95,7 +95,7 @@ int Main::run([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
 		request->type = TEXTURE;
 		request->texture = player.m_texture.get();
 
-		request->srcrects.emplace_back(Rectf(0, 0, 16, 28));
+		request->srcrects.emplace_back(Rectf(0, 0, player.m_texture.get()->get_texture_width(), player.m_texture.get()->get_texture_height()));
 		request->dstrects.emplace_back(Rectf(player.m_pos.x, player.m_pos.y, player.m_pos.x + 24, player.m_pos.y + 42));
 
 		renderer.start_draw();

@@ -10,59 +10,26 @@ public:
 	int width;
 	int height;
 public:
-	Size() :
-		width(0),
-		height(0)
-	{}
+	Size();
 
 	Size(const Size& rhs) = default;
 	Size& operator=(const Size& rhs) = default;
 
 	explicit Size(const Sizef& rhs);
 
-	Size(int width_, int height_) :
-		width(width_),
-		height(height_)
-	{}
+	Size(int width_, int height_);
 
-	Size& operator*=(int factor)
-	{
-		width *= factor;
-		height *= factor;
-		return *this;
-	}
+	Size& operator*=(int factor);
+	Size& operator/=(int divisor);
+	Size& operator+=(const Size& rhs);
+	Size& operator-=(const Size& rhs);
 
-	Size& operator/=(int divisor)
-	{
-		width /= divisor;
-		height /= divisor;
-		return *this;
-	}
-
-	Size& operator+=(const Size& rhs)
-	{
-		width += rhs.width;
-		height += rhs.height;
-		return *this;
-	}
-
-	Size& operator-=(const Size& rhs)
-	{
-		width -= rhs.width;
-		height -= rhs.height;
-		return *this;
-	}
-
-	bool is_valid() const
-	{
-		return width > 0 && height > 0;
-	}
+	bool is_valid() const;
 };
 
 inline Size operator*(const Size& lhs, int factor)
 {
-	return Size(lhs.width * factor,
-		lhs.height * factor);
+	return Size(lhs.width * factor, lhs.height * factor);
 }
 
 inline Size operator*(int factor, const Size& rhs)

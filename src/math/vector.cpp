@@ -3,6 +3,21 @@
 #include <math.h>
 #include <iostream>
 
+Vector::Vector() :
+	x(0), 
+	y(0)
+{}
+
+Vector::Vector(const Vector& other) :
+	x(other.x), 
+	y(other.y)
+{}
+
+Vector::Vector(float x_, float y_) :
+	x(x_), 
+	y(y_)
+{}
+
 Vector& Vector::operator=(const Vector& other)
 {
 	x = other.x;

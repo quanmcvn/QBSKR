@@ -12,63 +12,23 @@ public:
 	float width;
 	float height;
 public:
-	Sizef() :
-		width(0.0f),
-		height(0.0f)
-	{}
+	Sizef();
 
 	Sizef(const Sizef& rhs) = default;
 	Sizef& operator=(const Sizef& rhs) = default;
 
-	explicit Sizef(const Vector& v) :
-		width(v.x),
-		height(v.y)
-	{}
+	explicit Sizef(const Vector& v);
 
-	Sizef(float width_, float height_) :
-		width(width_),
-		height(height_)
-	{}
-
+	Sizef(float width_, float height_);
 	Sizef(const Size& rhs);
 
-	Sizef& operator*=(float factor)
-	{
-		width *= factor;
-		height *= factor;
-		return *this;
-	}
+	Sizef& operator*=(float factor);
+	Sizef& operator/=(float divisor);
+	Sizef& operator+=(const Sizef& rhs);
+	Sizef& operator-=(const Sizef& rhs);
 
-	Sizef& operator/=(float divisor)
-	{
-		width /= divisor;
-		height /= divisor;
-		return *this;
-	}
-
-	Sizef& operator+=(const Sizef& rhs)
-	{
-		width += rhs.width;
-		height += rhs.height;
-		return *this;
-	}
-
-	Sizef& operator-=(const Sizef& rhs)
-	{
-		width -= rhs.width;
-		height -= rhs.height;
-		return *this;
-	}
-
-	Vector as_vector() const
-	{
-		return Vector(width, height);
-	}
-
-	bool is_valid() const
-	{
-		return width > 0 && height > 0;
-	}
+	Vector as_vector() const;
+	bool is_valid() const;
 };
 
 inline Sizef operator*(const Sizef& lhs, float factor)
