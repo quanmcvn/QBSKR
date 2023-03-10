@@ -5,7 +5,6 @@
 
 #include "util/log.hpp"
 #include "video/sdl/sdl_surface_creator.hpp"
-#include "video/texture_manager.hpp"
 #include "video/video_system.hpp"
 
 TextureManager::TextureManager() :
@@ -53,6 +52,7 @@ void TextureManager::free_cache_entry(const Texture::Key& key)
 		m_image_textures.erase(it);
 	}
 }
+
 TexturePtr TextureManager::create_image_texture(const std::string& filename) noexcept
 {
 	try {
@@ -80,9 +80,7 @@ TexturePtr TextureManager::create_image_texture_raw(const std::string& filename)
 
 TexturePtr TextureManager::create_dummy_texture()
 {
-	// this (the relative filepath) is bad and I don't have a way to fix it
-	// need more tools
-	const std::string dummy_texture_filename = "../data/images/missing.png";
+	const std::string dummy_texture_filename = "images/missing.png";
 
 	// this function will be called when create_image_texture() fail
 	// try load placeholder file

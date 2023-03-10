@@ -3,8 +3,8 @@
 
 #include <SDL.h>
 
-#include "video/renderer.hpp"
 #include "video/sdl/sdl_painter.hpp"
+#include "video/renderer.hpp"
 
 /**
  * This class holds Painter and SDL_Renderer*

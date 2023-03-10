@@ -4,7 +4,7 @@
 #include <SDL.h>
 
 /**
- * Wrapper class for SDL_Surface
+ * Wrapper class for SDL_Surface*
 */
 class SDLSurfacePtr final {
 private:

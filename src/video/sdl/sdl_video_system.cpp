@@ -7,7 +7,6 @@
 #include "video/sdl/sdl_renderer.hpp"
 #include "video/sdl/sdl_texture.hpp"
 #include "video/texture_manager.hpp"
-#include "sdl_video_system.hpp"
 
 SDLVideoSystem::SDLVideoSystem() : 
 	m_sdl_renderer(nullptr, &SDL_DestroyRenderer),

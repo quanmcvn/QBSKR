@@ -59,7 +59,7 @@ int Main::run([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
 	m_video_system = VideoSystem::create(VideoSystem::VIDEO_SDL);
 
 	Player player;
-	player.m_texture = TextureManager::current()->get("../data/images/creatures/knight/idle0.png");
+	player.m_texture = TextureManager::current()->get("images/creatures/knight/idle0.png");
 
 	bool quit = false;
 

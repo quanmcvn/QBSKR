@@ -18,9 +18,6 @@ OBJS = src/main.cpp                            \
        src/qbskr/main.cpp                      \
        src/object/player.cpp                   \
        src/util/log.cpp                        \
-       src/util/unique_name.cpp                \
-       src/util/uid.cpp                        \
-       src/util/uid_generator.cpp              \
        src/video/sdl/sdl_painter.cpp           \
        src/video/sdl/sdl_renderer.cpp          \
        src/video/sdl/sdl_surface_creator.cpp   \
@@ -58,5 +55,6 @@ LINKER_FLAGS = -lmingw32           \
 OBJ_NAME = QBSKR
 
 #This is the target that compiles our executable
+### Move the executable to ./data to (partial) fix the "../data/"
 all : $(OBJS)
-	$(CC) -g $(OBJS) $(INCLUDE_PATHS) $(LIBRARY_PATHS) $(COMPILER_FLAGS) $(LINKER_FLAGS) -o ./bin/$(OBJ_NAME)
+	$(CC) -g $(OBJS) $(INCLUDE_PATHS) $(LIBRARY_PATHS) $(COMPILER_FLAGS) $(LINKER_FLAGS) -o ./data/$(OBJ_NAME)
