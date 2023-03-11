@@ -2,6 +2,7 @@
 
 #include <math.h>
 
+#include "util/log.hpp"
 #include "video/drawing_request.hpp"
 #include "video/renderer.hpp"
 #include "video/sdl/sdl_texture.hpp"
@@ -28,7 +29,8 @@ namespace {
 
 SDLPainter::SDLPainter(Renderer& renderer, SDL_Renderer* sdl_renderer) :
 	m_renderer(renderer),
-	m_sdl_renderer(sdl_renderer) 
+	m_sdl_renderer(sdl_renderer),
+	m_cliprect()
 {}
 
 void SDLPainter::draw_texture(const TextureRequest& request) 
@@ -46,5 +48,23 @@ void SDLPainter::draw_texture(const TextureRequest& request)
 		SDL_RenderCopyEx(m_sdl_renderer, texture.get_texture(), 
 		                 &src_rect, &dst_rect,
 		                 0.0f, nullptr, flip); 
+	}
+}
+
+void SDLPainter::set_clip_rect(const Rect& rect)
+{
+	m_cliprect = rect.to_sdl();
+
+	if (SDL_RenderSetClipRect(m_sdl_renderer, &*m_cliprect) < 0) {
+		log_warning << "SDLPainter::set_clip_rect(): SDL_RenderSetClipRect() failed: " << SDL_GetError() << std::endl;
+	}
+}
+
+void SDLPainter::clear_clip_rect()
+{
+	m_cliprect.reset();
+
+	if (SDL_RenderSetClipRect(m_sdl_renderer, nullptr) < 0) {
+		log_warning << "SDLPainter::clear_clip_rect(): SDL_RenderSetClipRect() failed: " << SDL_GetError() << std::endl;
 	}
 }

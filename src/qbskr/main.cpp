@@ -11,7 +11,9 @@
 #include "math/rect.hpp"
 #include "qbskr/globals.hpp"
 #include "util/log.hpp"
-#include "video/drawing_request.hpp"
+#include "video/canvas.hpp"
+#include "video/compositor.hpp"
+#include "video/drawing_context.hpp"
 #include "video/sdl/sdl_video_system.hpp"
 #include "video/sdl/sdl_renderer.hpp"
 
@@ -59,7 +61,9 @@ int Main::run([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
 	m_video_system = VideoSystem::create(VideoSystem::VIDEO_SDL);
 
 	Player player;
-	player.m_texture = TextureManager::current()->get("images/creatures/knight/idle0.png");
+	player.m_surface = Surface::from_file("images/creatures/knight/idle0.png");
+
+	assert(player.m_surface->get_texture());
 
 	bool quit = false;
 
@@ -87,26 +91,13 @@ int Main::run([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
 
 		player.update();
 
-		auto& renderer = VideoSystem::current()->get_renderer();
-		auto& painter = renderer.get_painter();
+		Compositor compositor(*VideoSystem::current());
 
-		auto request = new TextureRequest();
+		auto& drawing_context = compositor.make_context();
+		auto& canvas = drawing_context.get_canvas();
+		canvas.draw_surface(player.m_surface, player.m_pos, 100);
 
-		request->type = TEXTURE;
-		request->texture = player.m_texture.get();
-
-		request->srcrects.emplace_back(Rectf(0, 0, player.m_texture.get()->get_texture_width(), player.m_texture.get()->get_texture_height()));
-		request->dstrects.emplace_back(Rectf(player.m_pos.x, player.m_pos.y, 
-		                                     player.m_pos.x + player.m_texture.get()->get_texture_width(), 
-		                                     player.m_pos.y + player.m_texture.get()->get_texture_height()));
-
-		renderer.start_draw();
-
-		painter.draw_texture(static_cast<const TextureRequest&>(*request));
-
-		renderer.end_draw();
-
-		VideoSystem::current()->present();
+		compositor.render();
 
 		SDL_Delay(20);
 	}

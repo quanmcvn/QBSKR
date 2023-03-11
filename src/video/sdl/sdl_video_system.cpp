@@ -47,7 +47,7 @@ Renderer& SDLVideoSystem::get_renderer() const
 
 TexturePtr SDLVideoSystem::new_texture(const SDL_Surface& image)
 {
-	return TexturePtr(new SDLTexture(image));
+	return std::make_shared<SDLTexture>(image);
 }
 
 const Viewport& SDLVideoSystem::get_viewport() const 

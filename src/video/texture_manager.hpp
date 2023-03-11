@@ -16,7 +16,7 @@
 
 struct SDL_Surface;
 /**
- * This class caches images and provides way to get them
+ * This class stores images and provides way to get them
 */
 class TextureManager final : public Currenton<TextureManager> {
 public:
@@ -32,6 +32,7 @@ private:
 
 public:
 	TexturePtr get(const std::string& filename);
+	TexturePtr get(const std::string& filename, const std::optional<Rect>& rect);
 
 	// void debug_print(std::ostream& os) const;
 
@@ -43,9 +44,13 @@ private:
 
 	// on failure a dummy texture is returned and no exception is thrown
 	TexturePtr create_image_texture(const std::string& filename) noexcept;
+	// on failure a dummy texture is returned and no exception is thrown
+	TexturePtr create_image_texture(const std::string& filename, const Rect& rect) noexcept;
 
 	// throw exception on error
 	TexturePtr create_image_texture_raw(const std::string& filename);
+	// throw exception on error
+	TexturePtr create_image_texture_raw(const std::string& filename, const Rect& rect);
 
 	// create dummy texture in case of failure of create_image_texture_raw()
 	TexturePtr create_dummy_texture();

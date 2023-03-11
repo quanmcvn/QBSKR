@@ -14,8 +14,13 @@ struct DrawingRequest {
 	
 	RequestType type;
 
+	int layer;
+	Rect viewport;
+
 	DrawingRequest(RequestType type_) :
-		type(type_)
+		type(type_),
+		layer(),
+		viewport()
 	{}
 };
 
@@ -23,6 +28,7 @@ struct TextureRequest : DrawingRequest {
 private:
 	TextureRequest(const TextureRequest&) = delete;
 	TextureRequest& operator=(const TextureRequest&) = delete;
+
 public:
 	TextureRequest() :
 		DrawingRequest(TEXTURE),

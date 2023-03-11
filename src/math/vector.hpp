@@ -18,6 +18,7 @@ public:
 public:
 	Vector operator+(const Vector& other) const;
 	Vector operator-(const Vector& other) const;
+	Vector operator*(float factor) const;
 	Vector& operator+=(const Vector& other);
 	Vector& operator-=(const Vector& other);
 

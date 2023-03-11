@@ -17,6 +17,9 @@ public:
 
 public:
 	virtual void draw_texture(const TextureRequest& request) = 0;
+
+	virtual void set_clip_rect(const Rect& rect) = 0;
+	virtual void clear_clip_rect() = 0;
 };
 
 #endif

@@ -2,13 +2,12 @@
 
 Player::Player() :
 	m_pos(0, 0),
-	m_texture(),
+	m_surface(),
 	m_movement(0, 0)
 {}
 
 Player::~Player()
-{
-}
+{}
 
 void Player::set_movement(const Vector movement)
 {

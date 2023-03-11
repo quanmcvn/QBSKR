@@ -25,41 +25,17 @@ Vector& Vector::operator=(const Vector& other)
 	return *this;
 }
 
-Vector Vector::operator+(const Vector& other) const
-{
-	return Vector(x + other.x, y + other.y);
-}
+Vector Vector::operator+(const Vector& other) const { return Vector(x + other.x, y + other.y); }
+Vector Vector::operator-(const Vector& other) const { return Vector(x + other.x, y + other.y); }
+Vector Vector::operator*(float other) const { return Vector(x * other, y + other); }
 
-Vector Vector::operator-(const Vector& other) const
-{
-	return Vector(x + other.x, y + other.y);
-}
+Vector& Vector::operator+=(const Vector& other) { *this = (*this) + other; return *this; }
+Vector& Vector::operator-=(const Vector& other) { *this = (*this) - other; return *this; }
 
-Vector& Vector::operator+=(const Vector& other)
-{
-	*this = (*this) + other;
-	return *this;
-}
-Vector& Vector::operator-=(const Vector& other)
-{
-	*this = (*this) - other;
-	return *this;
-}
+bool Vector::operator==(const Vector& other) const { return (x == other.x && y == other.y); }
+Vector Vector::operator-() const { return Vector(-x, -y); }
 
-bool Vector::operator==(const Vector& other) const
-{
-	return (x == other.x && y == other.y);
-}
-
-Vector Vector::operator-() const
-{
-	return Vector(-x, -y);
-}
-
-float Vector::length() const
-{
-	return sqrt(x * x + y * y);
-}
+float Vector::length() const { return sqrt(x * x + y * y); }
 
 std::ostream& operator<<(std::ostream& os, const Vector& other)
 {

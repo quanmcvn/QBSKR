@@ -5,8 +5,8 @@
 
 #include "math/rectf.hpp"
 #include "math/size.hpp"
-#include "video/texture.hpp"
-#include "video/texture_ptr.hpp"
+#include "video/surface.hpp"
+#include "video/surface_ptr.hpp"
 
 class Player {
 public:
@@ -19,7 +19,7 @@ public:
 
 public:
 	// temporary, will be changed soonTM
-	TexturePtr m_texture;
+	SurfacePtr m_surface;
 	// The movement that will happen till next frame
 	Vector m_movement;
 	// // Bounding box of player (used for collision detection)

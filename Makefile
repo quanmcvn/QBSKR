@@ -24,6 +24,10 @@ OBJS = src/main.cpp                            \
        src/video/sdl/sdl_texture.cpp           \
        src/video/sdl/sdl_video_system.cpp      \
        src/video/sdl/sdlbased_video_system.cpp \
+       src/video/canvas.cpp                    \
+       src/video/compositor.cpp                \
+       src/video/drawing_context.cpp           \
+       src/video/surface.cpp                   \
        src/video/texture_manager.cpp           \
        src/video/texture.cpp                   \
        src/video/video_system.cpp              \
