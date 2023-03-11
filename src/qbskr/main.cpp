@@ -83,7 +83,7 @@ int Main::run([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
 		dir[1] += static_cast<int>(InputManager::current()->get_controller(0).hold(Control::DOWN));
 		dir[1] -= static_cast<int>(InputManager::current()->get_controller(0).hold(Control::UP));
 
-		player.set_movement(Vector(dir[0] * 4, dir[1] * 4));
+		player.set_movement(Vector(dir[0] * 3, dir[1] * 3));
 
 		player.update();
 
@@ -97,8 +97,8 @@ int Main::run([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
 
 		request->srcrects.emplace_back(Rectf(0, 0, player.m_texture.get()->get_texture_width(), player.m_texture.get()->get_texture_height()));
 		request->dstrects.emplace_back(Rectf(player.m_pos.x, player.m_pos.y, 
-		                                     player.m_pos.x + player.m_texture.get()->get_texture_width() * VideoSystem::current()->get_viewport().get_scale().x, 
-		                                     player.m_pos.y + player.m_texture.get()->get_texture_height() * VideoSystem::current()->get_viewport().get_scale().y));
+		                                     player.m_pos.x + player.m_texture.get()->get_texture_width(), 
+		                                     player.m_pos.y + player.m_texture.get()->get_texture_height()));
 
 		renderer.start_draw();
 

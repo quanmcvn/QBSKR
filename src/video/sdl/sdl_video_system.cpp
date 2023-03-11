@@ -17,7 +17,7 @@ SDLVideoSystem::SDLVideoSystem() :
 {
 	create_window();
 
-	m_renderer = std::make_unique<SDLRenderer>(m_sdl_renderer.get());
+	m_renderer = std::make_unique<SDLRenderer>(*this, m_sdl_renderer.get());
 	m_texture_manager = std::make_unique<TextureManager>();
 
 	apply_config();
@@ -51,7 +51,7 @@ TexturePtr SDLVideoSystem::new_texture(const SDL_Surface& image)
 }
 
 const Viewport& SDLVideoSystem::get_viewport() const 
-{ 
+{
 	return m_viewport; 
 }
 

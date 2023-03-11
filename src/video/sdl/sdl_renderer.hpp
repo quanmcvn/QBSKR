@@ -6,12 +6,14 @@
 #include "video/sdl/sdl_painter.hpp"
 #include "video/renderer.hpp"
 
+class SDLVideoSystem;
+
 /**
  * This class holds Painter and SDL_Renderer*
 */
 class SDLRenderer final : public Renderer {
 public:
-	SDLRenderer(SDL_Renderer* renderer);
+	SDLRenderer(SDLVideoSystem& video_system, SDL_Renderer* renderer);
 	~SDLRenderer();
 
 private:
@@ -19,6 +21,7 @@ private:
 	SDLRenderer& operator=(const SDLRenderer&) = delete;
 
 private:
+	SDLVideoSystem& m_video_system;
 	SDL_Renderer* m_renderer;
 	SDLPainter m_painter;
 

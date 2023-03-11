@@ -24,7 +24,9 @@ std::unique_ptr<VideoSystem> VideoSystem::create(VideoSystem::VideoType video_sy
 			assert(false);
 			break;
 	}
-	assert(false);
+	// to get rid of annoying waring "control reaches end of non-void function"
+	// idk why it isn't happy
+	return std::make_unique<SDLVideoSystem>();
 }
 
 VideoSystem::VideoSystem()
