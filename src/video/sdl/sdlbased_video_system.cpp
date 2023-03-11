@@ -2,6 +2,8 @@
 
 #include <sstream>
 
+#include "qbskr/gameconfig.hpp"
+#include "qbskr/globals.hpp"
 #include "util/log.hpp"
 
 SDLBasedVideoSystem::SDLBasedVideoSystem() : 
@@ -12,7 +14,7 @@ SDLBasedVideoSystem::~SDLBasedVideoSystem()
 {}
 
 void SDLBasedVideoSystem::create_sdl_window() {
-	Size size = Size(640, 480);
+	Size size = g_config->window_size;
 	m_sdl_window.reset(SDL_CreateWindow("QBSKR",
 	                                    SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
 	                                    size.width, size.height,

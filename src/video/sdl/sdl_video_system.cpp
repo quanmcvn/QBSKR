@@ -2,6 +2,8 @@
 
 #include <sstream>
 
+#include "qbskr/gameconfig.hpp"
+#include "qbskr/globals.hpp"
 #include "util/log.hpp"
 #include "video/renderer.hpp"
 #include "video/sdl/sdl_renderer.hpp"
@@ -17,6 +19,8 @@ SDLVideoSystem::SDLVideoSystem() :
 
 	m_renderer = std::make_unique<SDLRenderer>(m_sdl_renderer.get());
 	m_texture_manager = std::make_unique<TextureManager>();
+
+	apply_config();
 }
 
 SDLVideoSystem::~SDLVideoSystem() 
@@ -44,6 +48,18 @@ Renderer& SDLVideoSystem::get_renderer() const
 TexturePtr SDLVideoSystem::new_texture(const SDL_Surface& image)
 {
 	return TexturePtr(new SDLTexture(image));
+}
+
+const Viewport& SDLVideoSystem::get_viewport() const 
+{ 
+	return m_viewport; 
+}
+
+void SDLVideoSystem::apply_config()
+{
+	Rect viewport = Rect(0, 0, g_config->window_size);
+	Vector scale = Vector(g_config->magnification, g_config->magnification);
+	m_viewport = Viewport(viewport, scale);
 }
 
 void SDLVideoSystem::present() {

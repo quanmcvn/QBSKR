@@ -27,6 +27,7 @@ OBJS = src/main.cpp                            \
        src/video/texture_manager.cpp           \
        src/video/texture.cpp                   \
        src/video/video_system.cpp              \
+       src/video/viewport.cpp                  \
 
 #CC specifies which compiler we're using
 CC = g++

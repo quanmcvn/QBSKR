@@ -6,6 +6,7 @@
 #include "math/size.hpp"
 #include "util/currenton.hpp"
 #include "video/texture_ptr.hpp"
+#include "video/viewport.hpp"
 
 class Renderer;
 
@@ -46,6 +47,8 @@ public:
 
 	virtual TexturePtr new_texture(const SDL_Surface& image) = 0;
 
+	virtual const Viewport& get_viewport() const = 0;
+	virtual void apply_config() = 0;
 	// swap (flip (?)) the backbuffer to frontbuffer
 	virtual void present() = 0; 
 };
