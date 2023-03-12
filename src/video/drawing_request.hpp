@@ -3,23 +3,31 @@
 
 #include "math/rectf.hpp"
 #include "video/texture.hpp"
+#include "video/flip.hpp"
 
 enum RequestType {
 	TEXTURE = 0,
 };
 
+
+// cast from XXXRequest* to DrawingRequest* (and reverse) is possible
+// (note the *, can't cast values without losing data (and potentially expensive), but cast pointers is possible)
+
 struct DrawingRequest {
 	DrawingRequest() = delete;
+	// to maybe use dynamic_cast<>
 	virtual ~DrawingRequest() {}
 	
 	RequestType type;
 
 	int layer;
+	Flip flip;
 	Rect viewport;
 
 	DrawingRequest(RequestType type_) :
 		type(type_),
 		layer(),
+		flip(),
 		viewport()
 	{}
 };

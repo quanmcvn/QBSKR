@@ -62,10 +62,11 @@ int Main::run([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
 
 	Player player;
 	player.m_surface = Surface::from_file("images/creatures/knight/idle0.png");
-
-	assert(player.m_surface->get_texture());
+	player.m_surface_flip_horizontal = player.m_surface->clone_flip(HORIZONTAL_FLIP);
 
 	bool quit = false;
+
+	bool is_player_flip = false;
 
 	while (!quit) {
 		{
@@ -81,11 +82,21 @@ int Main::run([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
 
 		int dir[2] = { 0, 0 };
 
-		dir[0] += static_cast<int>(InputManager::current()->get_controller(0).hold(Control::RIGHT));
-		dir[0] -= static_cast<int>(InputManager::current()->get_controller(0).hold(Control::LEFT));
+		auto& player_control = InputManager::current()->get_controller(0);
 
-		dir[1] += static_cast<int>(InputManager::current()->get_controller(0).hold(Control::DOWN));
-		dir[1] -= static_cast<int>(InputManager::current()->get_controller(0).hold(Control::UP));
+		dir[0] += static_cast<int>(player_control.hold(Control::RIGHT));
+		dir[0] -= static_cast<int>(player_control.hold(Control::LEFT));
+
+		dir[1] += static_cast<int>(player_control.hold(Control::DOWN));
+		dir[1] -= static_cast<int>(player_control.hold(Control::UP));
+
+		if (!player_control.hold(Control::LEFT) && player_control.hold(Control::RIGHT)) {
+			is_player_flip = false;
+		}
+
+		if (player_control.hold(Control::LEFT) && !player_control.hold(Control::RIGHT)) {
+			is_player_flip = true;
+		}
 
 		player.set_movement(Vector(dir[0] * 3, dir[1] * 3));
 
@@ -95,7 +106,12 @@ int Main::run([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
 
 		auto& drawing_context = compositor.make_context();
 		auto& canvas = drawing_context.get_canvas();
-		canvas.draw_surface(player.m_surface, player.m_pos, 100);
+
+		if (is_player_flip) {
+			canvas.draw_surface(player.m_surface_flip_horizontal, player.m_pos, 100);
+		} else {
+			canvas.draw_surface(player.m_surface, player.m_pos, 100);
+		}
 
 		compositor.render();
 

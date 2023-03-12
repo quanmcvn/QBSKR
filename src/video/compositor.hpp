@@ -14,14 +14,14 @@ class VideoSystem;
  *   - DrawingContext holds Canvas(es), also holds a transform stack (although didn't used)
  *   - Canvas passes DrawingRequests to Painter
  *   - Surface is NOT SDL_Surface, it's literally a surface
- *     it holds a TexturePtr, an area (region), flip (will be implemented soonTM)
+ *     it holds a TexturePtr, an area (region), flip
  *     it's also the component of Sprite (will be implemented soonTM)
 */
 
 /**
- * This class is the one holds memory of drawing requests, 
+ * This class holds memory of drawing requests, 
  * holds DrawingContext(s) which hold Canvas(es),
- * also composites the screen (which is the reason of its name)
+ * also composes the screen (which is the reason of its name)
 */
 class Compositor final {
 public:

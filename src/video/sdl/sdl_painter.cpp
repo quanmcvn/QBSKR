@@ -44,6 +44,8 @@ void SDLPainter::draw_texture(const TextureRequest& request)
 		const SDL_Rect& dst_rect = to_sdl_rect(request.dstrects[i]);
 
 		SDL_RendererFlip flip = SDL_FLIP_NONE;
+		if (request.flip & HORIZONTAL_FLIP) flip = static_cast<SDL_RendererFlip>(flip | SDL_FLIP_HORIZONTAL);
+		if (request.flip & VERTICAL_FLIP) flip = static_cast<SDL_RendererFlip>(flip | SDL_FLIP_VERTICAL);
 
 		SDL_RenderCopyEx(m_sdl_renderer, texture.get_texture(), 
 		                 &src_rect, &dst_rect,

@@ -50,16 +50,14 @@ void Canvas::draw_surface(const SurfacePtr& surface, const Vector& position, int
 	if (position.x + static_cast<float>(surface->get_width()) < cliprect.get_left()) return;
 	if (position.y + static_cast<float>(surface->get_height()) < cliprect.get_top()) return;
 
-	m_request_holder.emplace_back(std::make_unique<TextureRequest>());
+	m_request_holder.emplace_back(static_cast<std::unique_ptr<DrawingRequest>>(std::make_unique<TextureRequest>()));
 
 	TextureRequest* request = static_cast<TextureRequest*>(m_request_holder.back().get());
 
 	request->type = TEXTURE;
 	request->layer = layer;
+	request->flip = m_drawing_context.get_flip() ^ surface->get_flip();
 	request->viewport = m_drawing_context.get_viewport();
-
-	assert(surface->get_texture());
-	assert(surface->get_texture().get());
 
 	request->texture = surface->get_texture().get();
 	request->srcrects.emplace_back(Rectf(surface->get_region()));

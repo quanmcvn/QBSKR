@@ -20,6 +20,8 @@ public:
 public:
 	// temporary, will be changed soonTM
 	SurfacePtr m_surface;
+	// temporary, will be changed soonTM
+	SurfacePtr m_surface_flip_horizontal;
 	// The movement that will happen till next frame
 	Vector m_movement;
 	// // Bounding box of player (used for collision detection)
