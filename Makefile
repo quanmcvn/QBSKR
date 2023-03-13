@@ -18,6 +18,7 @@ OBJ_FILES = src/main.o                            \
             src/math/size.o                       \
             src/math/sizef.o                      \
             src/math/vector.o                     \
+            src/qbskr/constants.o                 \
             src/qbskr/gameconfig.o                \
             src/qbskr/globals.o                   \
             src/qbskr/main.o                      \
@@ -51,7 +52,7 @@ LIBRARY_PATHS = -LD:/Libraries/SDL2/x86_64-w64-mingw32/lib                   \
                 -LD:/Libraries/SDL2_image/x86_64-w64-mingw32/lib             \
 
 #COMPILER_FLAGS specifies the additional compilation options we're using
-COMPILER_FLAGS = -g -std=c++17 -Wall -Wextra
+COMPILER_FLAGS = -std=c++17 -Wall -Wextra
 
 #LINKER_FLAGS specifies the libraries we're linking against
 LINKER_FLAGS = -lmingw32           \
@@ -61,17 +62,28 @@ LINKER_FLAGS = -lmingw32           \
 
 #OBJ_NAME specifies the name of our exectuable
 OBJ_NAME = QBSKR
+GFLAGS = -g
 
 OBJDIR := bin
 OBJS := $(addprefix $(OBJDIR)/, $(OBJ_FILES))
 
 $(OBJDIR)/%.o : %.cpp
-	$(CC) -c $(INCLUDE_PATHS) $< -o $@
+	$(CC) -c $(GFLAGS) $(INCLUDE_PATHS) $(COMPILER_FLAGS) $< -o $@
 
 #This is the target that compiles our executable
 ### Move the executable to ./data to (partial) fix the "../data/"
 .PHONY : all
 all: $(OBJS)
-	$(CC) $(OBJS) $(LIBRARY_PATHS) $(COMPILER_FLAGS) $(LINKER_FLAGS) -o ./data/$(OBJ_NAME)
+	$(CC) $(GFLAGS) $(OBJS) $(LIBRARY_PATHS) $(COMPILER_FLAGS) $(LINKER_FLAGS) -o ./data/$(OBJ_NAME)
 
 $(OBJS): | $(OBJDIR)
+
+.PHONY : clean
+### wtf is this, this is so bad
+### also idk why it can execute shell/bash (idk what it is even more)
+### anyway...
+clean:
+	rm ./bin/src/*/*/*.o
+	rm ./bin/src/*/*.o
+	rm ./bin/src/*.o
+	rm ./data/QBSKR.exe
