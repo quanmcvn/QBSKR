@@ -52,15 +52,16 @@ Sizef& Sizef::operator-=(const Sizef& rhs)
 	return *this;
 }
 
-Vector Sizef::as_vector() const
-{
-	return Vector(width, height);
-}
+Sizef operator*(const Sizef& lhs, float factor) { return Sizef(lhs.width * factor, lhs.height * factor); }
+Sizef operator*(float factor, const Sizef& rhs) { return Sizef(rhs.width * factor, rhs.height * factor); }
+Sizef operator/(const Sizef& lhs, float divisor) { return Sizef(lhs.width / divisor, lhs.height / divisor); }
+Sizef operator+(const Sizef& lhs, const Sizef& rhs) { return Sizef(lhs.width + rhs.width, lhs.height + rhs.height); }
+Sizef operator-(const Sizef& lhs, const Sizef& rhs) { return Sizef(lhs.width - rhs.width, lhs.height - rhs.height); }
+bool operator==(const Sizef& lhs, const Sizef& rhs) { return (lhs.width == rhs.width) && (rhs.height == rhs.height); }
+bool operator!=(const Sizef& lhs, const Sizef& rhs) { return (lhs.width != rhs.width) || (lhs.height != rhs.height); }
 
-bool Sizef::is_valid() const
-{
-	return width > 0 && height > 0;
-}
+Vector Sizef::as_vector() const { return Vector(width, height); }
+bool Sizef::is_valid() const { return width > 0 && height > 0; }
 
 std::ostream& operator<<(std::ostream& s, const Sizef& size)
 {

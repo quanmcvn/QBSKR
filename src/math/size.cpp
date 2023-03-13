@@ -4,7 +4,6 @@
 
 #include "math/sizef.hpp"
 
-
 Size::Size() :
 		width(0),
 		height(0)
@@ -49,10 +48,14 @@ Size& Size::operator-=(const Size& rhs)
 	return *this;
 }
 
-bool Size::is_valid() const
-{
-	return width > 0 && height > 0;
-}
+Size operator*(const Size& lhs, int factor) { return Size(lhs.width * factor, lhs.height * factor); }
+Size operator*(int factor, const Size& rhs) { return Size(rhs.width * factor, rhs.height * factor); }
+Size operator/(const Size& lhs, int divisor) { return Size(lhs.width / divisor, lhs.height / divisor); }
+Size operator+(const Size& lhs, const Size& rhs) { return Size(lhs.width + rhs.width, lhs.height + rhs.height); }
+Size operator-(const Size& lhs, const Size& rhs) { return Size(lhs.width - rhs.width, lhs.height - rhs.height); }
+bool operator==(const Size& lhs, const Size& rhs) { return (lhs.width == rhs.width) && (lhs.height == rhs.height); }
+bool operator!=(const Size& lhs, const Size& rhs) { return (lhs.width != rhs.width) || (lhs.height != rhs.height); }
+bool Size::is_valid() const { return width > 0 && height > 0; }
 
 std::ostream& operator<<(std::ostream& s, const Size& size)
 {

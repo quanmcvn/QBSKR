@@ -58,19 +58,8 @@ public:
 	bool contains(const Vector& v) const;
 	bool contains(const Rectf& other) const;
 
-	float distance(const Vector& other, AnchorPoint ap = ANCHOR_MIDDLE) const
-	{
-		Vector v = get_anchor_pos(*this, ap);
-		return math::distance(v, other);
-	}
-
-	float distance(const Rectf& other, AnchorPoint ap = ANCHOR_MIDDLE) const
-	{
-		Vector v1 = get_anchor_pos(*this, ap);
-		Vector v2 = get_anchor_pos(other, ap);
-
-		return math::distance(v1, v2);
-	}
+	float distance(const Vector& other, const AnchorPoint ap = ANCHOR_MIDDLE) const;
+	float distance(const Rectf& other, const AnchorPoint ap = ANCHOR_MIDDLE) const;
 
 	Rectf grown(float border) const;
 	Vector p1() const;

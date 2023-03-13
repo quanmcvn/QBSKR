@@ -1,37 +1,42 @@
-#OBJS specifies which files to compile as part of the project
-OBJS = src/main.cpp                            \
-       src/control/controller.cpp              \
-       src/control/input_manager.cpp           \
-       src/control/keyboard_config.cpp         \
-       src/control/keyboard_manager.cpp        \
-       src/control/mouse_button_config.cpp     \
-       src/control/mouse_button_manager.cpp    \
-       src/control/mouse_motion_manager.cpp    \
-       src/math/anchor_point.cpp               \
-       src/math/rect.cpp                       \
-       src/math/rectf.cpp                      \
-       src/math/size.cpp                       \
-       src/math/sizef.cpp                      \
-       src/math/vector.cpp                     \
-       src/qbskr/gameconfig.cpp                \
-       src/qbskr/globals.cpp                   \
-       src/qbskr/main.cpp                      \
-       src/object/player.cpp                   \
-       src/util/log.cpp                        \
-       src/video/sdl/sdl_painter.cpp           \
-       src/video/sdl/sdl_renderer.cpp          \
-       src/video/sdl/sdl_surface_creator.cpp   \
-       src/video/sdl/sdl_texture.cpp           \
-       src/video/sdl/sdl_video_system.cpp      \
-       src/video/sdl/sdlbased_video_system.cpp \
-       src/video/canvas.cpp                    \
-       src/video/compositor.cpp                \
-       src/video/drawing_context.cpp           \
-       src/video/surface.cpp                   \
-       src/video/texture_manager.cpp           \
-       src/video/texture.cpp                   \
-       src/video/video_system.cpp              \
-       src/video/viewport.cpp                  \
+### After some scraping online, I have C-c C-v -ed the Makefile that only compile what needed to compile
+### It's not fully fool-proof because of no dependency check
+### So I will delete definition code in *.hpp files :D
+
+### (for myself in the future): create ./bin/src/* to match every single src/* folder
+
+OBJ_FILES = src/main.o                            \
+            src/control/controller.o              \
+            src/control/input_manager.o           \
+            src/control/keyboard_config.o         \
+            src/control/keyboard_manager.o        \
+            src/control/mouse_button_config.o     \
+            src/control/mouse_button_manager.o    \
+            src/control/mouse_motion_manager.o    \
+            src/math/anchor_point.o               \
+            src/math/rect.o                       \
+            src/math/rectf.o                      \
+            src/math/size.o                       \
+            src/math/sizef.o                      \
+            src/math/vector.o                     \
+            src/qbskr/gameconfig.o                \
+            src/qbskr/globals.o                   \
+            src/qbskr/main.o                      \
+            src/object/player.o                   \
+            src/util/log.o                        \
+            src/video/sdl/sdl_painter.o           \
+            src/video/sdl/sdl_renderer.o          \
+            src/video/sdl/sdl_surface_creator.o   \
+            src/video/sdl/sdl_texture.o           \
+            src/video/sdl/sdl_video_system.o      \
+            src/video/sdl/sdlbased_video_system.o \
+            src/video/canvas.o                    \
+            src/video/compositor.o                \
+            src/video/drawing_context.o           \
+            src/video/surface.o                   \
+            src/video/texture_manager.o           \
+            src/video/texture.o                   \
+            src/video/video_system.o              \
+            src/video/viewport.o                  \
 
 #CC specifies which compiler we're using
 CC = g++
@@ -46,9 +51,7 @@ LIBRARY_PATHS = -LD:/Libraries/SDL2/x86_64-w64-mingw32/lib                   \
                 -LD:/Libraries/SDL2_image/x86_64-w64-mingw32/lib             \
 
 #COMPILER_FLAGS specifies the additional compilation options we're using
-# -w suppresses all warnings
-# -Wl,-subsystem,windows gets rid of the console window
-COMPILER_FLAGS = -std=c++17 -Wall -Wextra
+COMPILER_FLAGS = -g -std=c++17 -Wall -Wextra
 
 #LINKER_FLAGS specifies the libraries we're linking against
 LINKER_FLAGS = -lmingw32           \
@@ -59,7 +62,16 @@ LINKER_FLAGS = -lmingw32           \
 #OBJ_NAME specifies the name of our exectuable
 OBJ_NAME = QBSKR
 
+OBJDIR := bin
+OBJS := $(addprefix $(OBJDIR)/, $(OBJ_FILES))
+
+$(OBJDIR)/%.o : %.cpp
+	$(CC) -c $(INCLUDE_PATHS) $< -o $@
+
 #This is the target that compiles our executable
 ### Move the executable to ./data to (partial) fix the "../data/"
-all : $(OBJS)
-	$(CC) -g $(OBJS) $(INCLUDE_PATHS) $(LIBRARY_PATHS) $(COMPILER_FLAGS) $(LINKER_FLAGS) -o ./data/$(OBJ_NAME)
+.PHONY : all
+all: $(OBJS)
+	$(CC) $(OBJS) $(LIBRARY_PATHS) $(COMPILER_FLAGS) $(LINKER_FLAGS) -o ./data/$(OBJ_NAME)
+
+$(OBJS): | $(OBJDIR)
