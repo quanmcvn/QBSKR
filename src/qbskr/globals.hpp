@@ -10,4 +10,6 @@ class Config;
 
 extern std::unique_ptr<Config> g_config;
 
+extern float g_game_time;
+
 #endif

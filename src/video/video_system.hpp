@@ -21,8 +21,6 @@ class Renderer;
  *   - SDLTexture is a wrapper around SDL_Texture*, implements Texture
  *   - SDLSurfacePtr is a wrapper around SDL_Surface*
  *     (What is this design...) 
- *     (I have good reasons: SDLTexture implements Texture so its name is fixed, 
- *     but SDLSurfacePtr exists on its own)
  *   - SDLSurfaceCreator is the class full of static functions to create SDLSurfacePtr
  *   - TextureManager is the class to get/cache textures by itself, but create textures through VideoSystem
 */

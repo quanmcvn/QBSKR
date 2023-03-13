@@ -2,7 +2,7 @@
 ### It's not fully fool-proof because of no dependency check
 ### So I will delete definition code in *.hpp files :D
 
-### (for myself in the future): create ./bin/src/* to match every single src/* folder
+### (for myself in the future): create ./bin/src/* to match every single ./src/* folder
 
 OBJ_FILES = src/main.o                            \
             src/control/controller.o              \
