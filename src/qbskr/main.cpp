@@ -9,8 +9,12 @@
 #include "control/keyboard_config.hpp"
 #include "control/mouse_button_config.hpp"
 #include "math/rect.hpp"
+#include "qbskr/constants.hpp"
 #include "qbskr/globals.hpp"
 #include "util/log.hpp"
+#include "sprite/sprite_data.hpp"
+#include "sprite/sprite_ptr.hpp"
+#include "sprite/sprite.hpp"
 #include "video/canvas.hpp"
 #include "video/compositor.hpp"
 #include "video/drawing_context.hpp"
@@ -54,17 +58,14 @@ Main::Main() :
 	m_video_system()
 {}
 
-#include "qbskr/constants.hpp"
-
 int Main::run([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
 {
 	m_sdl_subsystem = std::make_unique<SDLSubSystem>();
 	m_input_manager = std::make_unique<InputManager>(g_config->keyboard_config, g_config->mouse_button_config);
 	m_video_system = VideoSystem::create(VideoSystem::VIDEO_SDL);
+	m_sprite_manager = std::make_unique<SpriteManager>();
 
 	Player player;
-	player.m_surface = Surface::from_file("images/creatures/knight/idle0.png");
-	player.m_surface_flip_horizontal = player.m_surface->clone_flip(HORIZONTAL_FLIP);
 
 	const Uint32 ms_per_step = static_cast<Uint32>(1000.0 / LOGICAL_FPS);
 	const float seconds_per_step = static_cast<float>(ms_per_step) / 1000.0f;
@@ -122,7 +123,7 @@ int Main::run([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
 				is_player_flip = true;
 			}
 
-			player.set_movement(Vector(dir[0] * 3, dir[1] * 3));
+			player.set_movement(Vector(dir[0] * 2, dir[1] * 2));
 
 			player.update();
 
@@ -131,11 +132,15 @@ int Main::run([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
 			auto& drawing_context = compositor.make_context();
 			auto& canvas = drawing_context.get_canvas();
 
-			if (is_player_flip) {
-				canvas.draw_surface(player.m_surface_flip_horizontal, player.m_pos, 100);
-			} else {
-				canvas.draw_surface(player.m_surface, player.m_pos, 100);
-			}
+			player.m_sprite->draw(canvas, player.m_pos, 100, NO_FLIP);
+
+			// player can't flip now
+			// will be added back soonTM
+			// if (is_player_flip) {
+			// 	canvas.draw_surface(player.m_surface_flip_horizontal, player.m_pos, 100);
+			// } else {
+			// 	canvas.draw_surface(player.m_surface, player.m_pos, 100);
+			// }
 
 			compositor.render();
 			elapsed_ticks -= ms_per_step;

@@ -1,5 +1,6 @@
 #include "util/crappy_reader.hpp"
 
+#include <filesystem>
 #include <optional>
 #include <iostream>
 #include <sstream>
@@ -24,9 +25,25 @@ namespace {
 
 CrappyReader::CrappyReader(const std::string& filename) :
 	m_is(filename),
+	m_dir(filename),
 	m_data_holder()
 {
+	if (!std::filesystem::exists(filename)) {
+		std::ostringstream msg;
+		msg << "File '" << filename << "' not exist";
+		throw std::runtime_error(msg.str());
+	}
+	if (!m_is.is_open()) {
+		std::ostringstream msg;
+		msg << "Can't open file '" << filename << "'";
+		throw std::runtime_error(msg.str());
+	}
 	clear();
+}
+
+CrappyReader::~CrappyReader()
+{
+	m_data_holder.clear();
 }
 
 void CrappyReader::clear()
@@ -35,28 +52,29 @@ void CrappyReader::clear()
 	m_root = get_new_node("");
 }
 
-bool CrappyReader::skip_until(const std::string& desired)
+bool CrappyReader::parse(const std::string& desired)
 {
-	while (!m_is.eof()) {
-		if (getline(m_is) == desired) break;
-	}
+	m_root->m_childs.push_back(get_new_node(desired));
+	skip_until(desired + "-start");
+	dfs_parse(m_root->m_childs.back(), desired + "-end");
 	return !m_is.eof();
 }
 
-void CrappyReader::parse_until(const std::string& desired)
-{
-	dfs_parse(m_root, desired);
-}
 
 CrappyReaderData* CrappyReader::get_root() const
 {
 	return m_root;
 }
 
+std::string CrappyReader::get_dir() const
+{
+	return m_dir;
+}
+
 void CrappyReader::dfs_parse(CrappyReaderData* node, const std::string& desired)
 {
 	std::string line = getline(m_is);
-	while (m_is.is_open()) {
+	while (!m_is.eof()) {
 		if (line == desired) break;
 		std::optional<std::string> start_name = check_end(line, "-start");
 		if (start_name.has_value()) {
@@ -67,13 +85,19 @@ void CrappyReader::dfs_parse(CrappyReaderData* node, const std::string& desired)
 			std::string name;
 			ss >> name;
 			node->m_childs.push_back(get_new_node(name));
-			while (ss.tellp() == std::streampos(0)) {
-				std::string token;
-				ss >> token;
+			std::string token;
+			while (ss >> token) {
 				node->m_childs.back()->m_childs.push_back(get_new_node(token));
 			}
 		}
 		line = getline(m_is);
+	}
+}
+
+void CrappyReader::skip_until(const std::string& desired)
+{
+	while (!m_is.eof()) {
+		if (getline(m_is) == desired) break;
 	}
 }
 
@@ -82,5 +106,3 @@ CrappyReaderData* CrappyReader::get_new_node(const std::string& s)
 	m_data_holder.push_back(std::make_unique<CrappyReaderData>(s));
 	return m_data_holder.back().get();
 }
-
-

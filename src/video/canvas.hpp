@@ -41,6 +41,8 @@ public:
 
 	void clear();
 
+	DrawingContext& get_drawing_context();
+
 private:
 	Vector apply_translate(const Vector& pos) const;
 	float scale() const;

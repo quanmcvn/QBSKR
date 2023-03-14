@@ -8,7 +8,7 @@
 /**
  * Class to hold data of CrappyReader
  * 
- * Design problem:
+ * Design:
  *   - Currently, the CrappyReaderData is designed to:
  *     + Hold a string
  *     + Hold a vector of CrappyReaderData* to present childs (kind of a trie)
@@ -24,7 +24,7 @@
  *             ├── "name3"
  *             │      ├── "property0"
  *             │      └── "property1"
- *             └── "name3"
+ *             └── "name4"
  *                    ├── "property0"
  *                    ├── "property1"
  *                    └── "property2"
@@ -33,6 +33,7 @@
  *     + can't use std::map since 
  *         1) change listing order
  *         2) this is not designed with {key : value} in mind, just value
+ *   - Hardcoded a lot of functions
 */
 class CrappyReaderData final {
 public:
@@ -42,6 +43,15 @@ public:
 
 	CrappyReaderData();
 	CrappyReaderData(const std::string& data);
+
+	CrappyReaderData* get_child(const std::string& name) const;
+	std::vector<std::string> convert_child() const;
+
+	bool get(const std::string& name, float& value) const;
+	bool get(const std::string& name, std::string& value) const;
+	bool get(const std::string& name, std::vector<float>& values) const;
+	bool get(const std::string& name, std::vector<std::string>& values) const;
+
 
 	void dfs_print(std::ostream& os, int depth = 0);
 };

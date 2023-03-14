@@ -22,8 +22,13 @@ OBJ_FILES = src/main.o                            \
             src/qbskr/gameconfig.o                \
             src/qbskr/globals.o                   \
             src/qbskr/main.o                      \
+            src/sprite/sprite_data.o              \
+            src/sprite/sprite_manager.o           \
+            src/sprite/sprite.o                   \
             src/object/player.o                   \
             src/util/log.o                        \
+            src/util/crappy_reader_data.o         \
+            src/util/crappy_reader.o              \
             src/video/sdl/sdl_painter.o           \
             src/video/sdl/sdl_renderer.o          \
             src/video/sdl/sdl_surface_creator.o   \

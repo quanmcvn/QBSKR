@@ -1,8 +1,11 @@
 #include "object/player.hpp"
 
+#include "sprite/sprite_manager.hpp"
+#include "sprite/sprite.hpp"
+
 Player::Player() :
 	m_pos(0, 0),
-	m_surface(),
+	m_sprite(SpriteManager::current()->create("images/charactors/knight/knight_sprite.txt")),
 	m_movement(0, 0)
 {}
 

@@ -1,12 +1,8 @@
 #ifndef HEADER_QBSKR_OBJECT_PLAYER_HPP
 #define HEADER_QBSKR_OBJECT_PLAYER_HPP
 
-#include <SDL.h>
-
-#include "math/rectf.hpp"
-#include "math/size.hpp"
-#include "video/surface.hpp"
-#include "video/surface_ptr.hpp"
+#include "math/vector.hpp"
+#include "sprite/sprite_ptr.hpp"
 
 class Player {
 public:
@@ -18,10 +14,7 @@ public:
 	Vector m_pos;
 
 public:
-	// temporary, will be changed soonTM
-	SurfacePtr m_surface;
-	// temporary, will be changed soonTM
-	SurfacePtr m_surface_flip_horizontal;
+	SpritePtr m_sprite;
 	// The movement that will happen till next frame
 	Vector m_movement;
 	// // Bounding box of player (used for collision detection)
@@ -31,7 +24,6 @@ public:
 
 	void update();
 
-	Texture get_texture();
 };
 
 #endif

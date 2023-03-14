@@ -74,6 +74,8 @@ void Canvas::clear()
 	m_requests.clear();
 }
 
+DrawingContext& Canvas::get_drawing_context() { return m_drawing_context; }
+
 Vector Canvas::apply_translate(const Vector& pos) const
 {
 	Vector translation = m_drawing_context.get_translation();

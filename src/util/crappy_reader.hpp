@@ -5,7 +5,6 @@
 #include <vector>
 #include <memory>
 #include <string>
-#include <sstream>
 
 #include "util/crappy_reader_data.hpp"
 
@@ -24,13 +23,19 @@
  *        a-end
  *     Then b c ... is child of a
  * This is bad but it gets the job done :D
+ * Also kinda pointless since there is json/...
+ * Anyway...
 */
 class CrappyReader final {
 private:
 	CrappyReader() = delete;
 
+public:
+	~CrappyReader();
+
 private:
 	std::ifstream m_is;
+	std::string m_dir;
 	CrappyReaderData* m_root;
 	std::vector<std::unique_ptr<CrappyReaderData>> m_data_holder;
 
@@ -39,12 +44,13 @@ public:
 
 public:
 	void clear();
-	bool skip_until(const std::string& desired);
-	void parse_until(const std::string& desired);
+	bool parse(const std::string& desired);
 	CrappyReaderData* get_root() const;
+	std::string get_dir() const;
 
 private:
 	void dfs_parse(CrappyReaderData* node, const std::string& desired);
+	void skip_until(const std::string& desired);
 
 	CrappyReaderData* get_new_node(const std::string& s);
 };

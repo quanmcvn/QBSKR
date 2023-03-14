@@ -15,7 +15,7 @@ class VideoSystem;
  *   - Canvas passes DrawingRequests to Painter
  *   - Surface is NOT SDL_Surface, it's literally a surface
  *     it holds a TexturePtr, an area (region), flip
- *     it's also the component of Sprite (will be implemented soonTM)
+ *     it's also the component of Sprite
 */
 
 /**
