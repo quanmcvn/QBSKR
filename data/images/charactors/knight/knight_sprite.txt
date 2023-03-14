@@ -1,0 +1,18 @@
+action-start
+name walk-right
+fps 16
+hitbox 0 0 16 28
+get walk-0.png
+get walk-1.png
+get walk-2.png
+get walk-3.png
+get walk-4.png
+get walk-5.png
+get walk-6.png
+get walk-7.png
+action-end
+
+action-start
+name walk-left
+mirror walk-right
+action-end
