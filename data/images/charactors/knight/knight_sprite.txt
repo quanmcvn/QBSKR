@@ -18,3 +18,17 @@ action-start
 name walk-left
 mirror-action walk-right
 action-end
+
+action-start
+name idle-right
+fps 1
+hitbox 0 0 16 28
+images-start
+idle-0.png
+images-end
+action-end
+
+action-start
+name idle-left
+mirror-action idle-right
+action-end

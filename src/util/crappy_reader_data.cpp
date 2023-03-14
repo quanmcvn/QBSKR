@@ -94,7 +94,7 @@ bool CrappyReaderData::get(const std::string& name, std::vector<std::string>& va
 
 #undef GET_VALUES_MACRO
 
-void CrappyReaderData::dfs_print(std::ostream& os, int depth)
+void CrappyReaderData::dfs_print(std::ostream& os, int depth) const
 {
 	os << std::string(depth, '\t');
 	os << m_data << "\n";

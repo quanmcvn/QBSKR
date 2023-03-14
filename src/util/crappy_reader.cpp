@@ -49,7 +49,7 @@ CrappyReader::~CrappyReader()
 void CrappyReader::clear()
 {
 	m_data_holder.clear();
-	m_root = get_new_node("");
+	m_root = get_new_node("root");
 }
 
 bool CrappyReader::parse(const std::string& desired)
@@ -70,6 +70,8 @@ std::string CrappyReader::get_dir() const
 {
 	return m_dir;
 }
+
+#include<iostream>
 
 void CrappyReader::dfs_parse(CrappyReaderData* node, const std::string& desired)
 {

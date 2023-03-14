@@ -78,13 +78,13 @@ int Main::run([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
 
 	bool quit = false;
 
-	bool is_player_flip = false;
+	bool is_player_walk_left = false;
+	bool is_player_walk = false;
 
 	while (!quit) {
 		Uint64 ticks = SDL_GetTicks64();
 		elapsed_ticks += static_cast<Uint32>(ticks - last_ticks);
 		last_ticks = ticks;
-
 
 		if (elapsed_ticks < ms_per_step) {
 			SDL_Delay(ms_per_step - elapsed_ticks);
@@ -116,11 +116,15 @@ int Main::run([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
 			dir[1] -= static_cast<int>(player_control.hold(Control::UP));
 
 			if (!player_control.hold(Control::LEFT) && player_control.hold(Control::RIGHT)) {
-				is_player_flip = false;
+				is_player_walk_left = false;
+			} else if (player_control.hold(Control::LEFT) && !player_control.hold(Control::RIGHT)) {
+				is_player_walk_left = true;
 			}
 
-			if (player_control.hold(Control::LEFT) && !player_control.hold(Control::RIGHT)) {
-				is_player_flip = true;
+			if (dir[0] != 0 || dir[1] != 0) {
+				is_player_walk = true;
+			} else {
+				is_player_walk = false;
 			}
 
 			player.set_movement(Vector(dir[0] * 2, dir[1] * 2));
@@ -132,15 +136,22 @@ int Main::run([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
 			auto& drawing_context = compositor.make_context();
 			auto& canvas = drawing_context.get_canvas();
 
-			player.m_sprite->draw(canvas, player.m_pos, 100, NO_FLIP);
+			if (is_player_walk) {
+				if (is_player_walk_left) {
+					player.m_sprite->set_action("walk-left");
+				} else {
+					player.m_sprite->set_action("walk-right");
+				}
+			} else {
+				if (is_player_walk_left) {
+					player.m_sprite->set_action("idle-left");
+				} else {
+					player.m_sprite->set_action("idle-right");
+				}
+			}
 
-			// player can't flip now
-			// will be added back soonTM
-			// if (is_player_flip) {
-			// 	canvas.draw_surface(player.m_surface_flip_horizontal, player.m_pos, 100);
-			// } else {
-			// 	canvas.draw_surface(player.m_surface, player.m_pos, 100);
-			// }
+
+			player.m_sprite->draw(canvas, player.m_pos, 100, NO_FLIP);
 
 			compositor.render();
 			elapsed_ticks -= ms_per_step;

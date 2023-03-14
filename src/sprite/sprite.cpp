@@ -50,6 +50,22 @@ void Sprite::update()
 	}
 }
 
+void Sprite::set_action(const std::string& name)
+{
+	if (m_action->name == name) return;
+
+	const SpriteData::Action* new_action = m_data.get_action(name);
+	if (!new_action) {
+		log_debug << "Action '" << name << "' not found" << std::endl;
+		return;
+	}
+
+	m_frame_index = 0;
+	m_frame_progress = 0;
+
+	m_action = new_action;
+}
+
 int Sprite::get_frames() const { return static_cast<int>(m_action->surfaces.size()); }
 int Sprite::get_current_frame() const { return m_frame_index; }
 float Sprite::get_current_frame_progess() const { return m_frame_progress; }

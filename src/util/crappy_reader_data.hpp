@@ -52,8 +52,7 @@ public:
 	bool get(const std::string& name, std::vector<float>& values) const;
 	bool get(const std::string& name, std::vector<std::string>& values) const;
 
-
-	void dfs_print(std::ostream& os, int depth = 0);
+	void dfs_print(std::ostream& os, int depth = 0) const;
 };
 
 #endif

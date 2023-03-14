@@ -20,9 +20,12 @@ public:
 	// update and draw sprite
 	void draw(Canvas& canvas, const Vector& pos, int layer, Flip flip = NO_FLIP);
 
+	// set action (state)
+	void set_action(const std::string& name);
+
 	// get current total frame
 	int get_frames() const;
-
+	
 	// get current frame index
 	int get_current_frame() const;
 

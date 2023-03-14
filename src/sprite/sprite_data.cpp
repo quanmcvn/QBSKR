@@ -32,9 +32,12 @@ SpriteData::SpriteData(CrappyReader& cr) :
 	const CrappyReaderData* root = cr.get_root();
 	
 	// ugly hardcode
-	while (cr.parse("action")) {
-		parse_action(root->m_childs.back(), parent_dir);
+	while (cr.parse("action")) {}
+
+	for (const auto& child : root->m_childs) {
+		parse_action(child, parent_dir);
 	}
+	
 }
 
 void SpriteData::parse_action(CrappyReaderData* crd, const std::string& parent_dir)
