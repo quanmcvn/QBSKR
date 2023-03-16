@@ -55,6 +55,16 @@ namespace {
 		return true;                                                   \
 	}
 
+bool CrappyReaderData::get(const std::string& name, bool& value)  const
+{
+	GET_VALUE_MACRO()
+}
+
+bool CrappyReaderData::get(const std::string& name, uint32_t& value)  const
+{
+	GET_VALUE_MACRO()
+}
+
 bool CrappyReaderData::get(const std::string& name, float& value)  const
 {
 	GET_VALUE_MACRO()

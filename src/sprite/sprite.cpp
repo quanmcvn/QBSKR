@@ -45,9 +45,7 @@ void Sprite::update()
 		++ m_frame_index;
 	}
 
-	while (m_frame_index >= get_frames()) {
-		m_frame_index -= get_frames();
-	}
+	m_frame_index %= get_frames();
 }
 
 void Sprite::set_action(const std::string& name)

@@ -11,6 +11,9 @@
 #include "math/rect.hpp"
 #include "qbskr/constants.hpp"
 #include "qbskr/globals.hpp"
+#include "qbskr/tile_set_parser.hpp"
+#include "qbskr/tile_set.hpp"
+#include "qbskr/tile.hpp"
 #include "util/log.hpp"
 #include "sprite/sprite_data.hpp"
 #include "sprite/sprite_ptr.hpp"
@@ -18,6 +21,7 @@
 #include "video/canvas.hpp"
 #include "video/compositor.hpp"
 #include "video/drawing_context.hpp"
+#include "video/surface.hpp"
 #include "video/sdl/sdl_video_system.hpp"
 #include "video/sdl/sdl_renderer.hpp"
 
@@ -67,7 +71,9 @@ int Main::run([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
 
 	Player player;
 
-	const Uint32 ms_per_step = static_cast<Uint32>(1000.0 / LOGICAL_FPS);
+	auto tileset = TileSet::from_file("images/tiles/tiles-tileset.txt");
+
+	const Uint32 ms_per_step = static_cast<Uint32>(1000.0f / LOGICAL_FPS);
 	const float seconds_per_step = static_cast<float>(ms_per_step) / 1000.0f;
 
 	// SDL_GetTicks64() is recommended
@@ -150,8 +156,18 @@ int Main::run([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
 				}
 			}
 
-
 			player.m_sprite->draw(canvas, player.m_pos, 100, NO_FLIP);
+
+			for (int i = -5; i <= 5; i += 1) {
+				for (int j = -5; j <= 5; j += 1) {
+					Vector aug = Vector(i, j) * 16;
+					if (abs(i) == 5 || abs(j) == 5) {
+						tileset->get(1).draw(canvas, Vector(120, 120) + aug, 99);
+					} else {
+						tileset->get(2).draw(canvas, Vector(120, 120) + aug, 99);
+					}
+				}
+			}
 
 			compositor.render();
 			elapsed_ticks -= ms_per_step;

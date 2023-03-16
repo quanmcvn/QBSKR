@@ -47,6 +47,8 @@ public:
 	CrappyReaderData* get_child(const std::string& name) const;
 	std::vector<std::string> convert_child() const;
 
+	bool get(const std::string& name, bool& value) const;
+	bool get(const std::string& name, uint32_t& value) const;
 	bool get(const std::string& name, float& value) const;
 	bool get(const std::string& name, std::string& value) const;
 	bool get(const std::string& name, std::vector<float>& values) const;

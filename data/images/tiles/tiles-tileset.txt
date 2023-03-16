@@ -1,0 +1,23 @@
+tileset-start
+
+tile-start
+	id 1
+	attributes-start
+		solid 1
+	attributes-end
+	images-start
+		wall-0.png
+	images-end
+tile-end
+
+tile-start
+	id 2
+	attributes-start
+		solid 1
+	attributes-end
+	images-start
+		floor-0.png
+	images-end
+tile-end
+
+tileset-end

@@ -1,8 +1,9 @@
 #include "util/crappy_reader.hpp"
 
+#include <algorithm>
 #include <filesystem>
-#include <optional>
 #include <iostream>
+#include <optional>
 #include <sstream>
 
 namespace {
@@ -10,6 +11,8 @@ namespace {
 	{
 		std::string temp;
 		std::getline(is, temp);
+		// remove tab from string so that I can tab to format
+		temp.erase(std::remove(temp.begin(), temp.end(), '\t'), temp.end());
 		return temp;
 	}
 
@@ -70,8 +73,6 @@ std::string CrappyReader::get_dir() const
 {
 	return m_dir;
 }
-
-#include<iostream>
 
 void CrappyReader::dfs_parse(CrappyReaderData* node, const std::string& desired)
 {

@@ -22,6 +22,9 @@ OBJ_FILES = src/main.o                            \
             src/qbskr/gameconfig.o                \
             src/qbskr/globals.o                   \
             src/qbskr/main.o                      \
+            src/qbskr/tile_set_parser.o           \
+            src/qbskr/tile_set.o                  \
+            src/qbskr/tile.o                      \
             src/sprite/sprite_data.o              \
             src/sprite/sprite_manager.o           \
             src/sprite/sprite.o                   \

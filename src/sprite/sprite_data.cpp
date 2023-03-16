@@ -27,7 +27,7 @@ SpriteData::SpriteData(CrappyReader& cr) :
 {
 	name = cr.get_dir();
 
-	const std::string parent_dir = std::filesystem::path(cr.get_dir()).parent_path().string();
+	const std::string parent_path = std::filesystem::path(cr.get_dir()).parent_path().string() + '/';
 
 	const CrappyReaderData* root = cr.get_root();
 	
@@ -35,12 +35,12 @@ SpriteData::SpriteData(CrappyReader& cr) :
 	while (cr.parse("action")) {}
 
 	for (const auto& child : root->m_childs) {
-		parse_action(child, parent_dir);
+		parse_action(child, parent_path);
 	}
 	
 }
 
-void SpriteData::parse_action(CrappyReaderData* crd, const std::string& parent_dir)
+void SpriteData::parse_action(CrappyReaderData* crd, const std::string& parent_path)
 {
 	auto action = std::make_unique<Action>();
 
@@ -87,8 +87,8 @@ void SpriteData::parse_action(CrappyReaderData* crd, const std::string& parent_d
 		std::vector<std::string> image_filenames;
 		if (crd->get("images", image_filenames)) {
 			for (const auto& image_filename : image_filenames) {
-				auto surface = Surface::from_file(parent_dir + "/" + image_filename);
-				action->surfaces.push_back(surface);
+				auto surface = Surface::from_file(parent_path + image_filename);
+				action->surfaces.push_back(std::move(surface));
 			}
 		} else {
 			std::ostringstream msg;
