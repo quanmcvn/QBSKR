@@ -41,6 +41,11 @@ void Canvas::render(Renderer& renderer)
 
 void Canvas::draw_surface(const SurfacePtr& surface, const Vector& position, int layer) 
 {
+	draw_surface(surface, position, 0.0f, Color(1.0f, 1.0f, 1.0f), layer);
+}
+
+void Canvas::draw_surface(const SurfacePtr& surface, const Vector& position, float angle, const Color& color, int layer)
+{
 	if (!surface) return;
 
 	const auto& cliprect = m_drawing_context.get_cliprect();
@@ -57,6 +62,7 @@ void Canvas::draw_surface(const SurfacePtr& surface, const Vector& position, int
 	request->type = TEXTURE;
 	request->layer = layer;
 	request->flip = m_drawing_context.get_flip() ^ surface->get_flip();
+	request->alpha = m_drawing_context.get_alpha();
 	request->viewport = m_drawing_context.get_viewport();
 
 	request->texture = surface->get_texture().get();
@@ -64,10 +70,11 @@ void Canvas::draw_surface(const SurfacePtr& surface, const Vector& position, int
 	request->dstrects.emplace_back(Rectf(apply_translate(position) * scale(),
 	                               Sizef(static_cast<float>(surface->get_width()) * scale(),
 	                                     static_cast<float>(surface->get_height()) * scale())));
+	request->angles.push_back(angle);
+	request->color = color;
 
 	m_requests.push_back(static_cast<DrawingRequest*>(request));
 }
-
 
 void Canvas::clear()
 {

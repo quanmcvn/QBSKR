@@ -13,6 +13,9 @@ Sprite::Sprite(SpriteData& newdata) :
 	m_frame_progress(0),
 	m_frame_index(0),
 	m_last_ticks(g_game_time),
+	m_angle(),
+	m_alpha(1.0f),
+	m_color(),
 	m_action(m_data.actions.begin()->second.get())
 {}
 
@@ -25,9 +28,12 @@ void Sprite::draw(Canvas& canvas, const Vector& pos, int layer, Flip flip)
 	drawing_context.push_transform();
 
 	drawing_context.set_flip(drawing_context.get_flip() ^ flip);
+	drawing_context.set_alpha(drawing_context.get_alpha() * m_alpha);
 
 	canvas.draw_surface(m_action->surfaces[m_frame_index],
 	                    pos - Vector(m_action->x_offset, m_action->y_offset),
+	                    m_angle,
+	                    m_color,
 	                    layer);
 
 	drawing_context.pop_transform();
@@ -67,3 +73,12 @@ void Sprite::set_action(const std::string& name)
 int Sprite::get_frames() const { return static_cast<int>(m_action->surfaces.size()); }
 int Sprite::get_current_frame() const { return m_frame_index; }
 float Sprite::get_current_frame_progess() const { return m_frame_progress; }
+
+float Sprite::get_angle() const { return m_angle; }
+void Sprite::set_angle(float angle) { m_angle = angle; }
+
+float Sprite::get_alpha() const { return m_alpha; }
+void Sprite::set_alpha(float alpha) { m_alpha = alpha; }
+
+Color Sprite::get_color() const { return m_color; }
+void Sprite::set_color(const Color& color) { m_color = color; }

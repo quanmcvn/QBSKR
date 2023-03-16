@@ -43,6 +43,14 @@ void SDLPainter::draw_texture(const TextureRequest& request)
 		const SDL_Rect& src_rect = to_sdl_rect(request.srcrects[i]);
 		const SDL_Rect& dst_rect = to_sdl_rect(request.dstrects[i]);
 
+		Uint8 r = static_cast<Uint8>(request.color.red * 255);
+		Uint8 g = static_cast<Uint8>(request.color.green * 255);
+		Uint8 b = static_cast<Uint8>(request.color.blue * 255);
+		Uint8 a = static_cast<Uint8>(request.alpha * request.color.alpha * 255);
+
+		SDL_SetTextureColorMod(texture.get_texture(), r, g, b);
+		SDL_SetTextureAlphaMod(texture.get_texture(), a);
+
 		SDL_RendererFlip flip = SDL_FLIP_NONE;
 		if (request.flip & HORIZONTAL_FLIP) flip = static_cast<SDL_RendererFlip>(flip | SDL_FLIP_HORIZONTAL);
 		if (request.flip & VERTICAL_FLIP) flip = static_cast<SDL_RendererFlip>(flip | SDL_FLIP_VERTICAL);

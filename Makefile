@@ -39,6 +39,7 @@ OBJ_FILES = src/main.o                            \
             src/video/sdl/sdl_video_system.o      \
             src/video/sdl/sdlbased_video_system.o \
             src/video/canvas.o                    \
+            src/video/color.o                     \
             src/video/compositor.o                \
             src/video/drawing_context.o           \
             src/video/surface.o                   \

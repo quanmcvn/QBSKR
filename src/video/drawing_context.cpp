@@ -48,6 +48,9 @@ void DrawingContext::scale(float scale) { transform().scale *= scale; }
 Flip DrawingContext::get_flip() const { return transform().flip; }
 void DrawingContext::set_flip(Flip flip) { transform().flip = flip; }
 
+float DrawingContext::get_alpha() const { return transform().alpha; }
+void DrawingContext::set_alpha(float alpha) { transform().alpha = alpha; }
+
 const Rect DrawingContext::get_viewport() const { return m_viewport; }
 void DrawingContext::set_viewport(const Rect& viewport) { m_viewport = viewport; }
 

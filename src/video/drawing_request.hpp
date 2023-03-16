@@ -2,6 +2,7 @@
 #define HEADER_QBSKR_VIDEO_DRAWING_REQUEST_HPP
 
 #include "math/rectf.hpp"
+#include "video/color.hpp"
 #include "video/texture.hpp"
 #include "video/flip.hpp"
 
@@ -22,12 +23,14 @@ struct DrawingRequest {
 
 	int layer;
 	Flip flip;
+	float alpha;
 	Rect viewport;
 
 	DrawingRequest(RequestType type_) :
 		type(type_),
 		layer(),
 		flip(),
+		alpha(),
 		viewport()
 	{}
 };
@@ -40,7 +43,11 @@ private:
 public:
 	TextureRequest() :
 		DrawingRequest(TEXTURE),
-		texture()
+		texture(),
+		srcrects(),
+		dstrects(),
+		angles(),
+		color()
 	{}
 
 	const Texture* texture;
@@ -48,6 +55,8 @@ public:
 	std::vector<Rectf> srcrects;
 	// to batch draw 
 	std::vector<Rectf> dstrects;
+	std::vector<float> angles;
+	Color color;
 };
 
 #endif

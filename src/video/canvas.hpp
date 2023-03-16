@@ -38,6 +38,7 @@ public:
 	void render(Renderer& renderer);
 
 	void draw_surface(const SurfacePtr& surface, const Vector& position, int layer);
+	void draw_surface(const SurfacePtr& surface, const Vector& position, float angle, const Color& color, int layer);
 
 	void clear();
 

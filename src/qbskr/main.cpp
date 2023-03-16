@@ -25,9 +25,6 @@
 #include "video/sdl/sdl_video_system.hpp"
 #include "video/sdl/sdl_renderer.hpp"
 
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
-
 SDLSubSystem::SDLSubSystem() 
 {
 	Uint32 flags = SDL_INIT_VIDEO;

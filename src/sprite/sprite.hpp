@@ -3,6 +3,7 @@
 
 #include "sprite/sprite_data.hpp"
 #include "video/canvas.hpp"
+#include "video/color.hpp"
 #include "video/drawing_context.hpp"
 
 class Sprite final {
@@ -31,6 +32,15 @@ public:
 
 	float get_current_frame_progess() const;
 
+	float get_angle() const;
+	void set_angle(float angle);
+
+	float get_alpha() const;
+	void set_alpha(float alpha);
+
+	Color get_color() const;
+	void set_color(const Color& color);
+
 private:
 	void update();
 
@@ -40,8 +50,10 @@ private:
 	float m_frame_progress;
 	// between 0 and get_frames() - 1
 	int m_frame_index;
-	
 	float m_last_ticks;
+	float m_angle;
+	float m_alpha;
+	Color m_color;
 
 	const SpriteData::Action* m_action;
 };

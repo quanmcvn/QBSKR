@@ -54,6 +54,9 @@ public:
 	
 	Flip get_flip() const;
 	void set_flip(Flip flip);
+	
+	float get_alpha() const;
+	void set_alpha(float alpha);
 
 	const Rect get_viewport() const;
 	void set_viewport(const Rect& viewport);
