@@ -36,7 +36,7 @@ void Player::draw(DrawingContext& drawing_context)
 	std::string action_postfix;
 	action_postfix = (m_direction == Direction::RIGHT) ? "-right" : "-left";
 	
-	if (std::abs(math::length(m_physic.get_velocity())) < 1.0f) {
+	if (math::length(m_physic.get_velocity()) < 1.0f) {
 		m_sprite->set_action("idle" + action_postfix);
 	} else {
 		m_sprite->set_action("walk" + action_postfix);
@@ -45,12 +45,8 @@ void Player::draw(DrawingContext& drawing_context)
 	m_sprite->draw(drawing_context.get_canvas(), get_pos(), get_layer());
 }
 
-
 void Player::collision_solid(const CollisionHit& hit)
 {
-	// this will make player 'stuck in place' when trying to move diagonal into walls
-	// will be changed soonTM
-
 	if (hit.left || hit.right) {
 		m_physic.set_velocity_x(0);
 	}
