@@ -1,11 +1,11 @@
-#ifndef HEADER_QBSKR_QBSKR_TILE_SET_HPP
-#define HEADER_QBSKR_QBSKR_TILE_SET_HPP
+#ifndef HEADER_QBSKR_OBJECT_TILE_SET_HPP
+#define HEADER_QBSKR_OBJECT_TILE_SET_HPP
 
 #include <vector>
 #include <memory>
 #include <string>
 
-#include "qbskr/tile.hpp"
+#include "object/tile.hpp"
 
 class CrappyReader;
 

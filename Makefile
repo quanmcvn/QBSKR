@@ -12,26 +12,37 @@ OBJ_FILES = src/main.o                            \
             src/control/mouse_button_config.o     \
             src/control/mouse_button_manager.o    \
             src/control/mouse_motion_manager.o    \
+            src/collision/collision_object.o      \
+            src/collision/collision_system.o      \
+            src/collision/collision.o             \
             src/math/anchor_point.o               \
             src/math/rect.o                       \
             src/math/rectf.o                      \
             src/math/size.o                       \
             src/math/sizef.o                      \
             src/math/vector.o                     \
+            src/object/game_object_manager.o      \
+            src/object/game_object.o              \
+            src/object/moving_object.o            \
+            src/object/physic.o                   \
+            src/object/player.o                   \
+            src/object/tile_map.o                 \
+            src/object/tile_set_parser.o          \
+            src/object/tile_set.o                 \
+            src/object/tile.o                     \
             src/qbskr/constants.o                 \
             src/qbskr/gameconfig.o                \
             src/qbskr/globals.o                   \
             src/qbskr/main.o                      \
-            src/qbskr/tile_set_parser.o           \
-            src/qbskr/tile_set.o                  \
-            src/qbskr/tile.o                      \
+            src/qbskr/room.o                      \
             src/sprite/sprite_data.o              \
             src/sprite/sprite_manager.o           \
             src/sprite/sprite.o                   \
-            src/object/player.o                   \
-            src/util/log.o                        \
             src/util/crappy_reader_data.o         \
             src/util/crappy_reader.o              \
+            src/util/log.o                        \
+            src/util/uid_generator.o              \
+            src/util/uid.o                        \
             src/video/sdl/sdl_painter.o           \
             src/video/sdl/sdl_renderer.o          \
             src/video/sdl/sdl_surface_creator.o   \
@@ -51,14 +62,17 @@ OBJ_FILES = src/main.o                            \
 #CC specifies which compiler we're using
 CC = g++
 
+SDL2_PATH = D:/Libraries/SDL2/x86_64-w64-mingw32/
+SDL2_IMAGE_PATH = D:/Libraries/SDL2_image/x86_64-w64-mingw32/
+
 #INCLUDE_PATHS specifies the additional include paths we'll need
-INCLUDE_PATHS = -ID:/Libraries/SDL2/x86_64-w64-mingw32/include/SDL2          \
-                -ID:/Libraries/SDL2_image/x86_64-w64-mingw32/include/SDL2    \
-                -I./src                                                      \
+INCLUDE_PATHS = -I$(SDL2_PATH)include/SDL2          \
+                -I$(SDL2_IMAGE_PATH)include/SDL2    \
+                -I./src                             \
 
 #LIBRARY_PATHS specifies the additional library paths we'll need
-LIBRARY_PATHS = -LD:/Libraries/SDL2/x86_64-w64-mingw32/lib                   \
-                -LD:/Libraries/SDL2_image/x86_64-w64-mingw32/lib             \
+LIBRARY_PATHS = -L$(SDL2_PATH)lib                   \
+                -L$(SDL2_IMAGE_PATH)lib             \
 
 #COMPILER_FLAGS specifies the additional compilation options we're using
 COMPILER_FLAGS = -std=c++17 -Wall -Wextra

@@ -1,0 +1,280 @@
+#include "collision/collision_system.hpp"
+
+#include "collision/collision_object.hpp"
+#include "object/tile_map.hpp"
+#include "qbskr/constants.hpp"
+#include "qbskr/room.hpp"
+#include "video/drawing_context.hpp"
+
+namespace {
+	// abitrary choice of MAX_SPEED
+	const float MAX_SPEED = 8.0f;
+
+}
+
+CollisionSystem::CollisionSystem(Room& room) :
+	m_room(room),
+	m_objects()
+{}
+
+void CollisionSystem::add(CollisionObject* object)
+{
+	m_objects.push_back(object);
+}
+
+void CollisionSystem::remove(CollisionObject* object)
+{
+	// O(n), but not a big problem
+	m_objects.erase(std::find(m_objects.begin(), m_objects.end(), object));
+}
+
+namespace {
+	collision::Constraints check_collision(const Rectf& moving_object_rect, const Rectf& other_object_rect)
+	{
+		// slightly grow the static object
+		const Rectf grown_other_object_rect = other_object_rect.grown(EPSILON);
+	
+		collision::Constraints constraints;
+
+		if (!collision::intersects(moving_object_rect, grown_other_object_rect)) {
+			return constraints;
+		}
+
+		const float intersect_left   = moving_object_rect.get_right() - grown_other_object_rect.get_left();
+		const float intersect_right  = grown_other_object_rect.get_right() - moving_object_rect.get_left();
+		const float intersect_top    = moving_object_rect.get_bottom() - grown_other_object_rect.get_top();
+		const float intersect_bottom = grown_other_object_rect.get_bottom() - moving_object_rect.get_top();
+	
+		const float horizontal_intersect = std::min(intersect_left, intersect_right);
+		const float vertical_intersect = std::min(intersect_top, intersect_bottom);
+
+		if (horizontal_intersect < vertical_intersect) {
+			if (intersect_left < intersect_right) {
+				constraints.constrain_right(grown_other_object_rect.get_left());
+				constraints.hit.right = true;
+			} else {
+				constraints.constrain_left(grown_other_object_rect.get_right());
+				constraints.hit.left = true;
+			}
+		} else {
+			if (intersect_top < intersect_bottom) {
+				constraints.constrain_bottom(grown_other_object_rect.get_top());
+				constraints.hit.bottom = true;
+			} else {
+				constraints.constrain_top(grown_other_object_rect.get_bottom());
+				constraints.hit.top = true;
+			}
+		}
+
+		return constraints;
+	}
+
+	// set CollisionHit and Vector normal of 2 intersecting rects
+	void get_hit_normal(const Rectf& r1, const Rectf& r2, CollisionHit& hit, Vector& normal)
+	{
+		const float intersect_left   = r1.get_right() - r2.get_left();
+		const float intersect_right  = r2.get_right() - r1.get_left();
+		const float intersect_top    = r1.get_bottom() - r2.get_top();
+		const float intersect_bottom = r2.get_bottom() - r1.get_top();
+	
+		const float horizontal_intersect = std::min(intersect_left, intersect_right);
+		const float vertical_intersect = std::min(intersect_top, intersect_bottom);
+
+		if (horizontal_intersect < vertical_intersect) {
+			if (intersect_left < intersect_right) {
+				hit.right = true;
+				normal.x = horizontal_intersect;
+			} else {
+				hit.left = true;
+				normal.x = -horizontal_intersect;
+			}
+		} else {
+			if (intersect_top < intersect_bottom) {
+				hit.bottom = true;
+				normal.y = vertical_intersect;
+			} else {
+				hit.top = true;
+				normal.y = -vertical_intersect;
+			}
+		}
+	}
+}
+
+void CollisionSystem::update()
+{
+	// calculate destitaion of objects
+	for (const auto& object : m_objects) {
+		const Vector& mov = object->get_movement();
+
+		if (math::length(mov) > MAX_SPEED) {
+			object->set_movement(math::normalize(mov) * MAX_SPEED);
+		}
+
+		object->m_dest = object->get_bounding_box();
+		object->m_dest.move(object->get_movement());
+	}
+
+	// part 1: COLLISION_GROUP_MOVING vs COLLISION_GROUP_STATIC (NYI) and tilemap
+	for (const auto& object : m_objects) {
+		if (!object->is_valid()) continue;
+		if (object->get_group() != COLLISION_GROUP_MOVING &&
+		    object->get_group() != COLLISION_GROUP_STATIC)
+			continue;
+
+		collision_static_tilemap_object(*object);
+	}
+
+	// part ???
+
+	// part last: COLLISION_GROUP_MOVING vs COLLISION_GROUP_MOVING
+	for (auto it = m_objects.begin(); it != m_objects.end(); ++ it) {
+		// deference it since it is (approximately) CollisionObject**
+		auto object = *it;
+
+		if (!object->is_valid()) continue;
+		if (object->get_group() != COLLISION_GROUP_MOVING) continue;
+
+		for (auto jt = it + 1; jt != m_objects.end(); ++ jt) {
+			auto object2 = *jt;
+			if (!object2->is_valid()) continue;
+			if (object2->get_group() != COLLISION_GROUP_MOVING) continue;
+		
+			collision_object(*object, *object2);
+		}
+	}
+
+	// apply object movement
+	for (auto* object : m_objects) {
+		object->m_bounding_box = object->m_dest;
+		object->m_movement = Vector(0.0f, 0.0f);
+	}
+}
+
+void CollisionSystem::draw_debug(DrawingContext& drawing_context)
+{
+	const Color violet(0.5f, 0.0f, 1.0f, 0.75f);
+	const Color green_bright(0.7f, 1.0f, 0.7f, 0.75f);
+	for (auto& object : m_objects) {
+		Color color;
+		switch (object->get_group()) {
+			case COLLISION_GROUP_MOVING:
+				color = violet;
+				break;
+			default:
+				color = green_bright;
+				break;
+		}
+		drawing_context.get_canvas().draw_filled_rect(object->get_bounding_box(), color, LAYER_FOREGROUND + 10);
+	}
+}
+
+void CollisionSystem::collision_static_constraints(collision::Constraints* /* constraints */, const Vector& /* movement */, const Rectf& /* dest */, CollisionObject& /* object */) const
+{
+	// NYI
+}
+
+void CollisionSystem::collision_tilemap_constraints(collision::Constraints* constraints, const Vector& /* movement */, const Rectf& dest, CollisionObject& /* object */) const
+{
+	for (auto solid_tilemap : m_room.get_solid_tilemaps()) {
+		const Rect test_tiles = solid_tilemap->get_tiles_overlap(dest);
+
+		for (int x = test_tiles.left; x < test_tiles.right; ++ x) {
+			for (int y = test_tiles.top; y < test_tiles.bottom; ++ y) {
+				const Tile& tile = solid_tilemap->get_tile(x, y);
+
+				// skip non solid tiles
+				if (!tile.is_solid()) continue;
+				Rectf tile_bounding_box = solid_tilemap->get_tile_bounding_box(x, y);
+
+				collision::Constraints new_constraints = check_collision(dest, tile_bounding_box);
+				constraints->merge_constraints(new_constraints);
+			}
+		}
+	}
+}
+
+void CollisionSystem::collision_static_tilemap_constraints(collision::Constraints* constraints, const Vector& movement, const Rectf& dest, CollisionObject& object) const
+{
+	collision_tilemap_constraints(constraints, movement, dest, object);
+	collision_static_constraints(constraints, movement, dest, object);
+}
+
+void CollisionSystem::collision_static_tilemap_object(CollisionObject& object) const
+{
+	collision::Constraints constraints;
+	const Vector movement = object.m_movement;
+	Rectf& dest = object.m_dest;
+
+	for (int i = 0; i < 2; ++ i) {
+		collision_static_tilemap_constraints(&constraints, movement, dest, object);
+		if (!constraints.has_constraints()) {
+			break;
+		}
+
+		if (constraints.has_constraint_left() && constraints.has_constraint_right()) {
+			float x_mid = (constraints.get_position_right() + constraints.get_position_left()) / 2.0f;
+			dest.set_left(x_mid - object.get_bounding_box().get_width() / 2.0f);
+			dest.set_right(x_mid + object.get_bounding_box().get_width() / 2.0f);
+		} else {
+			if (constraints.has_constraint_right()) {
+				dest.set_right(constraints.get_position_right() - EPSILON);
+				dest.set_left(dest.get_right() - object.get_bounding_box().get_width());
+			} else if (constraints.has_constraint_left()) {
+				dest.set_left(constraints.get_position_left() + EPSILON);
+				dest.set_right(dest.get_left() + object.get_bounding_box().get_width());
+			}
+		}
+
+		if (constraints.has_constraint_top() && constraints.has_constraint_bottom()) {
+			float y_mid = (constraints.get_position_bottom() + constraints.get_position_top()) / 2.0f;
+			dest.set_top(y_mid - object.get_bounding_box().get_height() / 2.0f);
+			dest.set_bottom(y_mid + object.get_bounding_box().get_height() / 2.0f);
+		} else {
+			if (constraints.has_constraint_bottom()) {
+				dest.set_bottom(constraints.get_position_bottom() - EPSILON);
+				dest.set_top(dest.get_bottom() - object.get_bounding_box().get_height());
+			} else if (constraints.has_constraint_top()) {
+				dest.set_top(constraints.get_position_top() + EPSILON);
+				dest.set_bottom(dest.get_top() + object.get_bounding_box().get_height());
+			}
+		}
+	}
+
+	if (constraints.has_constraints()) {
+		if (constraints.hit.left || constraints.hit.right || constraints.hit.top || constraints.hit.bottom) {
+			object.collision_solid(constraints.hit);
+		}
+	}
+}
+
+void CollisionSystem::collision_object(CollisionObject& object1, CollisionObject& object2) const
+{
+	for (int i = 0; i < 4; ++ i) {
+		const Rectf& r1 = object1.m_dest;
+		const Rectf& r2 = object2.m_dest;
+
+		if (!collision::intersects(r1, r2)) return;
+		CollisionHit hit;
+		Vector normal(0.0f, 0.0f);
+		get_hit_normal(r1, r2, hit, normal);
+
+		HitResponse response1 = object1.collision(object2, hit);
+		std::swap(hit.left, hit.right);
+		std::swap(hit.top, hit.bottom);
+		HitResponse response2 = object2.collision(object1, hit);
+		std::swap(hit.left, hit.right);
+		std::swap(hit.top, hit.bottom);
+		
+		if (response1 == CONTINUE && response2 == CONTINUE) {
+			normal *= (0.5f + EPSILON);
+			object1.m_dest.move(-normal);
+			object2.m_dest.move(normal);
+		} else if (response1 == CONTINUE && response2 == FORCE_MOVE) {
+			normal *= (1.0f + EPSILON);
+			object1.m_dest.move(-normal);
+		} else if (response1 == FORCE_MOVE && response2 == CONTINUE) {
+			normal *= (1.0f + EPSILON);
+			object2.m_dest.move(normal);
+		}
+	}
+}

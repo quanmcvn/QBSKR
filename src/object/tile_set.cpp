@@ -1,6 +1,6 @@
-#include "qbskr/tile_set.hpp"
+#include "object/tile_set.hpp"
 
-#include "qbskr/tile_set_parser.hpp"
+#include "object/tile_set_parser.hpp"
 #include "util/log.hpp"
 
 std::unique_ptr<TileSet> TileSet::from_file(const std::string& filename)

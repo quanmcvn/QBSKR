@@ -35,6 +35,10 @@ void Canvas::render(Renderer& renderer)
 			case TEXTURE:
 				painter.draw_texture(static_cast<const TextureRequest&>(request));
 				break;
+
+			case FILLEDRECT:
+				painter.draw_filled_rect(static_cast<const FilledRectRequest&>(request));
+				break;
 		}
 	}
 }
@@ -72,6 +76,26 @@ void Canvas::draw_surface(const SurfacePtr& surface, const Vector& position, flo
 	                                     static_cast<float>(surface->get_height()) * scale())));
 	request->angles.push_back(angle);
 	request->color = color;
+
+	m_requests.push_back(static_cast<DrawingRequest*>(request));
+}
+
+void Canvas::draw_filled_rect(const Rectf& rect, const Color& color, int layer)
+{
+	m_request_holder.emplace_back(static_cast<std::unique_ptr<DrawingRequest>>(std::make_unique<FilledRectRequest>()));
+
+	FilledRectRequest* request = static_cast<FilledRectRequest*>(m_request_holder.back().get());
+	
+	request->type = FILLEDRECT;
+	request->layer = layer;
+
+	request->flip = m_drawing_context.get_flip();
+	request->alpha = m_drawing_context.get_alpha();
+	request->viewport = m_drawing_context.get_viewport();
+
+	request->rect = Rectf(apply_translate(rect.p1()) * scale(), rect.get_size() * scale());
+	request->color = color;
+	request->color.alpha = color.alpha * m_drawing_context.get_alpha();
 
 	m_requests.push_back(static_cast<DrawingRequest*>(request));
 }

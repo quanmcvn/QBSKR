@@ -61,6 +61,20 @@ void SDLPainter::draw_texture(const TextureRequest& request)
 	}
 }
 
+void SDLPainter::draw_filled_rect(const FilledRectRequest& request)
+{
+	SDL_Rect rect = to_sdl_rect(request.rect);
+
+	Uint8 r = static_cast<Uint8>(request.color.red * 255);
+	Uint8 g = static_cast<Uint8>(request.color.green * 255);
+	Uint8 b = static_cast<Uint8>(request.color.blue * 255);
+	Uint8 a = static_cast<Uint8>(request.alpha * request.color.alpha * 255);
+
+	SDL_SetRenderDrawBlendMode(m_sdl_renderer, SDL_BLENDMODE_BLEND);
+	SDL_SetRenderDrawColor(m_sdl_renderer, r, g, b, a);
+	SDL_RenderFillRect(m_sdl_renderer, &rect);
+}
+
 void SDLPainter::set_clip_rect(const Rect& rect)
 {
 	m_cliprect = rect.to_sdl();

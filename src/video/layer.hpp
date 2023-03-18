@@ -9,6 +9,10 @@ enum {
 	LAYER_TILES = 0,
 	// normal object
 	LAYER_OBJECTS = 100,
+
+	//
+
+	LAYER_FOREGROUND = 300
 };
 
 #endif

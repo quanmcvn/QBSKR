@@ -14,7 +14,7 @@ CrappyReaderData::CrappyReaderData(const std::string& data) :
 	m_childs()
 {}
 
-CrappyReaderData* CrappyReaderData::get_child(const std::string& name) const
+CrappyReaderData::Child CrappyReaderData::get_child(const std::string& name) const
 {
 	for (const auto& child : m_childs) {
 		if (child->m_data == name) return child;
@@ -22,13 +22,22 @@ CrappyReaderData* CrappyReaderData::get_child(const std::string& name) const
 	return nullptr;
 }
 
+std::vector<CrappyReaderData::Child> CrappyReaderData::get_child_all(const std::string& name) const
+{
+	std::vector<Child> childs;
+	for (const auto& child : m_childs) {
+		if (child->m_data == name) childs.push_back(child);
+	}
+	return childs;
+}
+
 std::vector<std::string> CrappyReaderData::convert_child() const
 {
-	std::vector<std::string> ret;
+	std::vector<std::string> childs_data;
 	for (const auto& child : m_childs) {
-		ret.push_back(child->m_data);
+		childs_data.push_back(child->m_data);
 	}
-	return ret;
+	return childs_data;
 }
 
 namespace {
@@ -44,7 +53,7 @@ namespace {
 */
 
 #define GET_VALUE_MACRO()                                              \
-	CrappyReaderData* child = get_child(name);                         \
+	Child child = get_child(name);                                     \
 	if (child == nullptr) {                                            \
 		return false;                                                  \
 	} else {                                                           \
@@ -56,6 +65,11 @@ namespace {
 	}
 
 bool CrappyReaderData::get(const std::string& name, bool& value)  const
+{
+	GET_VALUE_MACRO()
+}
+
+bool CrappyReaderData::get(const std::string& name, int& value)  const
 {
 	GET_VALUE_MACRO()
 }
@@ -78,7 +92,7 @@ bool CrappyReaderData::get(const std::string& name, std::string& value) const
 #undef GET_VALUE_MACRO
 
 #define GET_VALUES_MACRO(type)                                         \
-	CrappyReaderData* child = get_child(name);                         \
+	Child child = get_child(name);                                     \
 	if (child == nullptr) {                                            \
 		return false;                                                  \
 	} else {                                                           \
@@ -103,6 +117,23 @@ bool CrappyReaderData::get(const std::string& name, std::vector<std::string>& va
 }
 
 #undef GET_VALUES_MACRO
+
+#define GET_CHILD_VALUES_MACRO(type)                               \
+	std::vector<std::string> child_data = convert_child();         \
+	for (const auto& str : child_data) {                           \
+		type value;                                                \
+		std::stringstream ss(str);                                 \
+		ss >> value;                                               \
+		values.push_back(value);                                   \
+	}                                                              \
+	return true;                                                   \
+
+bool CrappyReaderData::get_child_values(std::vector<uint32_t>& values) const
+{
+	GET_CHILD_VALUES_MACRO(uint32_t)
+}
+
+#undef GET_CHILD_VALUES_MACRO
 
 void CrappyReaderData::dfs_print(std::ostream& os, int depth) const
 {

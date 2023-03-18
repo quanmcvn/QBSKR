@@ -1,5 +1,5 @@
-#ifndef HEADER_QBSKR_QBSRK_TILE_HPP
-#define HEADER_QBSKR_QBSRK_TILE_HPP
+#ifndef HEADER_QBSKR_OBJECT_TILE_HPP
+#define HEADER_QBSKR_OBJECT_TILE_HPP
 
 #include <vector>
 #include <string>
@@ -14,11 +14,13 @@ class Tile final {
 public:
 	// bitset for tile attribute
 	enum {
-		SOLID   = 0b0000'0000'0000'0001,
+		SOLID                       = 0b0000'0000'0000'0001,
 
 		// reserve for some more attribute
 
-		GOAL    = 0b0000'0001'0000'0000
+		// to check in collision
+		FIRST_INTERESTING_ATTRIBUTE = 0b0000'0001'0000'0000,
+		GOAL                        = 0b0000'0001'0000'0000
 	};
 
 public:

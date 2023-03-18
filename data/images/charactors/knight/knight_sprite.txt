@@ -1,7 +1,7 @@
 action-start
 	name walk-right
 	fps 16
-	hitbox 0 0 16 28
+	hitbox 3 18 16 22
 	images-start
 		walk-0.png
 		walk-1.png
@@ -22,7 +22,7 @@ action-end
 action-start
 	name idle-right
 	fps 1
-	hitbox 0 0 16 28
+	hitbox 3 18 16 22
 	images-start
 		idle-0.png
 	images-end

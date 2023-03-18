@@ -1,0 +1,17 @@
+#include "object/game_object.hpp"
+
+GameObject::GameObject() :
+	m_uid(),
+	m_schedule_for_remove(false)
+{}
+
+GameObject::~GameObject()
+{}
+
+UID GameObject::get_uid() const { return m_uid; }
+
+void GameObject::remove_me() { m_schedule_for_remove = true; }
+
+bool GameObject::is_valid() const { return !m_schedule_for_remove; }
+
+void GameObject::set_uid(const UID& uid) { m_uid = uid; }

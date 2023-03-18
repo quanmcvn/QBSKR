@@ -19,20 +19,22 @@ public:
 	Vector operator+(const Vector& other) const;
 	Vector operator-(const Vector& other) const;
 	Vector operator*(float factor) const;
+	Vector operator/(float factor) const;
 	Vector& operator+=(const Vector& other);
 	Vector& operator-=(const Vector& other);
+	Vector& operator*=(float factor);
 
 	bool operator==(const Vector& other) const;
 
 	Vector operator-() const;
-
-	float length() const;
 
 	friend std::ostream& operator<<(std::ostream& os, const Vector& other);
 };
 
 namespace math {
 
+	float length(const Vector& vector);
+	Vector normalize(const Vector& vector);
 	float dot(const Vector& lhs, const Vector& rhs);
 	float distance(const Vector& lhs, const Vector& rhs);
 

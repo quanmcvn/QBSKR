@@ -40,6 +40,8 @@ public:
 	void draw_surface(const SurfacePtr& surface, const Vector& position, int layer);
 	void draw_surface(const SurfacePtr& surface, const Vector& position, float angle, const Color& color, int layer);
 
+	void draw_filled_rect(const Rectf& rect, const Color& color, int layer);
+
 	void clear();
 
 	DrawingContext& get_drawing_context();

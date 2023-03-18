@@ -25,13 +25,26 @@
  * This is bad but it gets the job done :D
  * Also kinda pointless since there is json/...
  * Anyway...
+ * 
+ * Problem arise:
+ *   - MY specific format depends on line
+ *   - So to parse thing like TileMap, I have 2 choices:
+ *      1) 1 entry per line (super bad)
+ *      2) add a prefix to each line (I'll go this way) (but it also create problems)
+ *        + Have to change/add CrappyReaderData to parse this specific format
+ *        + Hardcode the parse in TileMap
 */
+
 class CrappyReader final {
 private:
 	CrappyReader() = delete;
 
 public:
 	~CrappyReader();
+
+private:
+	CrappyReader(const CrappyReader&) = delete;
+	CrappyReader& operator=(const CrappyReader&) = delete;
 
 private:
 	std::ifstream m_is;

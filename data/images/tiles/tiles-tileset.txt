@@ -17,4 +17,63 @@ tile-start
 	images-end
 tile-end
 
+tile-start
+	id 3
+	images-start
+		floor-1.png
+	images-end
+tile-end
+
+tile-start
+	id 4
+	images-start
+		floor-2.png
+	images-end
+tile-end
+
+tile-start
+	id 5
+	images-start
+		floor-3.png
+	images-end
+tile-end
+
+tile-start
+	id 6
+	images-start
+		floor-4.png
+	images-end
+tile-end
+
+tile-start
+	id 7
+	images-start
+		floor-5.png
+	images-end
+tile-end
+
+tile-start
+	id 8
+	images-start
+		floor-6.png
+	images-end
+tile-end
+
+tile-start
+	id 9
+	images-start
+		floor-7.png
+	images-end
+tile-end
+
+tile-start
+	id 10
+	attributes-start
+		solid 1
+	attributes-end
+	images-start
+		fence-0.png
+	images-end
+tile-end
+
 tileset-end

@@ -1,8 +1,8 @@
-#include "qbskr/tile_set_parser.hpp"
+#include "object/tile_set_parser.hpp"
 
 #include <filesystem>
 
-#include "qbskr/tile_set.hpp"
+#include "object/tile_set.hpp"
 #include "video/surface.hpp"
 #include "util/crappy_reader.hpp"
 
@@ -39,7 +39,7 @@ void TileSetParser::parse_tile(CrappyReaderData* crd)
 	crd->get("fps", fps);
 
 	uint32_t attributes = 0;
-	if (CrappyReaderData* crd_attributes = crd->get_child("attributes")) {
+	if (CrappyReaderData::Child crd_attributes = crd->get_child("attributes")) {
 		bool value;
 		if (crd_attributes->get("solid", value) && value) attributes |= Tile::SOLID;
 		if (crd_attributes->get("goal", value) && value) attributes |= Tile::GOAL;

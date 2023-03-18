@@ -8,6 +8,7 @@
 
 enum RequestType {
 	TEXTURE = 0,
+	FILLEDRECT = 1
 };
 
 
@@ -35,7 +36,7 @@ struct DrawingRequest {
 	{}
 };
 
-struct TextureRequest : DrawingRequest {
+struct TextureRequest : public DrawingRequest {
 private:
 	TextureRequest(const TextureRequest&) = delete;
 	TextureRequest& operator=(const TextureRequest&) = delete;
@@ -58,5 +59,18 @@ public:
 	std::vector<float> angles;
 	Color color;
 };
+
+struct FilledRectRequest : public DrawingRequest
+{
+	Rectf rect;
+	Color color;
+
+	FilledRectRequest() :
+		DrawingRequest(FILLEDRECT),
+		rect(),
+		color()
+	{}
+};
+
 
 #endif

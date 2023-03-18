@@ -37,22 +37,29 @@
 */
 class CrappyReaderData final {
 public:
+	CrappyReaderData();
+
+public:
 	std::string m_data;
 	using Child = CrappyReaderData*;
 	std::vector<Child> m_childs;
 
-	CrappyReaderData();
+public:
 	CrappyReaderData(const std::string& data);
 
-	CrappyReaderData* get_child(const std::string& name) const;
+	Child get_child(const std::string& name) const;
+	std::vector<Child> get_child_all(const std::string& name) const;
 	std::vector<std::string> convert_child() const;
 
 	bool get(const std::string& name, bool& value) const;
+	bool get(const std::string& name, int& value) const;
 	bool get(const std::string& name, uint32_t& value) const;
 	bool get(const std::string& name, float& value) const;
 	bool get(const std::string& name, std::string& value) const;
 	bool get(const std::string& name, std::vector<float>& values) const;
 	bool get(const std::string& name, std::vector<std::string>& values) const;
+
+	bool get_child_values(std::vector<uint32_t>& values) const;
 
 	void dfs_print(std::ostream& os, int depth = 0) const;
 };

@@ -2,23 +2,103 @@
 
 #include "sprite/sprite_manager.hpp"
 #include "sprite/sprite.hpp"
+#include "control/input_manager.hpp"
 
-Player::Player() :
-	m_pos(0, 0),
-	m_sprite(SpriteManager::current()->create("images/charactors/knight/knight_sprite.txt")),
-	m_movement(0, 0)
-{}
+namespace {
+	const float WALK_SPEED = 100.0f;
+
+	const float PLAYER_WIDTH = 10.0f;
+	const float PLAYER_HEIGHT = 10.0f;
+}
+
+Player::Player(int player_id) :
+	m_id(player_id),
+	m_controller(&(InputManager::current()->get_controller(m_id))),
+	m_direction(Direction::RIGHT),
+	m_physic(),
+	m_sprite(SpriteManager::current()->create("images/charactors/knight/knight_sprite.txt"))
+{
+	m_collision_object.set_size(PLAYER_WIDTH, PLAYER_HEIGHT);
+}
 
 Player::~Player()
 {}
 
-void Player::set_movement(const Vector movement)
+void Player::update(float dt_sec)
 {
-	m_movement = movement;
+	handle_input();
+
+	m_collision_object.set_movement(m_physic.get_movement(dt_sec));
 }
 
-void Player::update()
+void Player::draw(DrawingContext& drawing_context)
 {
-	m_pos += m_movement;
-	m_movement = Vector();
+	std::string action_postfix;
+	action_postfix = (m_direction == Direction::RIGHT) ? "-right" : "-left";
+	
+	if (std::abs(math::length(m_physic.get_velocity())) < 1.0f) {
+		m_sprite->set_action("idle" + action_postfix);
+	} else {
+		m_sprite->set_action("walk" + action_postfix);
+	}
+
+	m_sprite->draw(drawing_context.get_canvas(), get_pos(), get_layer());
+}
+
+
+void Player::collision_solid(const CollisionHit& hit)
+{
+	// this will make player 'stuck in place' when trying to move diagonal into walls
+	// will be changed soonTM
+
+	if (hit.left || hit.right) {
+		m_physic.set_velocity_x(0);
+	}
+
+	if (hit.top || hit.bottom) {
+		m_physic.set_velocity_y(0);
+	}
+}
+
+HitResponse Player::collision(GameObject& /* other */, const CollisionHit& /* hit */)
+{
+	// NYI
+	return ABORT_MOVE;
+}
+
+void Player::collision_tile(uint32_t /* tile_attributes */)
+{
+	// NYI
+}
+
+int Player::get_layer() const { return LAYER_OBJECTS + 1; }
+
+int Player::get_id() const { return m_id; }
+void Player::set_id(int id) { m_id = id; m_controller = &(InputManager::current()->get_controller(m_id)); }
+
+void Player::handle_input()
+{
+	handle_movement_input();
+}
+
+void Player::handle_movement_input()
+{
+	float dir_x_sign = 0;
+	if (m_controller->hold(Control::LEFT) && !m_controller->hold(Control::RIGHT)) {
+		dir_x_sign = -1;
+		m_direction = Direction::LEFT;
+	} else if (!m_controller->hold(Control::LEFT) && m_controller->hold(Control::RIGHT)) {
+		dir_x_sign = 1;
+		m_direction = Direction::RIGHT;
+	}
+
+	float dir_y_sign = 0;
+	if (m_controller->hold(Control::UP) && !m_controller->hold(Control::DOWN)) {
+		dir_y_sign = -1;
+	} else if (!m_controller->hold(Control::UP) && m_controller->hold(Control::DOWN)) {
+		dir_y_sign = 1;
+	}
+
+	m_physic.set_velocity_x(dir_x_sign * WALK_SPEED);
+	m_physic.set_velocity_y(dir_y_sign * WALK_SPEED);
 }

@@ -1,29 +1,44 @@
 #ifndef HEADER_QBSKR_OBJECT_PLAYER_HPP
 #define HEADER_QBSKR_OBJECT_PLAYER_HPP
 
-#include "math/vector.hpp"
+#include "object/moving_object.hpp"
+#include "object/physic.hpp"
+#include "object/direction.hpp"
 #include "sprite/sprite_ptr.hpp"
 
-class Player {
-public:
-	Player();
-	~Player();
+class Controller;
 
+class Player final : public MovingObject{
 public:
-	// Position of player
-	Vector m_pos;
+	Player(int player_id);
+	~Player() override;
 
-public:
+private:
+	Player(const Player&) = delete;
+	Player& operator=(const Player&) = delete;
+
+private:
+	int m_id;
+	const Controller* m_controller;
+	Direction m_direction;
+	Physic m_physic;
 	SpritePtr m_sprite;
-	// The movement that will happen till next frame
-	Vector m_movement;
-	// // Bounding box of player (used for collision detection)
-	// Rectf m_bbox;
+
 public:
-	void set_movement(Vector movement);
+	virtual void update(float dt_sec) override;
+	virtual void draw(DrawingContext& drawing_context) override;
+	virtual void collision_solid(const CollisionHit& hit) override;
+	virtual HitResponse collision(GameObject& other, const CollisionHit& hit) override;
+	virtual void collision_tile(uint32_t tile_attributes) override;
+	virtual int get_layer() const override;
 
-	void update();
+public:
+	int get_id() const;
+	void set_id(int id);
 
+private:
+	void handle_input();
+	void handle_movement_input();
 };
 
 #endif

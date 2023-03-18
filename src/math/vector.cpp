@@ -26,16 +26,16 @@ Vector& Vector::operator=(const Vector& other)
 }
 
 Vector Vector::operator+(const Vector& other) const { return Vector(x + other.x, y + other.y); }
-Vector Vector::operator-(const Vector& other) const { return Vector(x + other.x, y + other.y); }
-Vector Vector::operator*(float other) const { return Vector(x * other, y * other); }
+Vector Vector::operator-(const Vector& other) const { return Vector(x - other.x, y - other.y); }
+Vector Vector::operator*(float factor) const { return Vector(x * factor, y * factor); }
+Vector Vector::operator/(float factor) const { return Vector(x / factor, y / factor); }
 
 Vector& Vector::operator+=(const Vector& other) { *this = (*this) + other; return *this; }
 Vector& Vector::operator-=(const Vector& other) { *this = (*this) - other; return *this; }
+Vector& Vector::operator*=(float factor) { *this = (*this) * factor; return *this; }
 
 bool Vector::operator==(const Vector& other) const { return (x == other.x && y == other.y); }
 Vector Vector::operator-() const { return Vector(-x, -y); }
-
-float Vector::length() const { return sqrt(x * x + y * y); }
 
 std::ostream& operator<<(std::ostream& os, const Vector& other)
 {
@@ -43,6 +43,17 @@ std::ostream& operator<<(std::ostream& os, const Vector& other)
 }
 
 namespace math {
+	float length(const Vector& vector)
+	{
+		return sqrt(vector.x * vector.x + vector.y * vector.y);
+	}
+
+	Vector normalize(const Vector& vector)
+	{
+		if (length(vector) == 0) return Vector(0.0f, 0.0f);
+		return vector / math::length(vector);
+	}
+
 	float dot(const Vector& lhs, const Vector& rhs)
 	{
 		return lhs.x * rhs.x + lhs.y * rhs.y;
