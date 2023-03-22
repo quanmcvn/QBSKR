@@ -5,17 +5,21 @@
 #include "object/physic.hpp"
 #include "object/direction.hpp"
 #include "sprite/sprite_ptr.hpp"
+#include "weapon/weapon.hpp"
 
 class Controller;
 
-class Player final : public MovingObject{
+class Player final : public MovingObject {
 public:
-	Player(int player_id);
 	~Player() override;
 
 private:
 	Player(const Player&) = delete;
 	Player& operator=(const Player&) = delete;
+
+public:
+	Player(int player_id);
+	Player(int player_id, uint32_t weapon_id);
 
 private:
 	int m_id;
@@ -23,6 +27,7 @@ private:
 	Direction m_direction;
 	Physic m_physic;
 	SpritePtr m_sprite;
+	Weapon* m_weapon;
 
 public:
 	virtual void update(float dt_sec) override;

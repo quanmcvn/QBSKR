@@ -12,6 +12,7 @@ Room::Room() :
 
 Room::~Room()
 {
+	deactivate();
 	clear_objects();
 }
 
@@ -33,6 +34,16 @@ void Room::draw(DrawingContext& drawing_context)
 	m_collision_system->draw_debug(drawing_context);
 
 	drawing_context.pop_transform();
+}
+
+void Room::activate()
+{
+	s_current = this;
+}
+
+void Room::deactivate()
+{
+	s_current = nullptr;
 }
 
 bool Room::before_object_add(GameObject& object)

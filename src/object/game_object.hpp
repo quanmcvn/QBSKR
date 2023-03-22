@@ -3,6 +3,8 @@
 
 #include "util/uid.hpp"
 
+#include <string>
+
 class DrawingContext;
 
 class GameObject {
@@ -33,6 +35,12 @@ public:
 	virtual void remove_me();
 
 	bool is_valid() const;
+
+	static std::string class_name();
+	virtual std::string get_class_name() const;
+
+	// if true then only one of this is allowed in a GameObjectManager
+	virtual bool is_singleton() const;
 
 private:
 	void set_uid(const UID& uid);

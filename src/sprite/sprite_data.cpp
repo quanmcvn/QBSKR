@@ -21,31 +21,38 @@ SpriteData::~SpriteData()
 	actions.clear();
 }
 
-SpriteData::SpriteData(CrappyReader& cr) :
+SpriteData::SpriteData(const std::string& filename) :
 	actions(),
-	name()
+	name(filename)
 {
-	name = cr.get_dir();
+
+	CrappyReader cr(filename);
 
 	const std::string parent_path = std::filesystem::path(cr.get_dir()).parent_path().string() + '/';
 
-	const CrappyReaderData* root = cr.get_root();
-	
-	// ugly hardcode
-	while (cr.parse("action")) {}
+	while (cr.parse("sprite")) {}
 
-	for (const auto& child : root->m_childs) {
-		parse_action(child, parent_path);
+	CrappyReaderData* crd = cr.get_root()->get_child("sprite");
+
+	if (!crd) {
+		std::ostringstream msg;
+		msg << "File '" << name << "' is not sprite file";
+		throw std::runtime_error(msg.str());
 	}
-	
+
+	for (const auto& child : crd->m_childs) {
+		if (child->m_data == "action") parse_action(child, parent_path);
+	}
 }
 
-void SpriteData::parse_action(CrappyReaderData* crd, const std::string& parent_path)
+void SpriteData::parse_action(const CrappyReaderData* crd, const std::string& parent_path)
 {
 	auto action = std::make_unique<Action>();
 
 	if (!crd->get("name", action->name)) {
-		throw std::runtime_error("Action should have name!");
+		if (static_cast<int>(actions.size()) >= 1) {
+			throw std::runtime_error("If there are more than 1 action, they should have name");
+		}
 	}
 
 	std::vector<float> hitbox;

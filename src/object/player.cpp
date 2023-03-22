@@ -1,8 +1,10 @@
 #include "object/player.hpp"
 
+#include "control/input_manager.hpp"
 #include "sprite/sprite_manager.hpp"
 #include "sprite/sprite.hpp"
-#include "control/input_manager.hpp"
+#include "qbskr/room.hpp"
+#include "weapon/weapon_set.hpp"
 
 namespace {
 	const float WALK_SPEED = 100.0f;
@@ -16,9 +18,25 @@ Player::Player(int player_id) :
 	m_controller(&(InputManager::current()->get_controller(m_id))),
 	m_direction(Direction::RIGHT),
 	m_physic(),
-	m_sprite(SpriteManager::current()->create("images/charactors/knight/knight_sprite.txt"))
+	m_sprite(SpriteManager::current()->create("images/charactors/knight/knight_sprite.txt")),
+	m_weapon()
 {
+	set_pos(Vector(17.0f, 17.0f));
 	m_collision_object.set_size(PLAYER_WIDTH, PLAYER_HEIGHT);
+}
+
+Player::Player(int player_id, uint32_t weapon_id) :
+	m_id(player_id),
+	m_controller(&(InputManager::current()->get_controller(m_id))),
+	m_direction(Direction::RIGHT),
+	m_physic(),
+	m_sprite(SpriteManager::current()->create("images/charactors/knight/knight_sprite.txt")),
+	m_weapon()
+{
+	set_pos(Vector(17.0f, 17.0f));
+	m_collision_object.set_size(PLAYER_WIDTH, PLAYER_HEIGHT);
+	// should be OK here even though I did a cast down hierachy
+	m_weapon = static_cast<Weapon*>(&Room::get().add_object(WeaponSet::current()->get_weapon(weapon_id).clone(this)));
 }
 
 Player::~Player()
@@ -29,6 +47,9 @@ void Player::update(float dt_sec)
 	handle_input();
 
 	m_collision_object.set_movement(m_physic.get_movement(dt_sec));
+	// this is not good, the weapon can move while the parent (player) can't
+	// will be fixed soonTM
+	if (m_weapon) m_weapon->set_movement(get_movement());
 }
 
 void Player::draw(DrawingContext& drawing_context)
@@ -75,6 +96,10 @@ void Player::set_id(int id) { m_id = id; m_controller = &(InputManager::current(
 void Player::handle_input()
 {
 	handle_movement_input();
+
+	if (m_controller->hold(Control::ATTACK)) {
+		if (m_weapon) m_weapon->attack(0.0f);
+	}
 }
 
 void Player::handle_movement_input()

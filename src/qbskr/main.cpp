@@ -25,6 +25,9 @@
 #include "video/surface.hpp"
 #include "video/sdl/sdl_video_system.hpp"
 #include "video/sdl/sdl_renderer.hpp"
+#include "weapon/weapon_set.hpp"
+#include "weapon/weapon.hpp"
+#include "weapon/shooting_weapon/projectile_set.hpp"
 
 SDLSubSystem::SDLSubSystem() 
 {
@@ -66,16 +69,20 @@ int Main::run([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
 	m_input_manager = std::make_unique<InputManager>(g_config->keyboard_config, g_config->mouse_button_config);
 	m_video_system = VideoSystem::create(VideoSystem::VIDEO_SDL);
 	m_sprite_manager = std::make_unique<SpriteManager>();
+	auto weapon_set = std::make_unique<WeaponSet>();
+	auto projectile_set = std::make_unique<ProjectileSet>();
 
 	auto tileset = TileSet::from_file("images/tiles/tiles-tileset.txt");
 
-	CrappyReader cr("images/level/level0/level0-tilemap.txt");
+	CrappyReader cr("levels/level0/level0-tilemap.txt");
 	while (cr.parse("tilemap")) {}
 
 	auto room = std::make_unique<Room>();
 
-	room->add<TileMap>(tileset.get(), cr.get_root()->get_child("tilemap"));
-	room->add<Player>(0);
+	room->activate();
+
+	Room::get().add<TileMap>(tileset.get(), cr.get_root()->get_child("tilemap"));
+	Room::get().add<Player>(0, 1);
 
 	const Uint32 ms_per_step = static_cast<Uint32>(1000.0f / LOGICAL_FPS);
 	const float seconds_per_step = static_cast<float>(ms_per_step) / 1000.0f;

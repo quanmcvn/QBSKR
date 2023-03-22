@@ -1,0 +1,8 @@
+sprite-start
+	action-start
+		hitbox 0 0 7 5
+		images-start
+			projectiles/bullet-0.png
+		images-end
+	action-end
+sprite-end

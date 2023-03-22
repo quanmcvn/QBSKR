@@ -1,11 +1,23 @@
 #include "sprite/sprite.hpp"
 
 #include "qbskr/globals.hpp"
+#include "sprite/sprite_ptr.hpp"
 #include "util/log.hpp"
 #include "video/drawing_context.hpp"
 #include "video/surface.hpp"
 
 Sprite::~Sprite()
+{}
+
+Sprite::Sprite(const Sprite& other) :
+	m_data(other.m_data),
+	m_frame_progress(other.m_frame_progress),
+	m_frame_index(other.m_frame_index),
+	m_last_ticks(other.m_last_ticks),
+	m_angle(0.0f),
+	m_alpha(1.0f),
+	m_color(1.0f, 1.0f, 1.0f, 1.0f),
+	m_action(other.m_action)
 {}
 
 Sprite::Sprite(SpriteData& newdata) :
@@ -18,6 +30,11 @@ Sprite::Sprite(SpriteData& newdata) :
 	m_color(),
 	m_action(m_data.actions.begin()->second.get())
 {}
+
+SpritePtr Sprite::clone() const
+{
+	return std::make_unique<Sprite>(*this);
+}
 
 void Sprite::draw(Canvas& canvas, const Vector& pos, int layer, Flip flip)
 {
@@ -46,10 +63,9 @@ void Sprite::update()
 
 	m_frame_progress += frame_inc;
 
-	while (m_frame_progress >= 1.0f) {
-		m_frame_progress -= 1.0f;
-		++ m_frame_index;
-	}
+	// cast to int is better than floor (I think)
+	m_frame_index += static_cast<int>(m_frame_progress);
+	m_frame_progress -= static_cast<int>(m_frame_progress);
 
 	m_frame_index %= get_frames();
 }
@@ -73,6 +89,9 @@ void Sprite::set_action(const std::string& name)
 int Sprite::get_frames() const { return static_cast<int>(m_action->surfaces.size()); }
 int Sprite::get_current_frame() const { return m_frame_index; }
 float Sprite::get_current_frame_progess() const { return m_frame_progress; }
+
+float Sprite::get_current_hitbox_width() const { return m_action->hitbox_w; }
+float Sprite::get_current_hitbox_height() const { return m_action->hitbox_h; }
 
 float Sprite::get_angle() const { return m_angle; }
 void Sprite::set_angle(float angle) { m_angle = angle; }

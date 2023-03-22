@@ -11,8 +11,12 @@ class Physic final {
 public:
 	Physic();
 
-	void set_velocity(float nvx, float nvy);
+private:
+	float vx, vy;
 
+public:
+	void set_velocity(float nvx, float nvy);
+	void set_velocity(const Vector& vector);
 	void set_velocity_x(float nvx);
 	void set_velocity_y(float nvy);
 
@@ -21,9 +25,6 @@ public:
 	float get_velocity_y() const;
 
 	Vector get_movement(float dt_sec); 
-
-private:
-	float vx, vy;
 };
 
 #endif

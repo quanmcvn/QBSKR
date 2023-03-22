@@ -40,6 +40,12 @@ public:
 
 	CollisionObject* get_collision_object();
 	const CollisionObject* get_collision_object() const;
+
+	static std::string class_name();
+	virtual std::string get_class_name() const override;
+
+protected:
+	void set_group(CollisionGroup collision_group);
 };
 
 #endif

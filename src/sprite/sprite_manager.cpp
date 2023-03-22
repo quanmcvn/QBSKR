@@ -34,8 +34,7 @@ SpritePtr SpriteManager::create(const std::string& name)
 
 SpriteData* SpriteManager::load(const std::string& filename)
 {
-	CrappyReader cr(filename);
-	auto data = std::make_unique<SpriteData>(cr);
+	auto data = std::make_unique<SpriteData>(filename);
 	sprites[filename] = std::move(data);
 
 	return sprites[filename].get();

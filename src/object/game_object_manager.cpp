@@ -96,7 +96,13 @@ void GameObjectManager::this_before_object_add(GameObject& object)
 		}
 	}
 
-	m_objects_by_uid[object.get_uid()] = &object;
+	{ // by UID
+		m_objects_by_uid[object.get_uid()] = &object;
+	}
+
+	{ // by type_index
+		m_objects_by_type_index[typeid(object)].push_back(&object);
+	}
 }
 
 void GameObjectManager::this_before_object_remove(GameObject& object)
@@ -107,5 +113,15 @@ void GameObjectManager::this_before_object_remove(GameObject& object)
 		}
 	}
 	
-	m_objects_by_uid.erase(object.get_uid());
+	{ // by UID
+		m_objects_by_uid.erase(object.get_uid());
+	}
+
+
+	{ // by type_index
+		auto& vec = m_objects_by_type_index[std::type_index(typeid(object))];
+		auto it = std::find(vec.begin(), vec.end(), &object);
+		assert(it != vec.end());
+		vec.erase(it);
+	}
 }

@@ -1,0 +1,15 @@
+weapon-set-start
+
+	weapon-start
+		id 1
+		weapon-class shooting-weapon
+		weapon-type pistol
+		weapon-specific-start
+			projectile-id 1
+			projectile-speed 500
+			projectiles-per-sec 3
+			sprite-filename shooting_weapons/piston-sprite.txt
+		weapon-specific-end
+	weapon-end
+
+weapon-set-end

@@ -15,3 +15,8 @@ void GameObject::remove_me() { m_schedule_for_remove = true; }
 bool GameObject::is_valid() const { return !m_schedule_for_remove; }
 
 void GameObject::set_uid(const UID& uid) { m_uid = uid; }
+
+std::string GameObject::class_name() { return "game-object"; }
+std::string GameObject::get_class_name() const { return class_name(); }
+
+bool GameObject::is_singleton() const { return false; }

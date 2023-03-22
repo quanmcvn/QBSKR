@@ -13,7 +13,7 @@ CollisionObject::CollisionObject(CollisionGroup group, CollisionListener& parent
 
 void CollisionObject::collision_solid(const CollisionHit& hit) { m_listener.collision_solid(hit); }
 
-HitResponse CollisionObject::collision(CollisionObject& other, const CollisionHit& hit)  { return m_listener.collision(dynamic_cast<GameObject&>(other), hit); }
+HitResponse CollisionObject::collision(CollisionObject& other, const CollisionHit& hit)  { return m_listener.collision(dynamic_cast<GameObject&>(other.m_listener), hit); }
 
 void CollisionObject::collision_tile(uint32_t tile_attributes) { m_listener.collision_tile(tile_attributes); }
 

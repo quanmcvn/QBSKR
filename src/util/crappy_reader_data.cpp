@@ -106,6 +106,11 @@ bool CrappyReaderData::get(const std::string& name, std::string& value) const
 		return true;                                                   \
 	}
 
+bool CrappyReaderData::get(const std::string& name, std::vector<int>& values) const
+{
+	GET_VALUES_MACRO(int)
+}
+
 bool CrappyReaderData::get(const std::string& name, std::vector<float>& values) const
 {
 	GET_VALUES_MACRO(float)

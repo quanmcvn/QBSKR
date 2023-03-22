@@ -47,6 +47,7 @@ CrappyReader::CrappyReader(const std::string& filename) :
 CrappyReader::~CrappyReader()
 {
 	m_data_holder.clear();
+	m_is.close();
 }
 
 void CrappyReader::clear()

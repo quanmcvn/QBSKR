@@ -28,7 +28,7 @@ void TileSetParser::parse()
 	}
 }
 
-void TileSetParser::parse_tile(CrappyReaderData* crd)
+void TileSetParser::parse_tile(const CrappyReaderData* crd)
 {
 	uint32_t id;
 	if (!crd->get("id", id)) {

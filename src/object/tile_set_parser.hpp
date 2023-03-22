@@ -21,7 +21,7 @@ public:
 
 public:
 	void parse();
-	void parse_tile(CrappyReaderData* crd);
+	void parse_tile(const CrappyReaderData* crd);
 };
 
 #endif

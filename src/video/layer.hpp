@@ -10,9 +10,11 @@ enum {
 	// normal object
 	LAYER_OBJECTS = 100,
 
-	//
+	LAYER_WEAPONS = 200,
 
-	LAYER_FOREGROUND = 300
+	LAYER_PROJECTILES = 300,
+
+	LAYER_FOREGROUND = 400
 };
 
 #endif

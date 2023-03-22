@@ -4,6 +4,7 @@
 #include <memory>
 #include <vector>
 #include <unordered_map>
+#include <typeindex>
 
 #include "object/game_object.hpp"
 #include "util/uid_generator.hpp"
@@ -26,6 +27,7 @@ private:
 	// container for newly create objects, will be added in flush_game_objects()
 	std::vector<std::unique_ptr<GameObject>> m_game_objects_new;
 	std::unordered_map<UID, GameObject*> m_objects_by_uid;
+	std::unordered_map<std::type_index, std::vector<GameObject*>> m_objects_by_type_index;
 
 	// fast access to solid tilemaps
 	std::vector<TileMap*> m_solid_tilemaps;
@@ -63,6 +65,27 @@ public:
 			assert(ptr != nullptr);
 			return ptr;
 		}
+	}
+
+	const std::vector<GameObject*>& get_objects_by_type_index(std::type_index type_idx) const
+	{
+		auto it = m_objects_by_type_index.find(type_idx);
+		if (it == m_objects_by_type_index.end()) {
+			// use a dummy return value to avoid making non-const
+			static std::vector<GameObject*> dummy;
+			return dummy;
+		} else {
+			return it->second;
+		}
+	}
+
+	template<class T>
+	T& get_singleton_by_type() const
+	{
+		const auto& range = get_objects_by_type_index(typeid(T));
+		assert(range.begin() != range.end());
+		assert((*range.begin())->is_singleton());
+		return **range.begin();
 	}
 
 	// a hook that is called to decide "should i really add this?"

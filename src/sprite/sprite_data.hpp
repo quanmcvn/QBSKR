@@ -13,7 +13,7 @@ class CrappyReaderData;
 class SpriteData final {
 public:
 	~SpriteData();
-	SpriteData(CrappyReader& cr);
+	SpriteData(const std::string& filename);
 
 private:
 	friend class Sprite;
@@ -40,7 +40,7 @@ private:
 	std::string name;
 
 public:
-	void parse_action(CrappyReaderData* crd, const std::string& parent_path);
+	void parse_action(const CrappyReaderData* crd, const std::string& parent_path);
 	const Action* get_action(const std::string& name) const;
 };
 

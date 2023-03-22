@@ -17,11 +17,12 @@ public:
 	TileSet();
 	~TileSet();
 
-	void add_tile(uint32_t id, std::unique_ptr<Tile> tile);
-	const Tile& get(const uint32_t id) const;
-
 private:
 	std::vector<std::unique_ptr<Tile>> m_tiles;
+
+public:
+	void add_tile(uint32_t id, std::unique_ptr<Tile> tile);
+	const Tile& get(const uint32_t id) const;
 };
 
 #endif

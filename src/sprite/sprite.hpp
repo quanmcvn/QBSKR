@@ -2,6 +2,7 @@
 #define HEADER_QBSKR_SPRITE_SPRITE_HPP
 
 #include "sprite/sprite_data.hpp"
+#include "sprite/sprite_ptr.hpp"
 #include "video/canvas.hpp"
 #include "video/color.hpp"
 #include "video/drawing_context.hpp"
@@ -10,14 +11,18 @@ class Sprite final {
 public:
 	~Sprite();
 
-private:
-	// Sprite(const Sprite& other);
-	Sprite& operator=(const Sprite&) = delete;
+public:
+	Sprite(const Sprite& other);
 
 public:
 	Sprite(SpriteData& data);
 
+private:
+	Sprite& operator=(const Sprite&) = delete;
+
 public:
+	SpritePtr clone() const;
+
 	// update and draw sprite
 	void draw(Canvas& canvas, const Vector& pos, int layer, Flip flip = NO_FLIP);
 
@@ -31,6 +36,9 @@ public:
 	int get_current_frame() const;
 
 	float get_current_frame_progess() const;
+
+	float get_current_hitbox_width() const;
+	float get_current_hitbox_height() const;
 
 	float get_angle() const;
 	void set_angle(float angle);

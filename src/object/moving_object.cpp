@@ -24,3 +24,8 @@ CollisionGroup MovingObject::get_group() const { return m_collision_object.get_g
 
 CollisionObject* MovingObject::get_collision_object() { return &m_collision_object; }
 const CollisionObject* MovingObject::get_collision_object() const { return &m_collision_object; }
+
+std::string MovingObject::class_name() { return "moving-object"; }
+std::string MovingObject::get_class_name() const { return class_name(); }
+
+void MovingObject::set_group(CollisionGroup collision_group) { m_collision_object.m_group = collision_group; }

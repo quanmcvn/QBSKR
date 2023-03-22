@@ -8,7 +8,7 @@
 class CollisionListener;
 class GameObject;
 
-class CollisionObject {
+class CollisionObject final {
 	friend class CollisionSystem;
 
 private:
@@ -36,13 +36,13 @@ public:
 	CollisionObject(CollisionGroup group, CollisionListener& parent);
 
 	// called when collided with something solid
-	virtual void collision_solid(const CollisionHit& hit);
+	void collision_solid(const CollisionHit& hit);
 
 	// called when collided with any other object
-	virtual HitResponse collision(CollisionObject& other, const CollisionHit& hit);
+	HitResponse collision(CollisionObject& other, const CollisionHit& hit);
 
 	// called when collided with tiles with special attributes
-	virtual void collision_tile(uint32_t tile_attributes);
+	void collision_tile(uint32_t tile_attributes);
 
 	Rectf get_bounding_box() const;
 
