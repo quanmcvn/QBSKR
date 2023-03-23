@@ -98,7 +98,7 @@ void Player::handle_input()
 
 	if (m_weapon) {
 		Vector mouse_pos = VideoSystem::current()->get_viewport().to_logical(m_controller->get_mouse_pos().x, m_controller->get_mouse_pos().y);
-		Vector line_player_mouse_pos = mouse_pos - get_pos();
+		Vector line_player_mouse_pos = mouse_pos - get_bounding_box().get_middle();
 
 		float angle = math::radian_to_degree(std::atan2(line_player_mouse_pos.y, line_player_mouse_pos.x));
 		m_weapon->set_angle(angle);

@@ -6,6 +6,8 @@
 #include "object/player.hpp"
 #include "util/crappy_reader_data.hpp"
 #include "weapon/hurt.hpp"
+#include "weapon/shooting_weapon/projectile_set.hpp"
+#include "weapon/shooting_weapon/projectile.hpp"
 
 Pistol::Pistol(MovingObject* parent, const std::string& sprite_name) :
 	ShootingWeapon(parent, sprite_name),
@@ -62,12 +64,7 @@ bool Pistol::check_timer() { return m_timer.check(); }
 Vector Pistol::get_projectile_spawn_pos() const
 {
 	Vector to_rotate = m_projectile_spawn_pos;
-	// since flipping (the sprite) has some undesired result
-	// flip y to counter that
-	if (get_flip() & VERTICAL_FLIP) {
-		to_rotate.y = -to_rotate.y;
-	}
-	return get_bounding_box().get_middle() + math::rotate(to_rotate, get_angle());
+	return get_bounding_box().get_middle() - ProjectileSet::current()->get(get_projectile_id()).get_bounding_box().get_middle() + math::rotate(to_rotate, get_angle());
 }
 
 uint32_t Pistol::get_hurt_attributes() const { return m_hurt_attributes; }

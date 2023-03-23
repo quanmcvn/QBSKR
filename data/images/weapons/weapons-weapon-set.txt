@@ -6,11 +6,11 @@ weapon-set-start
 		weapon-type pistol
 		weapon-specific-start
 			projectile-id 1
-			projectile-speed 500
-			projectiles-per-sec 3
+			projectile-speed 1000
+			projectiles-per-sec 1000
 			projectile-spawn-pos-start
 				x 0
-				y -3
+				y 0
 			projectile-spawn-pos-end
 			sprite-filename shooting_weapons/piston-sprite.txt
 		weapon-specific-end

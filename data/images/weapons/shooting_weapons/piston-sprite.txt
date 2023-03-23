@@ -3,7 +3,7 @@ sprite-start
 	action-start
 		name normal
 		fps 1
-		hitbox -2 0 13 9
+		hitbox 0 0 13 9
 		images-start
 			piston-0.png
 		images-end
