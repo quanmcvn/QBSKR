@@ -1,7 +1,9 @@
 #include "math/vector.hpp"
 
-#include <math.h>
+#include <cmath>
 #include <iostream>
+
+#include "math/util.hpp"
 
 Vector::Vector() :
 	x(0), 
@@ -45,13 +47,19 @@ std::ostream& operator<<(std::ostream& os, const Vector& other)
 namespace math {
 	float length(const Vector& vector)
 	{
-		return sqrt(vector.x * vector.x + vector.y * vector.y);
+		return hypot(vector.x, vector.y);
 	}
 
 	Vector normalize(const Vector& vector)
 	{
 		if (length(vector) == 0) return Vector(0.0f, 0.0f);
 		return vector / math::length(vector);
+	}
+
+	Vector rotate(const Vector& vector, float angle)
+	{
+		return Vector(vector.x * cos_degree(angle) - vector.y * sin_degree(angle), 
+		              vector.x * sin_degree(angle) + vector.y * cos_degree(angle));
 	}
 
 	float dot(const Vector& lhs, const Vector& rhs)
@@ -61,6 +69,6 @@ namespace math {
 
 	float distance(const Vector& lhs, const Vector& rhs)
 	{
-		return sqrt((rhs.x - lhs.x) * (rhs.x - lhs.x) + (rhs.y - lhs.y) * (rhs.y - lhs.y));
+		return std::hypotf(rhs.x - lhs.x, rhs.y - lhs.y);
 	}
 } // namespace math

@@ -16,6 +16,8 @@ public:
 
 	float magnification;
 
+	bool debug;
+
 	KeyboardConfig keyboard_config;
 	MouseButtonConfig mouse_button_config;
 

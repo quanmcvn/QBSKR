@@ -8,6 +8,7 @@
 Config::Config() :
 	window_size(640, 480),
 	magnification(1.0f),
+	debug(false),
 	keyboard_config(),
 	mouse_button_config()
 {}
@@ -40,5 +41,10 @@ Config::Config(const std::string& filename) :
 	if (!crd->get("magnification", magnification)) {
 		log_warning << "Cound't found magnification in config, now using default: "
 		            << magnification << std::endl;
+	}
+
+	if (!crd->get("debug", debug)) {
+		log_warning << "Cound't found debug in config, now using default: "
+		            << debug << std::endl;
 	}
 }

@@ -22,18 +22,6 @@ MovingSprite::MovingSprite(const Vector& pos, const std::string& sprite_name,
 	set_group(collision_group);
 }
 
-MovingSprite::MovingSprite(const Vector& pos, const SpritePtr& sprite,
-	                         int layer, CollisionGroup collision_group) :
-	m_sprite_name(""),
-	m_sprite(sprite->clone()),
-	m_layer(layer),
-	m_flip(NO_FLIP)
-{
-	m_collision_object.set_pos(pos);
-	m_collision_object.m_bounding_box.set_size(m_sprite->get_current_hitbox_width(), m_sprite->get_current_hitbox_height());
-	set_group(collision_group);
-}
-
 MovingSprite::MovingSprite(const Vector& pos, const Sprite* sprite,
 	                         int layer, CollisionGroup collision_group) :
 	m_sprite_name(""),
@@ -67,3 +55,6 @@ void MovingSprite::set_action(const std::string& action)
 
 float MovingSprite::get_angle() const { return m_sprite->get_angle(); }
 void MovingSprite::set_angle(float angle) { m_sprite->set_angle(angle); }
+
+Flip MovingSprite::get_flip() const { return m_flip; }
+void MovingSprite::set_flip(Flip flip) { m_flip = flip; }

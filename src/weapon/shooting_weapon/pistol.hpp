@@ -16,16 +16,11 @@ private:
 	uint32_t m_projectile_id;
 	float m_projectile_speed;
 	Timer m_timer;
+	Vector m_projectile_spawn_pos;
 
 public:
-	Pistol(MovingObject* parent, const std::string& sprite_name,
-	       uint32_t projectile_id, float projectile_speed, float projectiles_per_sec);
-
-	Pistol(MovingObject* parent, const SpritePtr& sprite,
-	       uint32_t projectile_id, float projectile_speed, float projectiles_per_sec);
-
-	Pistol(MovingObject* parent, const Sprite* sprite,
-	       uint32_t projectile_id, float projectile_speed, float projectiles_per_sec);
+	Pistol(MovingObject* parent, const std::string& sprite_name);
+	Pistol(MovingObject* parent, const Sprite* sprite);
 
 public:
 	static std::unique_ptr<Pistol> from_reader(const CrappyReaderData* crd, const std::string& parent_path);
@@ -34,6 +29,7 @@ public:
 	static std::string class_name();
 	virtual std::string get_class_name() const;
 	virtual bool check_timer() override;
+	virtual Vector get_projectile_spawn_pos() const override;
 	virtual uint32_t get_hurt_attributes() const override;
 	virtual uint32_t get_projectile_id() const override;
 	virtual float get_projectile_speed() const override;

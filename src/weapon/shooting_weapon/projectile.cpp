@@ -19,15 +19,7 @@ Projectile::Projectile(const Vector& pos, const std::string& sprite_name, uint32
 	m_hurt_attributes(hurt_attributes)
 {
 	set_angle(angle);
-	m_physic.set_velocity(Vector(math::cos_degree(angle), -math::sin_degree(angle)) * speed);
-}
-
-Projectile::Projectile(const Vector& pos, const SpritePtr& sprite, uint32_t hurt_attributes, float speed, float angle) :
-	MovingSprite(pos, sprite, LAYER_PROJECTILES),
-	m_hurt_attributes(hurt_attributes)
-{
-	set_angle(angle);
-	m_physic.set_velocity(Vector(math::cos_degree(angle), -math::sin_degree(angle)) * speed);
+	m_physic.set_velocity(Vector(math::cos_degree(angle), math::sin_degree(angle)) * speed);
 }
 
 Projectile::Projectile(const Vector& pos, const Sprite* sprite, uint32_t hurt_attributes, float speed, float angle) :
@@ -35,7 +27,7 @@ Projectile::Projectile(const Vector& pos, const Sprite* sprite, uint32_t hurt_at
 	m_hurt_attributes(hurt_attributes)
 {
 	set_angle(angle);
-	m_physic.set_velocity(Vector(math::cos_degree(angle), -math::sin_degree(angle)) * speed);
+	m_physic.set_velocity(Vector(math::cos_degree(angle), math::sin_degree(angle)) * speed);
 }
 
 std::unique_ptr<Projectile> Projectile::clone(const Vector& pos, uint32_t hurt_attributes, float speed, float angle) const

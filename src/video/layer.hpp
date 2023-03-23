@@ -7,12 +7,15 @@ enum {
 	LAYER_BACKGROUND = -100,
 	// solid tilemaps
 	LAYER_TILES = 0,
-	// normal object
-	LAYER_OBJECTS = 100,
 
-	LAYER_WEAPONS = 200,
+	// projectiles
+	LAYER_PROJECTILES = 100,
 
-	LAYER_PROJECTILES = 300,
+	// normal objects
+	LAYER_OBJECTS = 200,
+
+	// weapons
+	LAYER_WEAPONS = 300,
 
 	LAYER_FOREGROUND = 400
 };

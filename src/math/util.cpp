@@ -4,6 +4,7 @@ constexpr float PI = 3.14159265358979323846f;
 
 namespace math {
 	float degree_to_radian(float x) { return (x / 180.0f) * PI; }
+	float radian_to_degree(float x) { return (x / PI) * 180.0f; }
 
 	// https://stackoverflow.com/a/31525208 for more information
 	// although using float instead of double defeat the purpose -.-

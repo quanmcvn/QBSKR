@@ -25,7 +25,6 @@ private:
 public:
 	Projectile(const std::string& sprite_name, uint32_t hurt_attributes);
 	Projectile(const Vector& pos, const std::string& sprite_name, uint32_t hurt_attributes, float speed, float angle);
-	Projectile(const Vector& pos, const SpritePtr& sprite, uint32_t hurt_attributes, float speed, float angle);
 	Projectile(const Vector& pos, const Sprite* sprite, uint32_t hurt_attributes, float speed, float angle);
 
 public:

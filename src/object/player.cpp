@@ -4,6 +4,8 @@
 #include "sprite/sprite_manager.hpp"
 #include "sprite/sprite.hpp"
 #include "qbskr/room.hpp"
+#include "math/util.hpp"
+#include "video/video_system.hpp"
 #include "weapon/weapon_set.hpp"
 
 namespace {
@@ -47,9 +49,6 @@ void Player::update(float dt_sec)
 	handle_input();
 
 	m_collision_object.set_movement(m_physic.get_movement(dt_sec));
-	// this is not good, the weapon can move while the parent (player) can't
-	// will be fixed soonTM
-	if (m_weapon) m_weapon->set_movement(get_movement());
 }
 
 void Player::draw(DrawingContext& drawing_context)
@@ -97,8 +96,22 @@ void Player::handle_input()
 {
 	handle_movement_input();
 
-	if (m_controller->hold(Control::ATTACK)) {
-		if (m_weapon) m_weapon->attack(0.0f);
+	if (m_weapon) {
+		Vector mouse_pos = VideoSystem::current()->get_viewport().to_logical(m_controller->get_mouse_pos().x, m_controller->get_mouse_pos().y);
+		Vector line_player_mouse_pos = mouse_pos - get_pos();
+
+		float angle = math::radian_to_degree(std::atan2(line_player_mouse_pos.y, line_player_mouse_pos.x));
+		m_weapon->set_angle(angle);
+		
+		if (std::abs(angle) >= 90.0f) {
+			m_weapon->set_flip(VERTICAL_FLIP);
+		} else {
+			m_weapon->set_flip(NO_FLIP);
+		}
+
+		if (m_controller->hold(Control::ATTACK)) {
+			m_weapon->attack();
+		}
 	}
 }
 

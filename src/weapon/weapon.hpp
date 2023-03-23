@@ -18,12 +18,12 @@ protected:
 
 public:
 	Weapon(MovingObject* parent, const std::string& sprite_name);
-	Weapon(MovingObject* parent, const SpritePtr& sprite);
 	Weapon(MovingObject* parent, const Sprite* sprite);
 
 public:
 	virtual void update(float dt_sec) override;
-	virtual void attack(float angle) = 0;
+	virtual void draw(DrawingContext& drawing_context) override;
+	virtual void attack() = 0;
 	virtual uint32_t get_hurt_attributes() const = 0;
 	virtual void recalculate_hurt_attributes() = 0;
 	virtual std::unique_ptr<Weapon> clone(MovingObject* parent) const = 0;

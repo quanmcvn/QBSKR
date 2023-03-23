@@ -27,11 +27,6 @@ protected:
 public:
 	MovingSprite(const Vector& pos, const std::string& sprite_name, 
 	             int layer = LAYER_OBJECTS, CollisionGroup collision_group = COLLISION_GROUP_MOVING);
-
-	// this version is not ok
-	// idk why though
-	MovingSprite(const Vector& pos, const SpritePtr& sprite,
-	             int layer = LAYER_OBJECTS, CollisionGroup collision_group = COLLISION_GROUP_MOVING);
 	MovingSprite(const Vector& pos, const Sprite* sprite,
 	             int layer = LAYER_OBJECTS, CollisionGroup collision_group = COLLISION_GROUP_MOVING);
 
@@ -41,11 +36,13 @@ public:
 	static std::string class_name();
 	virtual std::string get_class_name() const override;
 	virtual int get_layer() const override;
+	float get_angle() const;
+	void set_angle(float angle);
+	Flip get_flip() const;
+	void set_flip(Flip flip);
 
 protected:
 	void set_action(const std::string& action);
-	float get_angle() const;
-	void set_angle(float angle);
 };
 
 #endif

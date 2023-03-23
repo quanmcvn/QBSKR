@@ -8,17 +8,13 @@ ShootingWeapon::ShootingWeapon(MovingObject* parent, const std::string& sprite_n
 	Weapon(parent, sprite_name)
 {}
 
-ShootingWeapon::ShootingWeapon(MovingObject* parent, const SpritePtr& sprite) :
-	Weapon(parent, sprite)
-{}
-
 ShootingWeapon::ShootingWeapon(MovingObject* parent, const Sprite* sprite) :
 	Weapon(parent, sprite)
 {}
 
-void ShootingWeapon::attack(float angle)
+void ShootingWeapon::attack()
 {
-	if (check_timer()) shoot_projectile(get_projectile_speed(), angle);
+	if (check_timer()) shoot_projectile(get_projectile_speed(), get_angle());
 }
 
 void ShootingWeapon::shoot_projectile(float speed, float angle) const
@@ -26,5 +22,5 @@ void ShootingWeapon::shoot_projectile(float speed, float angle) const
 	// wtf is this
 	// peak bad design
 	const Projectile& projectile = ProjectileSet::current()->get(get_projectile_id());
-	Room::get().add_object(projectile.clone(get_pos(), get_hurt_attributes(), speed, angle));
+	Room::get().add_object(projectile.clone(get_projectile_spawn_pos(), get_hurt_attributes(), speed, angle));
 }

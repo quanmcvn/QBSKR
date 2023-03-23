@@ -35,6 +35,7 @@ namespace math {
 
 	float length(const Vector& vector);
 	Vector normalize(const Vector& vector);
+	Vector rotate(const Vector& vector, float angle);
 	float dot(const Vector& lhs, const Vector& rhs);
 	float distance(const Vector& lhs, const Vector& rhs);
 

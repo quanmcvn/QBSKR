@@ -57,7 +57,7 @@ void SDLPainter::draw_texture(const TextureRequest& request)
 
 		SDL_RenderCopyEx(m_sdl_renderer, texture.get_texture(), 
 		                 &src_rect, &dst_rect,
-		                 0.0f, nullptr, flip); 
+		                 request.angles[i], nullptr, flip); 
 	}
 }
 

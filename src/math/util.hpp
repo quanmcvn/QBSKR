@@ -5,6 +5,7 @@
 
 namespace math {
 	float degree_to_radian(float x);
+	float radian_to_degree(float x);
 	float sin_degree(float x);
 	float cos_degree(float x);
 } // namespace math

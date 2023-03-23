@@ -1,8 +1,10 @@
 #include "qbskr/room.hpp"
 
-#include "video/drawing_context.hpp"
 #include "collision/collision_system.hpp"
 #include "object/moving_object.hpp"
+#include "qbskr/gameconfig.hpp"
+#include "qbskr/globals.hpp"
+#include "video/drawing_context.hpp"
 
 Room* Room::s_current = nullptr;
 
@@ -31,7 +33,8 @@ void Room::draw(DrawingContext& drawing_context)
 	drawing_context.push_transform();
 
 	GameObjectManager::draw(drawing_context);
-	m_collision_system->draw_debug(drawing_context);
+	
+	if (g_config->debug) m_collision_system->draw_debug(drawing_context);
 
 	drawing_context.pop_transform();
 }
