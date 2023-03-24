@@ -27,4 +27,6 @@ void Tile::draw(Canvas& canvas, const Vector& pos, int layer) const
 	}
 }
 
+uint32_t Tile::get_attributes() const { return m_attributes; }
+
 bool Tile::is_solid() const { return (m_attributes & SOLID); }

@@ -31,6 +31,8 @@ public:
 	void update();
 	void draw_debug(DrawingContext& drawing_context);
 
+	bool is_free_of_tiles(const Rectf& rect, uint32_t tiletype = Tile::SOLID) const;
+
 private:
 	void collision_static_constraints(collision::Constraints* constraints, const Vector& movement, const Rectf& dest, CollisionObject& object) const;
 	void collision_tilemap_constraints(collision::Constraints* constraints, const Vector& movement, const Rectf& dest, CollisionObject& object) const;
@@ -41,7 +43,6 @@ private:
 	void collision_static_tilemap_object(CollisionObject& object) const;
 
 	void collision_object(CollisionObject& object1, CollisionObject& object2) const;
-
 };
 
 #endif

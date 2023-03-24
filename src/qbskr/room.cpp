@@ -49,6 +49,11 @@ void Room::deactivate()
 	s_current = nullptr;
 }
 
+bool Room::is_free_of_tiles(const Rectf& rect, uint32_t tiletype) const
+{
+	return m_collision_system->is_free_of_tiles(rect, tiletype);
+}
+
 bool Room::before_object_add(GameObject& object)
 {
 	if (auto moving_object = dynamic_cast<MovingObject*>(&object)) {

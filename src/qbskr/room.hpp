@@ -2,8 +2,10 @@
 #define HEADER_QBSKR_QBSKR_ROOM_HPP
 
 #include "object/game_object_manager.hpp"
+#include "object/tile.hpp"
 
 class CollisionSystem;
+class Rectf;
 
 class Room final : public GameObjectManager {
 public:
@@ -33,6 +35,9 @@ public:
 	void activate();
 	void deactivate();
 
+	bool is_free_of_tiles(const Rectf& rect, uint32_t tiletype = Tile::SOLID) const;
+
+public:
 	virtual bool before_object_add(GameObject& object) override;
 	virtual void before_object_remove(GameObject& object) override;
 };

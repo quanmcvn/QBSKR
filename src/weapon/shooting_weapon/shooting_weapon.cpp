@@ -22,5 +22,7 @@ void ShootingWeapon::shoot_projectile(float angle) const
 	// wtf is this
 	// peak bad design
 	const Projectile& projectile = ProjectileSet::current()->get(get_projectile_id());
-	Room::get().add_object(projectile.clone(get_projectile_spawn_pos(), get_hurt_attributes(), angle));
+	if (Room::get().is_free_of_tiles(Rectf(get_projectile_spawn_pos(), projectile.get_bounding_box().get_size()))) {
+		Room::get().add_object(projectile.clone(get_projectile_spawn_pos(), get_hurt_attributes(), angle));
+	}
 }

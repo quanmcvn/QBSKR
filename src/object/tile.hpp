@@ -43,6 +43,8 @@ public:
 
 	void draw(Canvas& canvas, const Vector& pos, int layer) const;
 
+	uint32_t get_attributes() const;
+
 	bool is_solid() const;
 };
 

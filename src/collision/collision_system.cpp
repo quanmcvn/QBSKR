@@ -190,6 +190,25 @@ void CollisionSystem::draw_debug(DrawingContext& drawing_context)
 	}
 }
 
+bool CollisionSystem::is_free_of_tiles(const Rectf& rect, uint32_t tiletype) const
+{
+	for (const auto& solids : m_room.get_solid_tilemaps()) {
+		const Rect test_tiles = solids->get_tiles_overlap(rect);
+
+		for (int x = test_tiles.left; x < test_tiles.right; ++ x) {
+			for (int y = test_tiles.top; y < test_tiles.bottom; ++ y) {
+				const Tile& tile = solids->get_tile(x, y);
+
+				if (!(tile.get_attributes() & tiletype)) continue;
+
+				return false;
+			}
+		}
+	}
+
+	return true;
+}
+
 void CollisionSystem::collision_static_constraints(collision::Constraints* /* constraints */, const Vector& /* movement */, const Rectf& /* dest */, CollisionObject& /* object */) const
 {
 	// NYI
