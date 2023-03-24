@@ -1,5 +1,5 @@
 gameconfig-start
-	window-size 640 480
-	magnification 1.75
+	window-size 672 480
+	magnification 2
 	debug 0
 gameconfig-end

@@ -7,22 +7,34 @@
 #include <sstream>
 
 namespace {
-	std::string getline(std::ifstream& is)
+	bool check_start(const std::string& s, const std::string& pat)
 	{
-		std::string temp;
-		std::getline(is, temp);
-		// remove tab from string so that I can tab to format
-		temp.erase(std::remove(temp.begin(), temp.end(), '\t'), temp.end());
-		return temp;
+		if (s.size() < pat.size()) return false;
+		return s.compare(0, pat.size(), pat) == 0;
 	}
 
 	std::optional<std::string> check_end(const std::string& s, const std::string& pat)
 	{
 		if (s.size() < pat.size()) return std::nullopt;
-		if (s.substr(s.size() - pat.size()) == pat) {
+		if (s.compare(s.size() - pat.size(), pat.size(), pat) == 0) {
 			return s.substr(0, s.size() - pat.size());
 		}
 		return std::nullopt;
+	}
+
+	std::string getline(std::ifstream& is)
+	{
+		while (!is.eof()) {
+			std::string temp;
+			std::getline(is, temp);
+			// remove tab from string so that I can tab to format
+			temp.erase(std::remove(temp.begin(), temp.end(), '\t'), temp.end());
+			// comment start with "--", after removing tab
+			// note that this is designed to have comment exclusivly start with "--", not everywhere in string
+			if (check_start(temp, "--")) continue;
+			return temp;
+		}
+		return "";
 	}
 }
 
@@ -77,8 +89,8 @@ std::string CrappyReader::get_dir() const
 
 void CrappyReader::dfs_parse(CrappyReaderData* node, const std::string& desired)
 {
-	std::string line = getline(m_is);
-	while (!m_is.eof()) {
+	for (std::string line = getline(m_is); !m_is.eof(); line = getline(m_is)) {
+		if (line.empty()) continue;
 		if (line == desired) break;
 		std::optional<std::string> start_name = check_end(line, "-start");
 		if (start_name.has_value()) {
@@ -94,7 +106,6 @@ void CrappyReader::dfs_parse(CrappyReaderData* node, const std::string& desired)
 				node->m_childs.back()->m_childs.push_back(get_new_node(token));
 			}
 		}
-		line = getline(m_is);
 	}
 }
 
