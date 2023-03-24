@@ -62,9 +62,10 @@ OBJ_FILES = src/main.o                                                  \
             src/video/texture.o                                         \
             src/video/video_system.o                                    \
             src/video/viewport.o                                        \
-            src/weapon/shooting_weapon/pistol.o                         \
-            src/weapon/shooting_weapon/projectile_set.o                 \
-            src/weapon/shooting_weapon/projectile.o                     \
+            src/weapon/shooting_weapon/projectile/generic_projectile.o  \
+            src/weapon/shooting_weapon/projectile/projectile_set.o      \
+            src/weapon/shooting_weapon/projectile/projectile.o          \
+            src/weapon/shooting_weapon/generic_shooting_weapon.o        \
             src/weapon/shooting_weapon/shooting_weapon.o                \
             src/weapon/weapon_set.o                                     \
             src/weapon/weapon.o                                         \
@@ -116,6 +117,7 @@ $(OBJS): | $(OBJDIR)
 ### also idk why it can execute shell/bash (idk what it is even more)
 ### anyway...
 clean:
+	rm ./bin/src/*/*/*/*.o
 	rm ./bin/src/*/*/*.o
 	rm ./bin/src/*/*.o
 	rm ./bin/src/*.o

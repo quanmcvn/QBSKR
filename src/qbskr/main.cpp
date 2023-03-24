@@ -27,7 +27,7 @@
 #include "video/sdl/sdl_renderer.hpp"
 #include "weapon/weapon_set.hpp"
 #include "weapon/weapon.hpp"
-#include "weapon/shooting_weapon/projectile_set.hpp"
+#include "weapon/shooting_weapon/projectile/projectile_set.hpp"
 
 SDLSubSystem::SDLSubSystem() 
 {

@@ -1,5 +1,5 @@
-#ifndef HEADER_QBSKR_WEAPON_SHOOTING_WEAPON_PROJECTILE_HPP
-#define HEADER_QBSKR_WEAPON_SHOOTING_WEAPON_PROJECTILE_HPP
+#ifndef HEADER_QBSKR_WEAPON_SHOOTING_WEAPON_PROJECTILE_PROJECTILE_HPP
+#define HEADER_QBSKR_WEAPON_SHOOTING_WEAPON_PROJECTILE_PROJECTILE_HPP
 
 #include "object/moving_sprite.hpp"
 #include "object/physic.hpp"
@@ -8,28 +8,23 @@ class DrawingContext;
 
 /**
  * Base class for Projectile
- * Can be inherted to expand but now I'm lazy
 */
 class Projectile : public MovingSprite {
-public:
-	Projectile();
-
 private:
-	Projectile(const Projectile&);
+	Projectile(const Projectile&) = delete;
 	Projectile& operator=(const Projectile&) = delete;
 
 private:
 	uint32_t m_hurt_attributes;
+
+protected:
 	Physic m_physic;
 
 public:
-	Projectile(const std::string& sprite_name, uint32_t hurt_attributes);
-	Projectile(const Vector& pos, const std::string& sprite_name, uint32_t hurt_attributes, float speed, float angle);
-	Projectile(const Vector& pos, const Sprite* sprite, uint32_t hurt_attributes, float speed, float angle);
+	Projectile(const std::string& sprite_name);
+	Projectile(const Sprite* sprite);
 
 public:
-	std::unique_ptr<Projectile> clone(const Vector& pos, uint32_t hurt_attributes, float speed, float angle) const;
-
 	virtual void update(float dt_sec) override;
 	static std::string class_name();
 	virtual std::string get_class_name() const override; 
@@ -39,6 +34,12 @@ public:
 	virtual HitResponse collision(GameObject& other, const CollisionHit& hit) override;
 	// the default implementation doesn't do anything
 	virtual void collision_tile(uint32_t tile_attributes) override;
+
+	virtual std::unique_ptr<Projectile> clone(const Vector& pos, uint32_t hurt_attributes, float angle) const = 0;
+
+public:
+	uint32_t get_hurt_attributes() const;
+	void set_hurt_attributes(uint32_t hurt_attributes);
 };
 
 #endif

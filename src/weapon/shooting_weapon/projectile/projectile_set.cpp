@@ -1,16 +1,16 @@
-#include "weapon/shooting_weapon/projectile_set.hpp"
+#include "weapon/shooting_weapon/projectile/projectile_set.hpp"
 
 #include <sstream>
 #include <filesystem>
 
-#include "sprite/sprite_manager.hpp"
 #include "util/crappy_reader.hpp"
 #include "util/log.hpp"
 #include "weapon/hurt.hpp"
-#include "weapon/shooting_weapon/projectile.hpp"
+#include "weapon/shooting_weapon/projectile/projectile.hpp"
+#include "weapon/shooting_weapon/projectile/generic_projectile.hpp"
 
 ProjectileSet::ProjectileSet() :
-	m_filename("images/weapons/shooting_weapons/projectiles-projectile-set.txt"),
+	m_filename("images/weapons/shooting_weapons/projectiles/projectiles-projectile-set.txt"),
 	m_projectiles(1)
 {
 	parse(m_filename);
@@ -59,12 +59,23 @@ void ProjectileSet::parse_projectile(const CrappyReaderData* crd, const std::str
 		throw std::runtime_error("Missing projectile id");
 	}
 
-	std::string sprite_filename;
-	if (!crd->get("sprite-filename", sprite_filename)) {
-		throw std::runtime_error("Missing projectile sprite-filename");
+	std::string projectile_type;
+	if (!crd->get("projectile-type", projectile_type)) {
+		throw std::runtime_error("Missing projectile-type in projectile");
 	}
 
-	auto projectile = std::make_unique<Projectile>(parent_path + sprite_filename, 0);
+	const CrappyReaderData* crd_projectile_specific = crd->get_child("projectile-specific");
+
+	if (!crd_projectile_specific) {
+		throw std::runtime_error("Missing projectile-specific in weapon");
+	}
+
+	std::unique_ptr<Projectile> projectile;
+	if (projectile_type == "generic-projectile") {
+		projectile = GenericProjectile::from_reader(crd_projectile_specific, parent_path);
+	} else {
+		throw std::runtime_error("doesn't exist / NYI");
+	}
 
 	add_projectile_sprite(id, std::move(projectile));
 }

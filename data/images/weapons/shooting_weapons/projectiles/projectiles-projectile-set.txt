@@ -1,0 +1,14 @@
+-- This (originally) looks like callback hell (js ref?) but it isn't :D
+
+projectile-set-start
+	projectile-start
+		id 1
+		projectile-name pistol
+		projectile-type generic-projectile
+		projectile-specific-start
+			speed 1000
+			bounce-wall-count 1
+			sprite-filename piston-bullet-sprite.txt
+		projectile-specific-end
+	projectile-end
+projectile-set-end

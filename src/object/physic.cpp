@@ -17,3 +17,6 @@ float Physic::get_velocity_y() const { return vy; }
 Vector Physic::get_movement(float dt_sec) {
 	return Vector(vx, vy) * dt_sec;
 }
+
+void Physic::inverse_velocity_x() { vx = -vx; }
+void Physic::inverse_velocity_y() { vy = -vy; }

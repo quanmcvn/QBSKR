@@ -7,9 +7,9 @@
 #include "video/drawing_context.hpp"
 
 namespace {
-	// abitrary choice of MAX_SPEED
+	// abitrary (but < 16) choice of MAX_SPEED (pixel/frame)
+	// has to cap speed since I don't have collision checking for fast object
 	const float MAX_SPEED = 8.0f;
-
 }
 
 CollisionSystem::CollisionSystem(Room& room) :

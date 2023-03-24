@@ -1,13 +1,15 @@
 #include "weapon/weapon.hpp"
 
-Weapon::Weapon(MovingObject* parent, const std::string& sprite_name) :
-	MovingSprite(parent ? parent->get_pos() : Vector(0.0f, 0.0f), sprite_name, LAYER_WEAPONS, COLLISION_GROUP_DISABLED),
-	m_parent(parent)
+Weapon::Weapon(const std::string& sprite_name) :
+	MovingSprite(Vector(0.0f, 0.0f), sprite_name, LAYER_WEAPONS, COLLISION_GROUP_DISABLED),
+	m_parent(),
+	m_hurt_attributes()
 {}
 
-Weapon::Weapon(MovingObject* parent, const Sprite* sprite) :
-	MovingSprite(parent ? parent->get_pos() : Vector(0.0f, 0.0f), sprite, LAYER_WEAPONS, COLLISION_GROUP_DISABLED),
-	m_parent(parent)
+Weapon::Weapon(const Sprite* sprite) :
+	MovingSprite(Vector(0.0f, 0.0f), sprite, LAYER_WEAPONS, COLLISION_GROUP_DISABLED),
+	m_parent(),
+	m_hurt_attributes()
 {}
 
 void Weapon::update(float /* dt_sec */)
@@ -28,3 +30,6 @@ void Weapon::change_parent(MovingObject* parent)
 	m_parent = parent;
 	recalculate_hurt_attributes();
 }
+
+uint32_t Weapon::get_hurt_attributes() const { return m_hurt_attributes; }
+void Weapon::set_hurt_attributes(uint32_t hurt_attributes) { m_hurt_attributes = hurt_attributes; }

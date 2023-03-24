@@ -34,8 +34,7 @@ MovingSprite::MovingSprite(const Vector& pos, const Sprite* sprite,
 	set_group(collision_group);
 }
 
-void MovingSprite::update(float /* dt_sec */)
-{}
+void MovingSprite::update(float /* dt_sec */) {}
 
 void MovingSprite::draw(DrawingContext& drawing_context)
 {

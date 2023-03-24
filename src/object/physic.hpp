@@ -24,7 +24,10 @@ public:
 	float get_velocity_x() const;
 	float get_velocity_y() const;
 
-	Vector get_movement(float dt_sec); 
+	Vector get_movement(float dt_sec);
+
+	void inverse_velocity_x();
+	void inverse_velocity_y();
 };
 
 #endif
