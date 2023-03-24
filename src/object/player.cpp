@@ -105,8 +105,10 @@ void Player::handle_input()
 		
 		if (std::abs(angle) >= 90.0f) {
 			m_weapon->set_flip(VERTICAL_FLIP);
+			m_direction = Direction::LEFT;
 		} else {
 			m_weapon->set_flip(NO_FLIP);
+			m_direction = Direction::RIGHT;
 		}
 
 		if (m_controller->hold(Control::ATTACK)) {

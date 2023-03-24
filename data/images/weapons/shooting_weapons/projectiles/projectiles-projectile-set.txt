@@ -7,7 +7,7 @@ projectile-set-start
 		projectile-type generic-projectile
 		projectile-specific-start
 			speed 1000
-			bounce-wall-count 1
+			bounce-wall-count 0
 			sprite-filename piston-bullet-sprite.txt
 		projectile-specific-end
 	projectile-end

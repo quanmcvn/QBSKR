@@ -1,5 +1,7 @@
 #include "collision/collision_system.hpp"
 
+#include <cmath>
+
 #include "collision/collision_object.hpp"
 #include "object/tile_map.hpp"
 #include "qbskr/constants.hpp"
@@ -120,6 +122,54 @@ namespace {
 			}
 		}
 	}
+
+	int sign(int x) { return (0 < x) - (x < 0); }
+
+	// use exclusive in following algorithm
+	struct VectorInt {
+		int x;
+		int y;
+		VectorInt() : x(0), y(0) {}
+		VectorInt(int x_, int y_) : x(x_), y(y_) {}
+		Vector operator*(float m) const { return Vector(x, y) * m; }
+	};
+
+	std::vector<VectorInt> tile_position_intersect_line(int x1, int y1, int x2, int y2)
+	{
+		// Bresenham's line algorithm
+		// https://www.uobabylon.edu.iq/eprints/publication_2_22893_6215.pdf
+
+		std::vector<VectorInt> ret;
+		int x = x1;
+		int y = y1;
+		int dx = std::abs(x2 - x1);
+		int dy = std::abs(y2 - y1);
+		const int signx = sign(x2 - x1);
+		const int signy = sign(y2 - y1);
+		bool interchange = false;
+		if (dy > dx) {
+			std::swap(dx, dy);
+			interchange = true;
+		}
+		int error = 2 * dy - dx;
+		const int A = 2 * dy;
+		const int B = 2 * (dy - dx);
+
+		ret.emplace_back(x, y);
+		for (int i = 1; i <= dx; ++ i) {
+			if (error < 0) {
+				if (interchange) y += signy;
+				else x += signx; 
+				error += A;
+			} else {
+				y += signy;
+				x += signx;
+				error += B;
+			}
+			ret.emplace_back(x, y);
+		}
+		return ret;
+	}
 }
 
 void CollisionSystem::update()
@@ -188,25 +238,6 @@ void CollisionSystem::draw_debug(DrawingContext& drawing_context)
 		}
 		drawing_context.get_canvas().draw_filled_rect(object->get_bounding_box(), color, LAYER_FOREGROUND + 10);
 	}
-}
-
-bool CollisionSystem::is_free_of_tiles(const Rectf& rect, uint32_t tiletype) const
-{
-	for (const auto& solids : m_room.get_solid_tilemaps()) {
-		const Rect test_tiles = solids->get_tiles_overlap(rect);
-
-		for (int x = test_tiles.left; x < test_tiles.right; ++ x) {
-			for (int y = test_tiles.top; y < test_tiles.bottom; ++ y) {
-				const Tile& tile = solids->get_tile(x, y);
-
-				if (!(tile.get_attributes() & tiletype)) continue;
-
-				return false;
-			}
-		}
-	}
-
-	return true;
 }
 
 void CollisionSystem::collision_static_constraints(collision::Constraints* /* constraints */, const Vector& /* movement */, const Rectf& /* dest */, CollisionObject& /* object */) const
@@ -319,4 +350,48 @@ void CollisionSystem::collision_object(CollisionObject& object1, CollisionObject
 			object2.m_dest.move(normal);
 		}
 	}
+}
+
+bool CollisionSystem::is_free_of_tiles(const Rectf& rect, uint32_t tiletype) const
+{
+	for (const auto& solids : m_room.get_solid_tilemaps()) {
+		const Rect test_tiles = solids->get_tiles_overlap(rect);
+
+		for (int x = test_tiles.left; x < test_tiles.right; ++ x) {
+			for (int y = test_tiles.top; y < test_tiles.bottom; ++ y) {
+				const Tile& tile = solids->get_tile(x, y);
+
+				if (!(tile.get_attributes() & tiletype)) continue;
+
+				return false;
+			}
+		}
+	}
+
+	return true;
+}
+
+bool CollisionSystem::free_line_of_sight(const Vector& line_start, const Vector& line_end) const
+{
+	// normalizing line_start and line_end
+	// note the / BLOCK_SIZE
+	int x1 = std::floor(line_start.x / BLOCK_SIZE);
+	int y1 = std::floor(line_start.y / BLOCK_SIZE);
+	int x2 = std::floor(line_end.x / BLOCK_SIZE);
+	int y2 = std::floor(line_end.y / BLOCK_SIZE);
+
+	std::vector<VectorInt> points_to_test = tile_position_intersect_line(x1, y1, x2, y2);
+	for (const auto& solids : m_room.get_solid_tilemaps()) {
+		for (const auto& point_ : points_to_test) {
+			// convert back by * BLOCK_SIZE
+			const Vector point = point_ * BLOCK_SIZE;
+
+			if (solids->is_outside_bounds(point)) continue;
+			const auto& tile = solids->get_tile_at(point);
+			
+
+			if (tile.is_solid()) return false;
+		}
+	}
+	return true;
 }

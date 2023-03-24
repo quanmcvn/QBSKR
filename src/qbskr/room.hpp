@@ -36,6 +36,7 @@ public:
 	void deactivate();
 
 	bool is_free_of_tiles(const Rectf& rect, uint32_t tiletype = Tile::SOLID) const;
+	bool free_line_of_sight(const Vector& line_start, const Vector& line_end) const;
 
 public:
 	virtual bool before_object_add(GameObject& object) override;

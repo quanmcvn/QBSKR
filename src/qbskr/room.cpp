@@ -54,6 +54,11 @@ bool Room::is_free_of_tiles(const Rectf& rect, uint32_t tiletype) const
 	return m_collision_system->is_free_of_tiles(rect, tiletype);
 }
 
+bool Room::free_line_of_sight(const Vector& line_start, const Vector& line_end) const
+{
+	return m_collision_system->free_line_of_sight(line_start, line_end);
+}
+
 bool Room::before_object_add(GameObject& object)
 {
 	if (auto moving_object = dynamic_cast<MovingObject*>(&object)) {
