@@ -1,6 +1,5 @@
 #include "weapon/weapon_set.hpp"
 
-#include <filesystem>
 #include <sstream>
 
 #include "util/crappy_reader.hpp"
@@ -41,14 +40,12 @@ void WeaponSet::parse(const std::string& filename)
 		throw std::runtime_error(msg.str());
 	}
 
-	std::string parent_path = std::filesystem::path(cr.get_dir()).parent_path().string() + '/';
-
 	for (const auto& child : crd->m_childs) {
-		if (child->m_data == "weapon") parse_weapon(child, parent_path);
+		if (child->m_data == "weapon") parse_weapon(child);
 	}
 }
 
-void WeaponSet::parse_weapon(const CrappyReaderData* crd, const std::string& parent_path)
+void WeaponSet::parse_weapon(const CrappyReaderData* crd)
 {
 	uint32_t id;
 	if (!crd->get("id", id)) {
@@ -68,7 +65,7 @@ void WeaponSet::parse_weapon(const CrappyReaderData* crd, const std::string& par
 
 	std::unique_ptr<Weapon> weapon;
 	if (weapon_type == "generic-shooting-weapon") {
-		weapon = GenericShootingWeapon::from_reader(crd_weapon_specific, parent_path);
+		weapon = GenericShootingWeapon::from_reader(crd_weapon_specific);
 	} else {
 		throw std::runtime_error("doesn't exist / NYI");
 	}

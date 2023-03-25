@@ -49,6 +49,7 @@ private:
 private:
 	std::ifstream m_is;
 	std::string m_dir;
+	std::string m_parent_path;
 	CrappyReaderData* m_root;
 	std::vector<std::unique_ptr<CrappyReaderData>> m_data_holder;
 

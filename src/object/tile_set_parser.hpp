@@ -14,7 +14,6 @@ private:
 private:
 	TileSet& m_tileset;
 	std::string m_filename;
-	std::string m_parent_path;
 
 public:
 	TileSetParser(TileSet& tileset, const std::string& filename);

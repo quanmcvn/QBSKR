@@ -3,7 +3,7 @@ sprite-start
 	action-start
 		name walk-right
 		fps 16
-		hitbox 3 18 16 22
+		hitbox 3 18 10 10
 		images-start
 			walk-0.png
 			walk-1.png
@@ -24,7 +24,7 @@ sprite-start
 	action-start
 		name idle-right
 		fps 1
-		hitbox 3 18 16 22
+		hitbox 3 18 10 10
 		images-start
 			idle-0.png
 		images-end

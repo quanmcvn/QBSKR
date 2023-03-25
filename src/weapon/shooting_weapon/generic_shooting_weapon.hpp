@@ -25,7 +25,7 @@ public:
 	GenericShootingWeapon(const Sprite* sprite);
 
 public:
-	static std::unique_ptr<GenericShootingWeapon> from_reader(const CrappyReaderData* crd, const std::string& parent_path);
+	static std::unique_ptr<GenericShootingWeapon> from_reader(const CrappyReaderData* crd);
 
 public:
 	static std::string class_name();

@@ -40,7 +40,7 @@ private:
 	std::string name;
 
 public:
-	void parse_action(const CrappyReaderData* crd, const std::string& parent_path);
+	void parse_action(const CrappyReaderData* crd);
 	const Action* get_action(const std::string& name) const;
 };
 

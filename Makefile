@@ -2,9 +2,10 @@
 ### It's not fully fool-proof because of no dependency check
 ### So I will delete definition code in *.hpp files :D
 
-### (for myself in the future): create ./bin/src/* to match every single ./src/* folder
-
 OBJ_FILES = src/main.o                                                  \
+            src/collision/collision_object.o                            \
+            src/collision/collision_system.o                            \
+            src/collision/collision.o                                   \
             src/control/controller.o                                    \
             src/control/input_manager.o                                 \
             src/control/keyboard_config.o                               \
@@ -12,9 +13,6 @@ OBJ_FILES = src/main.o                                                  \
             src/control/mouse_button_config.o                           \
             src/control/mouse_button_manager.o                          \
             src/control/mouse_motion_manager.o                          \
-            src/collision/collision_object.o                            \
-            src/collision/collision_system.o                            \
-            src/collision/collision.o                                   \
             src/math/anchor_point.o                                     \
             src/math/random.o                                           \
             src/math/rect.o                                             \
@@ -102,6 +100,7 @@ OBJDIR := bin
 OBJS := $(addprefix $(OBJDIR)/, $(OBJ_FILES))
 
 $(OBJDIR)/%.o : %.cpp
+	@mkdir -p $(@D)
 	$(CC) -c $(GFLAGS) $(INCLUDE_PATHS) $(COMPILER_FLAGS) $< -o $@
 
 #This is the target that compiles our executable
@@ -113,12 +112,8 @@ all: $(OBJS)
 $(OBJS): | $(OBJDIR)
 
 .PHONY : clean
-### wtf is this, this is so bad
-### also idk why it can execute shell/bash (idk what it is even more)
+### idk why it can execute shell/bash (idk what it is even more)
 ### anyway...
 clean:
-	rm ./bin/src/*/*/*/*.o
-	rm ./bin/src/*/*/*.o
-	rm ./bin/src/*/*.o
-	rm ./bin/src/*.o
+	rm -rf ./bin/src/
 	rm ./data/QBSKR.exe

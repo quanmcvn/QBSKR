@@ -5,6 +5,7 @@
 #include "object/tile.hpp"
 
 class CollisionSystem;
+class Player;
 class Rectf;
 
 class Room final : public GameObjectManager {
@@ -37,6 +38,8 @@ public:
 
 	bool is_free_of_tiles(const Rectf& rect, uint32_t tiletype = Tile::SOLID) const;
 	bool free_line_of_sight(const Vector& line_start, const Vector& line_end) const;
+
+	Player* get_nearest_player(const Vector& pos) const;
 
 public:
 	virtual bool before_object_add(GameObject& object) override;

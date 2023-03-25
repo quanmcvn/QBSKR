@@ -4,14 +4,10 @@
 #include <assert.h>
 #include <sstream>
 
-CrappyReaderData::CrappyReaderData() :
-	m_data(),
-	m_childs()
-{}
-
-CrappyReaderData::CrappyReaderData(const std::string& data) :
+CrappyReaderData::CrappyReaderData(const std::string& data, const std::string& parent_path) :
 	m_data(data),
-	m_childs()
+	m_childs(),
+	m_parent_path(parent_path)
 {}
 
 CrappyReaderData::Child CrappyReaderData::get_child(const std::string& name) const

@@ -10,9 +10,6 @@
 
 namespace {
 	const float WALK_SPEED = 100.0f;
-
-	const float PLAYER_WIDTH = 10.0f;
-	const float PLAYER_HEIGHT = 10.0f;
 }
 
 Player::Player(int player_id) :
@@ -24,7 +21,7 @@ Player::Player(int player_id) :
 	m_weapon()
 {
 	set_pos(Vector(17.0f, 17.0f));
-	m_collision_object.set_size(PLAYER_WIDTH, PLAYER_HEIGHT);
+	m_collision_object.set_size(m_sprite->get_current_hitbox_width(), m_sprite->get_current_hitbox_height());
 }
 
 Player::Player(int player_id, uint32_t weapon_id) :
@@ -36,7 +33,7 @@ Player::Player(int player_id, uint32_t weapon_id) :
 	m_weapon()
 {
 	set_pos(Vector(17.0f, 17.0f));
-	m_collision_object.set_size(PLAYER_WIDTH, PLAYER_HEIGHT);
+	m_collision_object.set_size(m_sprite->get_current_hitbox_width(), m_sprite->get_current_hitbox_height());
 	// should be OK here even though I did a cast down hierachy
 	m_weapon = static_cast<Weapon*>(&Room::get().add_object(WeaponSet::current()->get_weapon(weapon_id).clone(this)));
 }

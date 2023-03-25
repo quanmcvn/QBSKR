@@ -43,9 +43,12 @@ public:
 	std::string m_data;
 	using Child = CrappyReaderData*;
 	std::vector<Child> m_childs;
+	// parent path of file the CrappyReader reads
+	// shared between every CrappyReaderData
+	const std::string& m_parent_path;
 
 public:
-	CrappyReaderData(const std::string& data);
+	CrappyReaderData(const std::string& data, const std::string& parent_path);
 
 	Child get_child(const std::string& name) const;
 	std::vector<Child> get_child_all(const std::string& name) const;

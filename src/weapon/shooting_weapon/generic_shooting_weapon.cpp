@@ -20,7 +20,7 @@ GenericShootingWeapon::GenericShootingWeapon(const Sprite* sprite) :
 	m_projectile_spawn_pos(Vector(0, 0))
 {}
 
-std::unique_ptr<GenericShootingWeapon> GenericShootingWeapon::from_reader(const CrappyReaderData* crd, const std::string& parent_path)
+std::unique_ptr<GenericShootingWeapon> GenericShootingWeapon::from_reader(const CrappyReaderData* crd)
 {
 	uint32_t projectile_id;
 	if (!crd->get("projectile-id", projectile_id)) {
@@ -44,7 +44,7 @@ std::unique_ptr<GenericShootingWeapon> GenericShootingWeapon::from_reader(const 
 		throw std::runtime_error("Missing sprite-filename in weapon-specific");
 	}
 
-	auto weapon = std::make_unique<GenericShootingWeapon>(parent_path + sprite_filename);
+	auto weapon = std::make_unique<GenericShootingWeapon>(crd->m_parent_path + sprite_filename);
 	weapon->m_projectile_id = projectile_id;
 	weapon->m_timer.start_true(1.0f / projectiles_per_sec);
 	weapon->m_projectile_spawn_pos = projectile_spawn_pos;
@@ -85,7 +85,6 @@ std::unique_ptr<Weapon> GenericShootingWeapon::clone(MovingObject* parent) const
 	weapon->m_projectile_id = m_projectile_id;
 	weapon->m_timer.start_true(m_timer.get_period());
 	weapon->m_projectile_spawn_pos = m_projectile_spawn_pos;
-	weapon->recalculate_hurt_attributes();
 
 	return weapon;
 }

@@ -1,7 +1,5 @@
 #include "object/tile_set_parser.hpp"
 
-#include <filesystem>
-
 #include "object/tile_set.hpp"
 #include "video/surface.hpp"
 #include "util/crappy_reader.hpp"
@@ -15,11 +13,13 @@ void TileSetParser::parse()
 {
 	CrappyReader cr(m_filename);
 
-	m_parent_path = std::filesystem::path(cr.get_dir()).parent_path().string() + '/';
-
 	while (cr.parse("tileset")) {}
 
 	CrappyReaderData* root_tileset = cr.get_root()->get_child("tileset");
+
+	if (!root_tileset) {
+		throw std::runtime_error("File is not tileset file");
+	}
 
 	for (const auto& child : root_tileset->m_childs) {
 		if (child->m_data == "tile") {
@@ -54,7 +54,7 @@ void TileSetParser::parse_tile(const CrappyReaderData* crd)
 	}
 	std::vector<SurfacePtr> surfaces;
 	for (const auto& image_filename : image_filenames) {
-		SurfacePtr surface = Surface::from_file(m_parent_path + image_filename);
+		SurfacePtr surface = Surface::from_file(crd->m_parent_path + image_filename);
 		surfaces.push_back(std::move(surface));
 	}
 

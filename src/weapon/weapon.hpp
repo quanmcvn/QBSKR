@@ -5,7 +5,7 @@
 
 /**
  * Class to represent weapon
- * Only holds a pointer to parent (can't use ref since need init but I need to clone)
+ * Holds a pointer to parent (can't use ref since need init but I need to clone)
 */
 class Weapon : public MovingSprite {
 private:

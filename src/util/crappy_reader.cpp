@@ -48,6 +48,7 @@ CrappyReader::CrappyReader(const std::string& filename) :
 		msg << "File '" << filename << "' not exist";
 		throw std::runtime_error(msg.str());
 	}
+	m_parent_path = std::filesystem::path(m_dir).parent_path().string() + '/';
 	if (!m_is.is_open()) {
 		std::ostringstream msg;
 		msg << "Can't open file '" << filename << "'";
@@ -118,6 +119,6 @@ void CrappyReader::skip_until(const std::string& desired)
 
 CrappyReaderData* CrappyReader::get_new_node(const std::string& s)
 {
-	m_data_holder.push_back(std::make_unique<CrappyReaderData>(s));
+	m_data_holder.push_back(std::make_unique<CrappyReaderData>(s, m_parent_path));
 	return m_data_holder.back().get();
 }

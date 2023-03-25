@@ -33,7 +33,7 @@ public:
 
 private:
 	void parse(const std::string& filename);
-	void parse_weapon(const CrappyReaderData* crd, const std::string& parent_path);
+	void parse_weapon(const CrappyReaderData* crd);
 
 public:
 	void add_weapon(uint32_t id, std::unique_ptr<Weapon> weapon);
