@@ -56,6 +56,8 @@ public:
 
 	CollisionGroup get_group() const;
 
+	CollisionListener* get_listener();
+
 	bool is_valid() const;
 };
 

@@ -1,12 +1,8 @@
 sprite-start
-
 	action-start
-		name normal
-		fps 1
-		hitbox 0 0 13 9
+		hitbox 0 0 5 5
 		images-start
-			piston-0.png
+			bad-pistol-bullet.png
 		images-end
 	action-end
-
 sprite-end

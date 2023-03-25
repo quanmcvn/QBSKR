@@ -1,0 +1,18 @@
+sprite-start
+
+	action-start
+		name idle-right
+		fps 6
+		hitbox 0 0 10 10
+		images-start
+			idle-0.png
+			idle-1.png
+		images-end
+	action-end
+
+	action-start
+		name idle-left
+		mirror-action idle-right
+	action-end
+
+sprite-end

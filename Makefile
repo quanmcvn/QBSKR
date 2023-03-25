@@ -3,6 +3,9 @@
 ### So I will delete definition code in *.hpp files :D
 
 OBJ_FILES = src/main.o                                                  \
+            src/badguy/badguy_set.o                                     \
+            src/badguy/badguy.o                                         \
+            src/badguy/generic_badguy.o                                 \
             src/collision/collision_object.o                            \
             src/collision/collision_system.o                            \
             src/collision/collision.o                                   \

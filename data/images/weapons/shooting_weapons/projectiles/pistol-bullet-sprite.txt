@@ -2,7 +2,7 @@ sprite-start
 	action-start
 		hitbox 0 0 7 5
 		images-start
-			bullet-0.png
+			pistol-bullet.png
 		images-end
 	action-end
 sprite-end

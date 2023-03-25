@@ -33,4 +33,6 @@ void CollisionObject::set_size(float width, float height)
 
 CollisionGroup CollisionObject::get_group() const { return m_group; }
 
+CollisionListener* CollisionObject::get_listener() { return &m_listener; }
+
 bool CollisionObject::is_valid() const { return m_listener.listener_is_valid(); }

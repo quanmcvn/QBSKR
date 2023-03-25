@@ -12,18 +12,6 @@ namespace {
 	const float WALK_SPEED = 100.0f;
 }
 
-Player::Player(int player_id) :
-	m_id(player_id),
-	m_controller(&(InputManager::current()->get_controller(m_id))),
-	m_direction(Direction::RIGHT),
-	m_physic(),
-	m_sprite(SpriteManager::current()->create("images/charactors/knight/knight_sprite.txt")),
-	m_weapon()
-{
-	set_pos(Vector(17.0f, 17.0f));
-	m_collision_object.set_size(m_sprite->get_current_hitbox_width(), m_sprite->get_current_hitbox_height());
-}
-
 Player::Player(int player_id, uint32_t weapon_id) :
 	m_id(player_id),
 	m_controller(&(InputManager::current()->get_controller(m_id))),
@@ -35,7 +23,7 @@ Player::Player(int player_id, uint32_t weapon_id) :
 	set_pos(Vector(17.0f, 17.0f));
 	m_collision_object.set_size(m_sprite->get_current_hitbox_width(), m_sprite->get_current_hitbox_height());
 	// should be OK here even though I did a cast down hierachy
-	m_weapon = static_cast<Weapon*>(&Room::get().add_object(WeaponSet::current()->get_weapon(weapon_id).clone(this)));
+	if (weapon_id > 0) m_weapon = WeaponSet::current()->get_weapon(weapon_id).clone(this);
 }
 
 Player::~Player()
@@ -60,6 +48,8 @@ void Player::draw(DrawingContext& drawing_context)
 	}
 
 	m_sprite->draw(drawing_context.get_canvas(), get_pos(), get_layer());
+
+	if (m_weapon) m_weapon->draw(drawing_context);
 }
 
 void Player::collision_solid(const CollisionHit& hit)
@@ -93,25 +83,7 @@ void Player::handle_input()
 {
 	handle_movement_input();
 
-	if (m_weapon) {
-		Vector mouse_pos = VideoSystem::current()->get_viewport().to_logical(m_controller->get_mouse_pos().x, m_controller->get_mouse_pos().y);
-		Vector line_player_mouse_pos = mouse_pos - get_bounding_box().get_middle();
-
-		float angle = math::radian_to_degree(std::atan2(line_player_mouse_pos.y, line_player_mouse_pos.x));
-		m_weapon->set_angle(angle);
-		
-		if (std::abs(angle) >= 90.0f) {
-			m_weapon->set_flip(VERTICAL_FLIP);
-			m_direction = Direction::LEFT;
-		} else {
-			m_weapon->set_flip(NO_FLIP);
-			m_direction = Direction::RIGHT;
-		}
-
-		if (m_controller->hold(Control::ATTACK)) {
-			m_weapon->attack();
-		}
-	}
+	if (m_weapon) handle_weapon();
 }
 
 void Player::handle_movement_input()
@@ -134,4 +106,25 @@ void Player::handle_movement_input()
 
 	m_physic.set_velocity_x(dir_x_sign * WALK_SPEED);
 	m_physic.set_velocity_y(dir_y_sign * WALK_SPEED);
+}
+
+void Player::handle_weapon()
+{
+	Vector mouse_pos = VideoSystem::current()->get_viewport().to_logical(m_controller->get_mouse_pos().x, m_controller->get_mouse_pos().y);
+	Vector line_player_mouse_pos = mouse_pos - get_bounding_box().get_middle();
+
+	float angle = math::radian_to_degree(std::atan2(line_player_mouse_pos.y, line_player_mouse_pos.x));
+	m_weapon->set_angle(angle);
+	
+	if (std::abs(angle) >= 90.0f) {
+		m_weapon->set_flip(VERTICAL_FLIP);
+		m_direction = Direction::LEFT;
+	} else {
+		m_weapon->set_flip(NO_FLIP);
+		m_direction = Direction::RIGHT;
+	}
+
+	if (m_controller->hold(Control::ATTACK)) {
+		m_weapon->attack();
+	}
 }

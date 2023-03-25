@@ -3,6 +3,7 @@
 #include <cmath>
 
 #include "collision/collision_object.hpp"
+#include "object/player.hpp"
 #include "object/tile_map.hpp"
 #include "qbskr/constants.hpp"
 #include "qbskr/room.hpp"
@@ -31,7 +32,8 @@ void CollisionSystem::remove(CollisionObject* object)
 }
 
 namespace {
-	collision::Constraints check_collision(const Vector& object_movenent, const Rectf& moving_object_rect, const Rectf& other_object_rect)
+	collision::Constraints check_collision(const Vector& object_movenent, const Rectf& moving_object_rect, const Rectf& other_object_rect, 
+	                                       CollisionObject* moving_object = nullptr)
 	{
 		// slightly grow the static object
 		const Rectf grown_other_object_rect = other_object_rect.grown(EPSILON);
@@ -49,21 +51,25 @@ namespace {
 
 		bool shift_out = false;
 
-		if (std::abs(object_movenent.x) < std::abs(object_movenent.y)) {
-			if (intersect_left < SHIFT_DELTA) {
-				constraints.constrain_right(grown_other_object_rect.get_left());
-				shift_out = true;
-			} else if (intersect_right < SHIFT_DELTA) {
-				constraints.constrain_left(grown_other_object_rect.get_right());
-				shift_out = true;
-			}
-		} else {
-			if (intersect_top < SHIFT_DELTA) {
-				constraints.constrain_bottom(grown_other_object_rect.get_top());
-				shift_out = true;
-			} else if (intersect_bottom < SHIFT_DELTA) {
-				constraints.constrain_top(grown_other_object_rect.get_bottom());
-				shift_out = true;
+		if (moving_object) {
+			if (dynamic_cast<Player*>(moving_object->get_listener())) {
+				if (std::abs(object_movenent.x) < std::abs(object_movenent.y)) {
+					if (intersect_left < SHIFT_DELTA) {
+						constraints.constrain_right(grown_other_object_rect.get_left());
+						shift_out = true;
+					} else if (intersect_right < SHIFT_DELTA) {
+						constraints.constrain_left(grown_other_object_rect.get_right());
+						shift_out = true;
+					}
+				} else {
+					if (intersect_top < SHIFT_DELTA) {
+						constraints.constrain_bottom(grown_other_object_rect.get_top());
+						shift_out = true;
+					} else if (intersect_bottom < SHIFT_DELTA) {
+						constraints.constrain_top(grown_other_object_rect.get_bottom());
+						shift_out = true;
+					}
+				}
 			}
 		}
 
@@ -245,7 +251,7 @@ void CollisionSystem::collision_static_constraints(collision::Constraints* /* co
 	// NYI
 }
 
-void CollisionSystem::collision_tilemap_constraints(collision::Constraints* constraints, const Vector& movement, const Rectf& dest, CollisionObject& /* object */) const
+void CollisionSystem::collision_tilemap_constraints(collision::Constraints* constraints, const Vector& movement, const Rectf& dest, CollisionObject& object) const
 {
 	for (auto solid_tilemap : m_room.get_solid_tilemaps()) {
 		const Rect test_tiles = solid_tilemap->get_tiles_overlap(dest);
@@ -258,7 +264,7 @@ void CollisionSystem::collision_tilemap_constraints(collision::Constraints* cons
 				if (!tile.is_solid()) continue;
 				Rectf tile_bounding_box = solid_tilemap->get_tile_bounding_box(x, y);
 
-				collision::Constraints new_constraints = check_collision(movement, dest, tile_bounding_box);
+				collision::Constraints new_constraints = check_collision(movement, dest, tile_bounding_box, &object);
 				constraints->merge_constraints(new_constraints);
 			}
 		}

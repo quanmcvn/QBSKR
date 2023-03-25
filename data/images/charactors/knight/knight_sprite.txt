@@ -23,10 +23,11 @@ sprite-start
 
 	action-start
 		name idle-right
-		fps 1
+		fps 6
 		hitbox 3 18 10 10
 		images-start
 			idle-0.png
+			idle-1.png
 		images-end
 	action-end
 

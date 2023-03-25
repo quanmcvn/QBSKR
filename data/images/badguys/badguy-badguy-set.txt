@@ -1,0 +1,12 @@
+badguy-set-start
+
+	badguy-start
+		id 1
+		badguy-type generic-badguy
+		badguy-specific-start
+			weapon-id 1
+			sprite-filename goblin/goblin-sprite.txt
+		badguy-specific-end
+	badguy-end
+
+badguy-set-end

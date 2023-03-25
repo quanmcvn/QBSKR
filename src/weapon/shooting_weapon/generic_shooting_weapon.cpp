@@ -2,9 +2,7 @@
 
 #include <stdexcept>
 
-#include "object/player.hpp"
 #include "util/crappy_reader_data.hpp"
-#include "weapon/hurt.hpp"
 #include "weapon/shooting_weapon/projectile/projectile_set.hpp"
 #include "weapon/shooting_weapon/projectile/projectile.hpp"
 
@@ -64,19 +62,6 @@ Vector GenericShootingWeapon::get_projectile_spawn_pos() const
 }
 
 uint32_t GenericShootingWeapon::get_projectile_id() const { return m_projectile_id; }
-
-void GenericShootingWeapon::recalculate_hurt_attributes()
-{
-	if (m_parent == nullptr) {
-		m_hurt_attributes = 0;
-	} else {
-		if (dynamic_cast<const Player*>(m_parent)) {
-			m_hurt_attributes = HURT_BADGUY;
-		} else {
-			// NYI
-		}
-	}
-}
 
 std::unique_ptr<Weapon> GenericShootingWeapon::clone(MovingObject* parent) const
 {

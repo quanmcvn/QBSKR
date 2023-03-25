@@ -1,0 +1,12 @@
+sprite-start
+
+	action-start
+		name normal
+		fps 1
+		hitbox 0 0 13 9
+		images-start
+			pistol-0.png
+		images-end
+	action-end
+
+sprite-end

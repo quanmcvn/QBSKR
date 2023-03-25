@@ -74,7 +74,9 @@ public:
 
 	// respects m_offset
 	Rectf get_tile_bounding_box(int x, int y) const;
-	
+
+	// respects m_offset
+	Rectf get_bounding_box() const;
 
 private:
 	void parse_tiles(CrappyReaderData* crd);

@@ -8,7 +8,18 @@ projectile-set-start
 		projectile-specific-start
 			speed 1000
 			bounce-wall-count 0
-			sprite-filename piston-bullet-sprite.txt
+			sprite-filename pistol-bullet-sprite.txt
+		projectile-specific-end
+	projectile-end
+
+	projectile-start
+		id 2
+		projectile-name bad-pistol
+		projectile-type generic-projectile
+		projectile-specific-start
+			speed 160
+			bounce-wall-count 0
+			sprite-filename bad-pistol-bullet-sprite.txt
 		projectile-specific-end
 	projectile-end
 projectile-set-end

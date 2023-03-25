@@ -25,7 +25,7 @@ public:
 	virtual void update(float dt_sec) override;
 	virtual void draw(DrawingContext& drawing_context) override;
 	virtual void attack() = 0;
-	virtual void recalculate_hurt_attributes() = 0;
+	virtual void recalculate_hurt_attributes();
 	virtual std::unique_ptr<Weapon> clone(MovingObject* parent) const = 0;
 
 public:

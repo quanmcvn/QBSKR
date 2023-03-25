@@ -12,7 +12,22 @@ weapon-set-start
 				x 10
 				y 0
 			projectile-spawn-pos-end
-			sprite-filename shooting_weapons/piston-sprite.txt
+			sprite-filename shooting_weapons/pistol-sprite.txt
+		weapon-specific-end
+	weapon-end
+
+	weapon-start
+		id 2
+		weapon-name bad-pistol
+		weapon-type generic-shooting-weapon
+		weapon-specific-start
+			projectile-id 2
+			projectiles-per-sec 5
+			projectile-spawn-pos-start
+				x 10
+				y 0
+			projectile-spawn-pos-end
+			sprite-filename shooting_weapons/pistol-sprite.txt
 		weapon-specific-end
 	weapon-end
 

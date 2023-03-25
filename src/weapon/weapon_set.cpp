@@ -5,7 +5,6 @@
 #include "util/crappy_reader.hpp"
 #include "util/log.hpp"
 #include "weapon/shooting_weapon/generic_shooting_weapon.hpp"
-#include "weapon_set.hpp"
 
 WeaponSet::WeaponSet() :
 	m_filename("images/weapons/weapons-weapon-set.txt"),
@@ -36,7 +35,7 @@ void WeaponSet::parse(const std::string& filename)
 
 	if (!crd) {
 		std::ostringstream msg;
-		msg << "File '" << filename << "' is not projectile-set file";
+		msg << "File '" << filename << "' is not weapon-set file";
 		throw std::runtime_error(msg.str());
 	}
 

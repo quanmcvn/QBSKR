@@ -154,6 +154,11 @@ Rectf TileMap::get_tile_bounding_box(int x, int y) const
 	return Rectf(get_tile_posisition(x, y), get_tile_posisition(x + 1, y + 1));
 }
 
+Rectf TileMap::get_bounding_box() const
+{
+	return Rectf(get_tile_posisition(0, 0), get_tile_posisition(m_width, m_height));
+}
+
 void TileMap::parse_tiles(CrappyReaderData* crd)
 {
 	m_tiles.clear();

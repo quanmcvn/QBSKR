@@ -36,14 +36,15 @@ public:
 	void activate();
 	void deactivate();
 
-	bool is_free_of_tiles(const Rectf& rect, uint32_t tiletype = Tile::SOLID) const;
-	bool free_line_of_sight(const Vector& line_start, const Vector& line_end) const;
-
-	Player* get_nearest_player(const Vector& pos) const;
-
 public:
 	virtual bool before_object_add(GameObject& object) override;
 	virtual void before_object_remove(GameObject& object) override;
+
+public:
+	bool is_free_of_tiles(const Rectf& rect, uint32_t tiletype = Tile::SOLID) const;
+	bool free_line_of_sight(const Vector& line_start, const Vector& line_end) const;
+	bool can_see_player(const Vector& eye) const;
+	bool inside(const Rectf& rect) const;
 };
 
 #endif

@@ -2,6 +2,8 @@
 
 #include "collision/collision_system.hpp"
 #include "object/moving_object.hpp"
+#include "object/player.hpp"
+#include "object/tile_map.hpp"
 #include "qbskr/gameconfig.hpp"
 #include "qbskr/globals.hpp"
 #include "video/drawing_context.hpp"
@@ -49,16 +51,6 @@ void Room::deactivate()
 	s_current = nullptr;
 }
 
-bool Room::is_free_of_tiles(const Rectf& rect, uint32_t tiletype) const
-{
-	return m_collision_system->is_free_of_tiles(rect, tiletype);
-}
-
-bool Room::free_line_of_sight(const Vector& line_start, const Vector& line_end) const
-{
-	return m_collision_system->free_line_of_sight(line_start, line_end);
-}
-
 bool Room::before_object_add(GameObject& object)
 {
 	if (auto moving_object = dynamic_cast<MovingObject*>(&object)) {
@@ -73,4 +65,37 @@ void Room::before_object_remove(GameObject& object)
 	if (auto moving_object = dynamic_cast<MovingObject*>(&object)) {
 		m_collision_system->remove(moving_object->get_collision_object());
 	}
+}
+
+bool Room::is_free_of_tiles(const Rectf& rect, uint32_t tiletype) const
+{
+	return m_collision_system->is_free_of_tiles(rect, tiletype);
+}
+
+bool Room::free_line_of_sight(const Vector& line_start, const Vector& line_end) const
+{
+	return m_collision_system->free_line_of_sight(line_start, line_end);
+}
+
+bool Room::can_see_player(const Vector& eye) const
+{
+	for (auto player_ptr : get_objects_by_type_index(typeid(Player))) {
+		Player& player = *static_cast<Player*>(player_ptr);
+		// test for free line of sight to any of 4 corners and middle of player's bounding box
+		if (free_line_of_sight(eye, Vector(player.get_bounding_box().get_left(), player.get_bounding_box().get_top()))) return true;
+		if (free_line_of_sight(eye, Vector(player.get_bounding_box().get_left(), player.get_bounding_box().get_bottom()))) return true;
+		if (free_line_of_sight(eye, Vector(player.get_bounding_box().get_right(), player.get_bounding_box().get_bottom()))) return true;
+		if (free_line_of_sight(eye, Vector(player.get_bounding_box().get_right(), player.get_bounding_box().get_top()))) return true;
+		if (free_line_of_sight(eye, player.get_bounding_box().get_middle())) return true;
+	}
+	return false;
+}
+
+bool Room::inside(const Rectf& rect) const
+{
+	for (const auto& solids : get_solid_tilemaps()) {
+		Rectf bounding_box = solids->get_bounding_box();
+		if (!(bounding_box.contains(rect))) return false;
+	}
+	return true;
 }

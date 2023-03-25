@@ -1,5 +1,9 @@
 #include "weapon/weapon.hpp"
 
+#include "badguy/badguy.hpp"
+#include "object/player.hpp"
+#include "weapon/hurt.hpp"
+
 Weapon::Weapon(const std::string& sprite_name) :
 	MovingSprite(Vector(0.0f, 0.0f), sprite_name, LAYER_WEAPONS, COLLISION_GROUP_DISABLED),
 	m_parent(),
@@ -23,6 +27,19 @@ void Weapon::draw(DrawingContext& drawing_context)
 		set_pos(m_parent->get_pos());
 	}
 	MovingSprite::draw(drawing_context);
+}
+
+void Weapon::recalculate_hurt_attributes()
+{
+	if (m_parent == nullptr) {
+		m_hurt_attributes = 0;
+	} else {
+		if (dynamic_cast<Player*>(m_parent)) {
+			m_hurt_attributes = HURT_BADGUY;
+		} else if (dynamic_cast<BadGuy*>(m_parent)) {
+			m_hurt_attributes = HURT_PLAYER;
+		}
+	}
 }
 
 void Weapon::change_parent(MovingObject* parent)

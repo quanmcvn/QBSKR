@@ -18,7 +18,6 @@ private:
 	Player& operator=(const Player&) = delete;
 
 public:
-	Player(int player_id);
 	Player(int player_id, uint32_t weapon_id);
 
 private:
@@ -27,7 +26,7 @@ private:
 	Direction m_direction;
 	Physic m_physic;
 	SpritePtr m_sprite;
-	Weapon* m_weapon;
+	std::unique_ptr<Weapon> m_weapon;
 
 public:
 	virtual void update(float dt_sec) override;
@@ -44,6 +43,7 @@ public:
 private:
 	void handle_input();
 	void handle_movement_input();
+	void handle_weapon();
 };
 
 #endif
