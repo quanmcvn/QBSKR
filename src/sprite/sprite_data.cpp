@@ -52,6 +52,8 @@ void SpriteData::parse_action(const CrappyReaderData* crd)
 		}
 	}
 
+	crd->get("family-name", action->family_name);
+
 	std::vector<float> hitbox;
 	if (crd->get("hitbox", hitbox)) {
 		if (hitbox.size() != 4) {

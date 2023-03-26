@@ -15,6 +15,8 @@ private:
 	float vx, vy;
 
 public:
+	void reset();
+
 	void set_velocity(float nvx, float nvy);
 	void set_velocity(const Vector& vector);
 	void set_velocity_x(float nvx);

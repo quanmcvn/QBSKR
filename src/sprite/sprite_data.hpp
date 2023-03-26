@@ -20,7 +20,8 @@ private:
 
 	struct Action {
 		std::string name;
-	
+		std::string family_name;
+
 		float x_offset;
 		float y_offset;
 

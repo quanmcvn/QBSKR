@@ -2,6 +2,7 @@ sprite-start
 
 	action-start
 		name walk-right
+		family-name walk
 		fps 16
 		hitbox 3 18 10 10
 		images-start
@@ -18,11 +19,13 @@ sprite-start
 
 	action-start
 		name walk-left
+		family-name walk
 		mirror-action walk-right
 	action-end
 
 	action-start
 		name idle-right
+		family-name idle
 		fps 6
 		hitbox 3 18 10 10
 		images-start
@@ -33,6 +36,7 @@ sprite-start
 
 	action-start
 		name idle-left
+		family-name idle
 		mirror-action idle-right
 	action-end
 

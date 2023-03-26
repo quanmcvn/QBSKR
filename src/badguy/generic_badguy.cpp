@@ -2,25 +2,59 @@
 
 #include <stdexcept>
 
+#include "math/random.hpp"
+#include "math/util.hpp"
+#include "object/player.hpp"
 #include "qbskr/room.hpp"
 #include "util/crappy_reader_data.hpp"
+#include "weapon/shooting_weapon/projectile/projectile.hpp"
+#include "weapon/hurt.hpp"
 #include "weapon/weapon.hpp"
 #include "weapon/weapon_set.hpp"
 
+namespace {
+	// arbitrary choice
+	const float WALK_SPEED = 32.0f;
+	// arbitrary choice
+	const float WANDER_CHANCE = 0.01f;
+}
+
+GenericBadGuy::~GenericBadGuy()
+{
+	m_weapon.release();
+}
+
 GenericBadGuy::GenericBadGuy(const std::string& sprite_filename) :
-	BadGuy(sprite_filename)
+	BadGuy(sprite_filename),
+	m_weapon()
 {}
 
 GenericBadGuy::GenericBadGuy(const Sprite* sprite) :
-	BadGuy(sprite)
+	BadGuy(sprite),
+	m_weapon()
 {}
 
 std::unique_ptr<GenericBadGuy> GenericBadGuy::from_reader(const CrappyReaderData* crd)
 {
+	int health = 10;
+	crd->get("health", health);
+
 	uint32_t weapon_id;
 	if (!crd->get("weapon-id", weapon_id)) {
 		throw std::runtime_error("Missing weapon-id in badguy-specific");
 	}
+
+	Vector weapon_pos_offset;
+	if (CrappyReaderData* crd_weapon_pos_offset = crd->get_child("weapon-pos-offset")) {
+		crd_weapon_pos_offset->get("x", weapon_pos_offset.x);
+		crd_weapon_pos_offset->get("y", weapon_pos_offset.y);
+	}
+
+	float m_attack_per_sec = .25f;
+	crd->get("attack-per-sec", m_attack_per_sec);
+
+	float m_attack_chance = .5f;
+	crd->get("attack-chance", m_attack_chance);
 
 	std::string sprite_filename;
 	if (!crd->get("sprite-filename", sprite_filename)) {
@@ -29,25 +63,99 @@ std::unique_ptr<GenericBadGuy> GenericBadGuy::from_reader(const CrappyReaderData
 
 	auto badguy = std::make_unique<GenericBadGuy>(crd->m_parent_path + sprite_filename);
 	badguy->m_weapon = WeaponSet::current()->get_weapon(weapon_id).clone(badguy.get());
+	badguy->m_weapon->set_pos_offset(weapon_pos_offset);
+	badguy->m_health = health;
+	badguy->m_attack_timer.start(1.0 / m_attack_per_sec);
+	badguy->m_attack_chance = m_attack_chance;
 
 	return badguy;
 }
 
 void GenericBadGuy::draw(DrawingContext& drawing_context)
 {
-	if (m_weapon) m_weapon->draw(drawing_context);
+	if (m_state == STATE_INACTIVE) {
+		m_weapon->set_angle(math::angle(m_physic.get_velocity()));
+	}
 
-	BadGuy::draw(drawing_context);
+	float angle = m_weapon->get_angle();
+
+	if (std::abs(angle) >= 90.0f) {
+		m_weapon->set_flip(VERTICAL_FLIP);
+		m_direction = Direction::LEFT;
+	} else {
+		m_weapon->set_flip(NO_FLIP);
+		m_direction = Direction::RIGHT;
+	}
+	
+	m_weapon->draw(drawing_context);
+
+	std::string action_postfix;
+	action_postfix = (m_direction == Direction::RIGHT) ? "-right" : "-left";
+
+	m_sprite->set_action("idle" + action_postfix);
+
+	MovingSprite::draw(drawing_context);
 }
 
-void GenericBadGuy::active_update(float /* dt_sec */)
+void GenericBadGuy::collision_solid(const CollisionHit& hit)
 {
-	// NYI
+	if (hit.left || hit.right) {
+		m_physic.inverse_velocity_x();
+	}
+
+	if (hit.top || hit.bottom) {
+		m_physic.inverse_velocity_y();
+	}
 }
 
-void GenericBadGuy::inactive_update(float /* dt_sec */)
+HitResponse GenericBadGuy::collision(GameObject& other, const CollisionHit& /* hit */)
 {
-	// NYI
+	if (auto projectile = dynamic_cast<Projectile*>(&other)) {
+		if (projectile->get_hurt_attributes() & HURT_BADGUY) {
+			// since collision() can be call multiple time per frame, this is only temporary
+			m_health -= projectile->get_damage();
+		}
+	}
+	return CONTINUE;
+}
+
+void GenericBadGuy::active_update(float dt_sec)
+{
+	wander();
+
+	Vector player_pos = Room::get().get_nearest_player(get_pos())->get_pos();
+	Vector line_player_pos = player_pos - get_pos();
+	float angle = math::angle(line_player_pos);
+
+	m_weapon->set_angle(angle);
+
+	if (std::abs(angle) >= 90.0f) {
+		m_weapon->set_flip(VERTICAL_FLIP);
+		m_direction = Direction::LEFT;
+	} else {
+		m_weapon->set_flip(NO_FLIP);
+		m_direction = Direction::RIGHT;
+	}
+
+	// generic badguy only attack once in a while
+	if (m_attack_timer.check()) {
+		// if lucky, it attack
+		// else, another timer await
+		if (g_game_random.test_lucky(m_attack_chance)) {
+			m_weapon->attack();
+		} else {
+			m_attack_timer.start_true(m_attack_timer.get_period());
+		}
+	}
+
+	m_collision_object.set_movement(m_physic.get_movement(dt_sec));
+}
+
+void GenericBadGuy::inactive_update(float dt_sec)
+{
+	wander();
+
+	m_collision_object.set_movement(m_physic.get_movement(dt_sec));
 }
 
 void GenericBadGuy::try_change_state()
@@ -64,6 +172,24 @@ std::unique_ptr<BadGuy> GenericBadGuy::clone(const Vector& pos) const
 	auto badguy = std::make_unique<GenericBadGuy>(m_sprite.get());
 	badguy->set_pos(pos);
 	badguy->m_weapon = m_weapon->clone(badguy.get());
+	badguy->m_weapon->set_pos_offset(m_weapon->get_pos_offset());
+	badguy->m_health = m_health;
+	badguy->m_attack_timer.start(m_attack_timer.get_period());
+	badguy->m_attack_chance = m_attack_chance;
 
 	return badguy;
+}
+
+void GenericBadGuy::wander()
+{
+	if (g_game_random.test_lucky(WANDER_CHANCE)) {
+		// random speed uniformly in quad I
+		// add random an angle from -45 deg to 45 deg
+		// no sharp angle change
+		Vector speed(g_game_random.randf(WALK_SPEED), g_game_random.randf(WALK_SPEED));
+		float current_angle = math::angle(m_physic.get_velocity());
+		float added_angle = g_game_random.randf(-45.0f, 45.0f);
+		speed = math::rotate(speed, current_angle + added_angle);
+		m_physic.set_velocity(speed);
+	}
 }

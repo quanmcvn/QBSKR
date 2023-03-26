@@ -1,5 +1,7 @@
 #include "math/util.hpp"
 
+#include "math/vector.hpp"
+
 constexpr float PI = 3.14159265358979323846f;
 
 namespace math {
@@ -32,5 +34,10 @@ namespace math {
 	{
 		// good enough if x is not large
 		return sin_degree(90.0 - fabs(x));
+	}
+
+	float angle(const Vector& vector)
+	{
+		return math::radian_to_degree(std::atan2(vector.y, vector.x));
 	}
 } // namespace math

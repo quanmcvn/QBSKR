@@ -19,3 +19,5 @@ void Projectile::collision_tile(uint32_t /* tile_attributes */) {}
 
 uint32_t Projectile::get_hurt_attributes() const { return m_hurt_attributes; }
 void Projectile::set_hurt_attributes(uint32_t hurt_attributes) { m_hurt_attributes = hurt_attributes; }
+
+int Projectile::get_damage() const { return m_damage; }

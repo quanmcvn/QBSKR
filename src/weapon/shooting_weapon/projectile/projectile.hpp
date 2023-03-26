@@ -14,11 +14,10 @@ private:
 	Projectile(const Projectile&) = delete;
 	Projectile& operator=(const Projectile&) = delete;
 
-private:
-	uint32_t m_hurt_attributes;
-
 protected:
+	uint32_t m_hurt_attributes;
 	Physic m_physic;
+	int m_damage;
 
 public:
 	Projectile(const std::string& sprite_name);
@@ -40,6 +39,7 @@ public:
 public:
 	uint32_t get_hurt_attributes() const;
 	void set_hurt_attributes(uint32_t hurt_attributes);
+	int get_damage() const;
 };
 
 #endif

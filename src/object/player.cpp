@@ -22,7 +22,6 @@ Player::Player(int player_id, uint32_t weapon_id) :
 {
 	set_pos(Vector(17.0f, 17.0f));
 	m_collision_object.set_size(m_sprite->get_current_hitbox_width(), m_sprite->get_current_hitbox_height());
-	// should be OK here even though I did a cast down hierachy
 	if (weapon_id > 0) m_weapon = WeaponSet::current()->get_weapon(weapon_id).clone(this);
 }
 
@@ -65,8 +64,7 @@ void Player::collision_solid(const CollisionHit& hit)
 
 HitResponse Player::collision(GameObject& /* other */, const CollisionHit& /* hit */)
 {
-	// NYI
-	return ABORT_MOVE;
+	return CONTINUE;
 }
 
 void Player::collision_tile(uint32_t /* tile_attributes */)

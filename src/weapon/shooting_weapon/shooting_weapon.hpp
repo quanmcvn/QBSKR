@@ -16,7 +16,7 @@ public:
 	ShootingWeapon(const Sprite* sprite);
 
 public:
-	virtual void attack() override;
+	virtual void attack(int times = 1) override;
 	virtual void shoot_projectile(float angle) const;
 	virtual bool check_timer() = 0;
 	// since get_pos() returns the top left of collision bounding box

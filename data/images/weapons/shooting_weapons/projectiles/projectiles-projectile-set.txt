@@ -6,8 +6,9 @@ projectile-set-start
 		projectile-name pistol
 		projectile-type generic-projectile
 		projectile-specific-start
-			speed 1000
+			speed 320
 			bounce-wall-count 0
+			damage 3
 			sprite-filename pistol-bullet-sprite.txt
 		projectile-specific-end
 	projectile-end
@@ -17,8 +18,9 @@ projectile-set-start
 		projectile-name bad-pistol
 		projectile-type generic-projectile
 		projectile-specific-start
-			speed 160
+			speed 100
 			bounce-wall-count 0
+			damage 2
 			sprite-filename bad-pistol-bullet-sprite.txt
 		projectile-specific-end
 	projectile-end

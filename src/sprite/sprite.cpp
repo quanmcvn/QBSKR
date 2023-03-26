@@ -80,8 +80,10 @@ void Sprite::set_action(const std::string& name)
 		return;
 	}
 
-	m_frame_index = 0;
-	m_frame_progress = 0;
+	if (m_action->family_name != new_action->family_name) {
+		m_frame_index = 0;
+		m_frame_progress = 0;
+	}
 
 	m_action = new_action;
 }
@@ -92,6 +94,8 @@ float Sprite::get_current_frame_progess() const { return m_frame_progress; }
 
 float Sprite::get_current_hitbox_width() const { return m_action->hitbox_w; }
 float Sprite::get_current_hitbox_height() const { return m_action->hitbox_h; }
+
+Vector Sprite::get_current_offset() const { return Vector(m_action->x_offset, m_action->y_offset); }
 
 float Sprite::get_angle() const { return m_angle; }
 void Sprite::set_angle(float angle) { m_angle = angle; }

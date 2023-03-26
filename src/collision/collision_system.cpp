@@ -328,7 +328,7 @@ void CollisionSystem::collision_static_tilemap_object(CollisionObject& object) c
 
 void CollisionSystem::collision_object(CollisionObject& object1, CollisionObject& object2) const
 {
-	for (int i = 0; i < 4; ++ i) {
+	for (int i = 0; i < 2; ++ i) {
 		const Rectf& r1 = object1.m_dest;
 		const Rectf& r2 = object2.m_dest;
 

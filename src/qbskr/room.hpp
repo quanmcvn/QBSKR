@@ -45,6 +45,7 @@ public:
 	bool free_line_of_sight(const Vector& line_start, const Vector& line_end) const;
 	bool can_see_player(const Vector& eye) const;
 	bool inside(const Rectf& rect) const;
+	Player* get_nearest_player(const Vector& pos) const;
 };
 
 #endif

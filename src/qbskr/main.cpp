@@ -86,6 +86,8 @@ int Main::run([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
 	Room::get().add<TileMap>(tileset.get(), cr.get_root()->get_child("tilemap"));
 	Room::get().add<Player>(0, 1);
 	Room::get().add_object(BadGuySet::current()->get_badguy(1).clone(Vector(100.0f, 100.0f)));
+	Room::get().add_object(BadGuySet::current()->get_badguy(1).clone(Vector(100.0f, 100.0f)));
+	Room::get().add_object(BadGuySet::current()->get_badguy(1).clone(Vector(100.0f, 100.0f)));
 
 	const Uint32 ms_per_step = static_cast<Uint32>(1000.0f / LOGICAL_FPS);
 	const float seconds_per_step = static_cast<float>(ms_per_step) / 1000.0f;

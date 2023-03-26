@@ -5,6 +5,7 @@
 #include "badguy/generic_badguy.hpp"
 #include "util/crappy_reader.hpp"
 #include "util/log.hpp"
+#include "weapon/weapon.hpp"
 
 BadGuySet::BadGuySet() :
 	m_filename("images/badguys/badguy-badguy-set.txt"),

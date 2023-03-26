@@ -40,6 +40,8 @@ public:
 	float get_current_hitbox_width() const;
 	float get_current_hitbox_height() const;
 
+	Vector get_current_offset() const;
+
 	float get_angle() const;
 	void set_angle(float angle);
 

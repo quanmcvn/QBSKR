@@ -3,7 +3,7 @@ sprite-start
 	action-start
 		name idle-right
 		fps 6
-		hitbox 0 0 10 10
+		hitbox 0 0 11 16
 		images-start
 			idle-0.png
 			idle-1.png

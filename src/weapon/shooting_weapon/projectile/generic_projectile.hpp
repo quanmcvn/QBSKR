@@ -29,6 +29,7 @@ public:
 	static std::string class_name();
 	virtual std::string get_class_name() const;
 	virtual void collision_solid(const CollisionHit& hit) override;
+	virtual HitResponse collision(GameObject& other, const CollisionHit& hit) override;
 	virtual std::unique_ptr<Projectile> clone(const Vector& pos, uint32_t hurt_attributes, float angle) const override;
 };
 

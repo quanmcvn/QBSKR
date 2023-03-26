@@ -1,5 +1,7 @@
 #include "qbskr/room.hpp"
 
+#include <limits>
+
 #include "collision/collision_system.hpp"
 #include "object/moving_object.hpp"
 #include "object/player.hpp"
@@ -98,4 +100,23 @@ bool Room::inside(const Rectf& rect) const
 		if (!(bounding_box.contains(rect))) return false;
 	}
 	return true;
+}
+
+Player* Room::get_nearest_player(const Vector& pos) const
+{
+	Player* nearest_player = nullptr;
+	float nearest_dist = std::numeric_limits<float>::max();
+
+	for (auto player_ptr : get_objects_by_type_index(typeid(Player))) {
+		Player& player = *static_cast<Player*>(player_ptr);
+
+		float dist = player.get_bounding_box().distance(pos);
+
+		if (dist < nearest_dist) {
+			nearest_player = &player;
+			nearest_dist = dist;
+		}
+	}
+
+	return nearest_player;
 }

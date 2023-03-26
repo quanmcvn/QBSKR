@@ -12,9 +12,12 @@ ShootingWeapon::ShootingWeapon(const Sprite* sprite) :
 	Weapon(sprite)
 {}
 
-void ShootingWeapon::attack()
+
+void ShootingWeapon::attack(int times)
 {
-	if (check_timer()) shoot_projectile(get_angle());
+	if (check_timer()) {
+		for (int i = 0; i < times; ++ i) shoot_projectile(get_angle());
+	}
 }
 
 void ShootingWeapon::shoot_projectile(float angle) const

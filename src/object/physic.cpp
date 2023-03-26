@@ -5,6 +5,8 @@ Physic::Physic() :
 	vy(0.0f)
 {}
 
+void Physic::reset() { vx = 0; vy = 0; }
+
 void Physic::set_velocity(float nvx, float nvy) { vx = nvx; vy = nvy; }
 void Physic::set_velocity(const Vector& vector) { vx = vector.x; vy = vector.y; }
 void Physic::set_velocity_x(float nvx) { vx = nvx; }

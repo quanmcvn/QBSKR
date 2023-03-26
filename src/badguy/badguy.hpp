@@ -22,6 +22,7 @@ protected:
 	Physic m_physic;
 	Direction m_direction;
 	State m_state;
+	int m_health;
 
 public:
 	BadGuy(const std::string& sprite_filename);
@@ -29,7 +30,6 @@ public:
 
 public:
 	virtual void update(float dt_sec) override;
-	virtual void draw(DrawingContext& drawing_context) override;
 	static std::string class_name();
 	virtual std::string get_class_name() const;
 	virtual void active_update(float dt_sec) = 0;
@@ -39,6 +39,7 @@ public:
 	virtual std::unique_ptr<BadGuy> clone(const Vector& pos) const = 0;
 
 public:
+	int get_health() const;
 	// (potentialy) expensive
 	bool can_see_player() const;
 };
