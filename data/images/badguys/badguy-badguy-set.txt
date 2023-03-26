@@ -10,7 +10,8 @@ badguy-set-start
 				x 0
 				y 7
 			weapon-pos-offset-end
-			attack-per-sec .2
+			attack-per-sec .33
+			-- note that this is per-frame
 			attack-chance 0.01
 			sprite-filename goblin/goblin-sprite.txt
 		badguy-specific-end

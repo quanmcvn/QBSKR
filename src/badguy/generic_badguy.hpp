@@ -19,6 +19,7 @@ private:
 	std::unique_ptr<Weapon> m_weapon;
 	Timer m_attack_timer;
 	float m_attack_chance;
+	Timer m_die_animation_timer;
 
 public:
 	GenericBadGuy(const std::string& sprite_filename);

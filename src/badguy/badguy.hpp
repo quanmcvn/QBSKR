@@ -24,6 +24,11 @@ protected:
 	State m_state;
 	int m_health;
 
+protected:
+	bool m_die;
+	// if hit this frame
+	bool m_is_hit;
+
 public:
 	BadGuy(const std::string& sprite_filename);
 	BadGuy(const Sprite* sprite);

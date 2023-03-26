@@ -45,6 +45,7 @@ std::string MovingSprite::class_name() { return "moving-sprite"; }
 std::string MovingSprite::get_class_name() const { return class_name(); }
 
 int MovingSprite::get_layer() const { return m_layer; }
+void MovingSprite::set_layer(int layer) { m_layer = layer; }
 
 void MovingSprite::set_action(const std::string& action)
 {

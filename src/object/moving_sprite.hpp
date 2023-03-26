@@ -36,6 +36,7 @@ public:
 	static std::string class_name();
 	virtual std::string get_class_name() const override;
 	virtual int get_layer() const override;
+	void set_layer(int layer);
 	float get_angle() const;
 	void set_angle(float angle);
 	Flip get_flip() const;

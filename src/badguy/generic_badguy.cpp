@@ -1,7 +1,9 @@
 #include "badguy/generic_badguy.hpp"
 
+#include <algorithm>
 #include <stdexcept>
 
+#include "math/interpolate.hpp"
 #include "math/random.hpp"
 #include "math/util.hpp"
 #include "object/player.hpp"
@@ -17,6 +19,8 @@ namespace {
 	const float WALK_SPEED = 32.0f;
 	// arbitrary choice
 	const float WANDER_CHANCE = 0.01f;
+	// arbitrary choice
+	const float DIE_ANIMATION_TIME = 0.4f;
 }
 
 GenericBadGuy::~GenericBadGuy()
@@ -73,26 +77,46 @@ std::unique_ptr<GenericBadGuy> GenericBadGuy::from_reader(const CrappyReaderData
 
 void GenericBadGuy::draw(DrawingContext& drawing_context)
 {
-	if (m_state == STATE_INACTIVE) {
-		m_weapon->set_angle(math::angle(m_physic.get_velocity()));
-	}
-
-	float angle = m_weapon->get_angle();
-
-	if (std::abs(angle) >= 90.0f) {
-		m_weapon->set_flip(VERTICAL_FLIP);
-		m_direction = Direction::LEFT;
+	if (m_die) {
+		if (m_die_animation_timer.get_period() == 0.0f) {
+			m_die_animation_timer.start(DIE_ANIMATION_TIME);
+		}
+		set_layer(LAYER_TILES + 10);
+		// dim badguy
+		m_sprite->set_color(Color(.5f, .5f, .5f, 1.0f));
+		// use interpolate to calculate the angle to rotate sprite
+		float time_die_animation = std::clamp(m_die_animation_timer.get_timegone() / m_die_animation_timer.get_period(), 0.0f, 1.0f);
+		if (m_direction == Direction::RIGHT) {
+			m_sprite->set_angle(interpolate::quadratic_ease_out(time_die_animation, 0.0f, 90.0f));
+		} else {
+			m_sprite->set_angle(interpolate::quadratic_ease_out(time_die_animation, 0.0f, -90.0f));
+		}
 	} else {
-		m_weapon->set_flip(NO_FLIP);
-		m_direction = Direction::RIGHT;
+		if (m_state == STATE_INACTIVE) {
+			m_weapon->set_angle(math::angle(m_physic.get_velocity()));
+		}
+
+		float weapon_angle = m_weapon->get_angle();
+
+		if (std::abs(weapon_angle) >= 90.0f) {
+			m_weapon->set_flip(VERTICAL_FLIP);
+			m_direction = Direction::LEFT;
+		} else {
+			m_weapon->set_flip(NO_FLIP);
+			m_direction = Direction::RIGHT;
+		}
+		
+		m_weapon->draw(drawing_context);
 	}
-	
-	m_weapon->draw(drawing_context);
 
 	std::string action_postfix;
 	action_postfix = (m_direction == Direction::RIGHT) ? "-right" : "-left";
 
-	m_sprite->set_action("idle" + action_postfix);
+	if (m_die) {
+		m_sprite->set_action("die" + action_postfix);
+	} else {
+		m_sprite->set_action("idle" + action_postfix);
+	}
 
 	MovingSprite::draw(drawing_context);
 }
@@ -112,8 +136,8 @@ HitResponse GenericBadGuy::collision(GameObject& other, const CollisionHit& /* h
 {
 	if (auto projectile = dynamic_cast<Projectile*>(&other)) {
 		if (projectile->get_hurt_attributes() & HURT_BADGUY) {
-			// since collision() can be call multiple time per frame, this is only temporary
 			m_health -= projectile->get_damage();
+			m_is_hit = true;
 		}
 	}
 	return CONTINUE;
@@ -121,6 +145,11 @@ HitResponse GenericBadGuy::collision(GameObject& other, const CollisionHit& /* h
 
 void GenericBadGuy::active_update(float dt_sec)
 {
+	if (m_die) {
+		set_group(COLLISION_GROUP_DISABLED);
+		return;
+	}
+
 	wander();
 
 	Vector player_pos = Room::get().get_nearest_player(get_pos())->get_pos();
@@ -153,6 +182,11 @@ void GenericBadGuy::active_update(float dt_sec)
 
 void GenericBadGuy::inactive_update(float dt_sec)
 {
+	if (m_die) {
+		set_group(COLLISION_GROUP_DISABLED);
+		return;
+	}
+
 	wander();
 
 	m_collision_object.set_movement(m_physic.get_movement(dt_sec));
@@ -186,10 +220,12 @@ void GenericBadGuy::wander()
 		// random speed uniformly in quad I
 		// add random an angle from -45 deg to 45 deg
 		// no sharp angle change
-		Vector speed(g_game_random.randf(WALK_SPEED), g_game_random.randf(WALK_SPEED));
-		float current_angle = math::angle(m_physic.get_velocity());
-		float added_angle = g_game_random.randf(-45.0f, 45.0f);
-		speed = math::rotate(speed, current_angle + added_angle);
+		// Vector speed(g_game_random.randf(-WALK_SPEED, WALK_SPEED), g_game_random.randf(-WALK_SPEED, WALK_SPEED));
+		Vector speed(WALK_SPEED, WALK_SPEED);
+		
+		// float current_angle = math::angle(m_physic.get_velocity());
+		// float added_angle = g_game_random.randf(-45.0f, 45.0f);
+		speed = math::rotate(speed, g_game_random.randf(-180.0f, 180.0f));
 		m_physic.set_velocity(speed);
 	}
 }

@@ -6,14 +6,18 @@ BadGuy::BadGuy(const std::string& sprite_filename) :
 	MovingSprite(Vector(0.0f, 0.0f), sprite_filename),
 	m_physic(),
 	m_direction(Direction::RIGHT),
-	m_health(0)
+	m_health(0),
+	m_die(),
+	m_is_hit()
 {}
 
 BadGuy::BadGuy(const Sprite* sprite) :
 	MovingSprite(Vector(0.0f, 0.0f), sprite),
 	m_physic(),
 	m_direction(Direction::RIGHT),
-	m_health(0)
+	m_health(0),
+	m_die(),
+	m_is_hit()
 {}
 
 void BadGuy::update(float dt_sec)
@@ -33,8 +37,8 @@ void BadGuy::update(float dt_sec)
 			break;
 	}
 
-	// hardcode-ed health <= 0 then kill
-	if (m_health <= 0) remove_me();
+	// only set m_die = true, it's to the derived to decide what to do with it
+	if (m_health <= 0) m_die = true;
 }
 
 std::string BadGuy::class_name() { return "bad-guy"; }

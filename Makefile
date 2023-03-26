@@ -17,6 +17,7 @@ OBJ_FILES = src/main.o                                                  \
             src/control/mouse_button_manager.o                          \
             src/control/mouse_motion_manager.o                          \
             src/math/anchor_point.o                                     \
+            src/math/interpolate.o                                      \
             src/math/random.o                                           \
             src/math/rect.o                                             \
             src/math/rectf.o                                            \

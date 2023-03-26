@@ -23,6 +23,7 @@ public:
 	void start_true(float period);
 	// returns true if a period (or more) passed
 	bool check();
+	float get_timegone() const;
 
 	float get_period() const;
 };

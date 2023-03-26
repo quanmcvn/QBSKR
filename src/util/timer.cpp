@@ -32,3 +32,4 @@ bool Timer::check()
 }
 
 float Timer::get_period() const { return m_period; }
+float Timer::get_timegone() const { return g_game_time - m_cycle_start; }

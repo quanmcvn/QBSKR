@@ -1,6 +1,6 @@
 sprite-start
 	action-start
-		hitbox 0 0 5 5
+		hitbox 3 3 5 5
 		images-start
 			bad-pistol-bullet.png
 		images-end
