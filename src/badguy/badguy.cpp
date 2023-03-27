@@ -8,7 +8,7 @@ BadGuy::BadGuy(const std::string& sprite_filename) :
 	m_direction(Direction::RIGHT),
 	m_health(0),
 	m_die(),
-	m_is_hit()
+	m_hit_damage()
 {}
 
 BadGuy::BadGuy(const Sprite* sprite) :
@@ -17,7 +17,7 @@ BadGuy::BadGuy(const Sprite* sprite) :
 	m_direction(Direction::RIGHT),
 	m_health(0),
 	m_die(),
-	m_is_hit()
+	m_hit_damage()
 {}
 
 void BadGuy::update(float dt_sec)

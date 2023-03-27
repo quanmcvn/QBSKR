@@ -1,6 +1,8 @@
 #ifndef HEADER_QBSKR_BADGUY_BADGUY_HPP
 #define HEADER_QBSKR_BADGUY_BADGUY_HPP
 
+#include <optional>
+
 #include "object/direction.hpp"
 #include "object/moving_sprite.hpp"
 #include "object/physic.hpp"
@@ -27,7 +29,7 @@ protected:
 protected:
 	bool m_die;
 	// if hit this frame
-	bool m_is_hit;
+	std::optional<int> m_hit_damage;
 
 public:
 	BadGuy(const std::string& sprite_filename);
@@ -40,7 +42,6 @@ public:
 	virtual void active_update(float dt_sec) = 0;
 	virtual void inactive_update(float dt_sec) = 0;
 	virtual void try_change_state() = 0;
-	// assume the cloned badguy is put into Room
 	virtual std::unique_ptr<BadGuy> clone(const Vector& pos) const = 0;
 
 public:

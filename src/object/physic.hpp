@@ -13,6 +13,7 @@ public:
 
 private:
 	float vx, vy;
+	float ax, ay;
 
 public:
 	void reset();
@@ -26,10 +27,19 @@ public:
 	float get_velocity_x() const;
 	float get_velocity_y() const;
 
-	Vector get_movement(float dt_sec);
-
 	void inverse_velocity_x();
 	void inverse_velocity_y();
+
+	void set_acceleration(float nax, float nay);
+	void set_acceleration(const Vector& vector);
+	void set_acceleration_x(float nax);
+	void set_acceleration_y(float nay);
+
+	Vector get_acceleration() const;
+	float get_acceleration_x() const;
+	float get_acceleration_y() const;
+
+	Vector get_movement(float dt_sec);
 };
 
 #endif

@@ -6,7 +6,7 @@ projectile-set-start
 		projectile-name pistol
 		projectile-type generic-projectile
 		projectile-specific-start
-			speed 320
+			speed 640
 			bounce-wall-count 0
 			damage 3
 			sprite-filename pistol-bullet-sprite.txt

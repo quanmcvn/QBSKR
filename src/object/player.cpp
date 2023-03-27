@@ -1,5 +1,6 @@
 #include "object/player.hpp"
 
+#include "badguy/badguy.hpp"
 #include "control/input_manager.hpp"
 #include "sprite/sprite_manager.hpp"
 #include "sprite/sprite.hpp"
@@ -62,8 +63,11 @@ void Player::collision_solid(const CollisionHit& hit)
 	}
 }
 
-HitResponse Player::collision(GameObject& /* other */, const CollisionHit& /* hit */)
+HitResponse Player::collision(GameObject& other, const CollisionHit& /* hit */)
 {
+	if (dynamic_cast<BadGuy*>(&other)) {
+		return ABORT_MOVE;
+	}
 	return CONTINUE;
 }
 

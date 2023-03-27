@@ -18,9 +18,13 @@ namespace {
 	// arbitrary choice
 	const float WALK_SPEED = 32.0f;
 	// arbitrary choice
-	const float WANDER_CHANCE = 0.01f;
+	const float WANDER_CHANCE = 0.02f;
 	// arbitrary choice
 	const float DIE_ANIMATION_TIME = 0.4f;
+	// arbitrary choice
+	const float KNOCKBACK_ANIMATION_TIME = 0.1f;
+	// arbitrary choice
+	const float KNOCKBACK_SPEED = 100.0f;
 }
 
 GenericBadGuy::~GenericBadGuy()
@@ -69,17 +73,53 @@ std::unique_ptr<GenericBadGuy> GenericBadGuy::from_reader(const CrappyReaderData
 	badguy->m_weapon = WeaponSet::current()->get_weapon(weapon_id).clone(badguy.get());
 	badguy->m_weapon->set_pos_offset(weapon_pos_offset);
 	badguy->m_health = health;
-	badguy->m_attack_timer.start(1.0 / m_attack_per_sec);
+	badguy->m_attack_timer.start(1.0 / m_attack_per_sec, true);
 	badguy->m_attack_chance = m_attack_chance;
 
 	return badguy;
 }
 
+void GenericBadGuy::update(float dt_sec)
+{
+	try_change_state();
+	
+	if (m_die) {
+		set_group(COLLISION_GROUP_DISABLED);
+		return;
+	}
+
+	if (m_hit_damage.has_value()) {
+		m_health -= *m_hit_damage;
+		m_hit_damage.reset();
+	}
+
+	if (!m_knockback_animation_timer.started()) {
+		wander();
+	}
+
+	switch (m_state) {
+		case STATE_INACTIVE:
+			inactive_update(dt_sec);
+			break;
+
+		case STATE_ACTIVE:
+			active_update(dt_sec);
+			break;
+
+		default:
+			break;
+	}
+
+	if (m_health <= 0) m_die = true;
+
+	m_collision_object.set_movement(m_physic.get_movement(dt_sec));
+}
+
 void GenericBadGuy::draw(DrawingContext& drawing_context)
 {
 	if (m_die) {
-		if (m_die_animation_timer.get_period() == 0.0f) {
-			m_die_animation_timer.start(DIE_ANIMATION_TIME);
+		if (!m_die_animation_timer.started()) {
+			m_die_animation_timer.start(DIE_ANIMATION_TIME, false);
 		}
 		set_layer(LAYER_TILES + 10);
 		// dim badguy
@@ -112,10 +152,18 @@ void GenericBadGuy::draw(DrawingContext& drawing_context)
 	std::string action_postfix;
 	action_postfix = (m_direction == Direction::RIGHT) ? "-right" : "-left";
 
+	if (m_hit_damage.has_value()) {
+		m_knockback_animation_timer.start(KNOCKBACK_ANIMATION_TIME, false);
+	}
+
 	if (m_die) {
 		m_sprite->set_action("die" + action_postfix);
 	} else {
-		m_sprite->set_action("idle" + action_postfix);
+		if (!m_knockback_animation_timer.ended()) {
+			m_sprite->set_action("knockback" + action_postfix);
+		} else {
+			m_sprite->set_action("idle" + action_postfix);
+		}
 	}
 
 	MovingSprite::draw(drawing_context);
@@ -136,22 +184,14 @@ HitResponse GenericBadGuy::collision(GameObject& other, const CollisionHit& /* h
 {
 	if (auto projectile = dynamic_cast<Projectile*>(&other)) {
 		if (projectile->get_hurt_attributes() & HURT_BADGUY) {
-			m_health -= projectile->get_damage();
-			m_is_hit = true;
+			m_hit_damage = projectile->get_damage();
 		}
 	}
 	return CONTINUE;
 }
 
-void GenericBadGuy::active_update(float dt_sec)
+void GenericBadGuy::active_update(float /* dt_sec */)
 {
-	if (m_die) {
-		set_group(COLLISION_GROUP_DISABLED);
-		return;
-	}
-
-	wander();
-
 	Vector player_pos = Room::get().get_nearest_player(get_pos())->get_pos();
 	Vector line_player_pos = player_pos - get_pos();
 	float angle = math::angle(line_player_pos);
@@ -173,24 +213,13 @@ void GenericBadGuy::active_update(float dt_sec)
 		if (g_game_random.test_lucky(m_attack_chance)) {
 			m_weapon->attack();
 		} else {
-			m_attack_timer.start_true(m_attack_timer.get_period());
+			m_attack_timer.start_true(m_attack_timer.get_period(), true);
 		}
 	}
-
-	m_collision_object.set_movement(m_physic.get_movement(dt_sec));
 }
 
-void GenericBadGuy::inactive_update(float dt_sec)
-{
-	if (m_die) {
-		set_group(COLLISION_GROUP_DISABLED);
-		return;
-	}
-
-	wander();
-
-	m_collision_object.set_movement(m_physic.get_movement(dt_sec));
-}
+void GenericBadGuy::inactive_update(float /* dt_sec */)
+{}
 
 void GenericBadGuy::try_change_state()
 {
@@ -208,7 +237,7 @@ std::unique_ptr<BadGuy> GenericBadGuy::clone(const Vector& pos) const
 	badguy->m_weapon = m_weapon->clone(badguy.get());
 	badguy->m_weapon->set_pos_offset(m_weapon->get_pos_offset());
 	badguy->m_health = m_health;
-	badguy->m_attack_timer.start(m_attack_timer.get_period());
+	badguy->m_attack_timer.start(m_attack_timer.get_period(), true);
 	badguy->m_attack_chance = m_attack_chance;
 
 	return badguy;

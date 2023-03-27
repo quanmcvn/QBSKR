@@ -20,15 +20,16 @@ std::unique_ptr<GenericProjectile> GenericProjectile::from_reader(const CrappyRe
 {
 	float speed = 100.0f;
 	crd->get("speed", speed);
-	if (speed < 0) speed = 100;
+	// cap minimum speed
+	speed = std::max(speed, 80.0f);
 
 	int bounce_wall_count = 0;
 	crd->get("bounce-wall-count", bounce_wall_count);
-	if (bounce_wall_count < 0) bounce_wall_count = 0;
+	bounce_wall_count = std::max(bounce_wall_count, 0);
 
 	int damage = 1;
 	crd->get("damage", damage);
-	if (damage < 0) damage = 1;
+	damage = std::max(damage, 1);
 
 	std::string sprite_filename;
 	if (!crd->get("sprite-filename", sprite_filename)) {
@@ -71,7 +72,7 @@ HitResponse GenericProjectile::collision(GameObject& other, const CollisionHit& 
 		}
 		// projectile will hurt player, but that will be resolved by player's collision() call
 		remove_me();
-		return CONTINUE;
+		return FORCE_MOVE;
 	}
 
 	if (dynamic_cast<BadGuy*>(&other)) {
@@ -80,7 +81,7 @@ HitResponse GenericProjectile::collision(GameObject& other, const CollisionHit& 
 		}
 		// projectile will hurt badguy, but that will be resolved by badguy's collision() call
 		remove_me();
-		return CONTINUE;
+		return FORCE_MOVE;
 	}
 
 	if (dynamic_cast<GenericProjectile*>(&other)) {

@@ -4,15 +4,15 @@ badguy-set-start
 		id 1
 		badguy-type generic-badguy
 		badguy-specific-start
-			health 12
+			health 1200
 			weapon-id 2
 			weapon-pos-offset-start
 				x 0
 				y 7
 			weapon-pos-offset-end
-			attack-per-sec .33
+			attack-per-sec .66
 			-- note that this is per-frame
-			attack-chance 0.01
+			attack-chance 0.04
 			sprite-filename goblin/goblin-sprite.txt
 		badguy-specific-end
 	badguy-end

@@ -44,7 +44,7 @@ std::unique_ptr<GenericShootingWeapon> GenericShootingWeapon::from_reader(const 
 
 	auto weapon = std::make_unique<GenericShootingWeapon>(crd->m_parent_path + sprite_filename);
 	weapon->m_projectile_id = projectile_id;
-	weapon->m_timer.start_true(1.0f / projectiles_per_sec);
+	weapon->m_timer.start_true(1.0f / projectiles_per_sec, true);
 	weapon->m_projectile_spawn_pos = projectile_spawn_pos;
 
 	return weapon;
@@ -68,7 +68,7 @@ std::unique_ptr<Weapon> GenericShootingWeapon::clone(MovingObject* parent) const
 	auto weapon = std::make_unique<GenericShootingWeapon>(m_sprite.get());
 	weapon->change_parent(parent);
 	weapon->m_projectile_id = m_projectile_id;
-	weapon->m_timer.start_true(m_timer.get_period());
+	weapon->m_timer.start_true(m_timer.get_period(), true);
 	weapon->m_projectile_spawn_pos = m_projectile_spawn_pos;
 
 	return weapon;
