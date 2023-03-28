@@ -25,6 +25,7 @@ OBJ_FILES = src/main.o                                                  \
             src/math/sizef.o                                            \
             src/math/util.o                                             \
             src/math/vector.o                                           \
+            src/object/camera.o                                         \
             src/object/game_object_manager.o                            \
             src/object/game_object.o                                    \
             src/object/moving_object.o                                  \

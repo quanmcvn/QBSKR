@@ -3,11 +3,13 @@
 #include <limits>
 
 #include "collision/collision_system.hpp"
+#include "object/camera.hpp"
 #include "object/moving_object.hpp"
 #include "object/player.hpp"
 #include "object/tile_map.hpp"
 #include "qbskr/gameconfig.hpp"
 #include "qbskr/globals.hpp"
+#include "util/log.hpp"
 #include "video/drawing_context.hpp"
 
 Room* Room::s_current = nullptr;
@@ -55,6 +57,14 @@ void Room::deactivate()
 
 bool Room::before_object_add(GameObject& object)
 {
+	if (object.is_singleton()) {
+		const auto& objects = get_objects_by_type_index(typeid(object));
+		if (!objects.empty()) {
+			log_warning << "Can't insert multiple GameObject of type '" << typeid(object).name() << "', discarding" << std::endl;
+			return false;
+		}
+	}
+
 	if (auto moving_object = dynamic_cast<MovingObject*>(&object)) {
 		m_collision_system->add(moving_object->get_collision_object());
 	}
@@ -119,4 +129,20 @@ Player* Room::get_nearest_player(const Vector& pos) const
 	}
 
 	return nearest_player;
+}
+
+Camera& Room::get_camera() const
+{
+	auto cameras = get_objects_by_type_index(typeid(Camera));
+	assert(cameras.size() == 1);
+	return *static_cast<Camera*>(cameras[0]);
+}
+
+std::vector<Player*> Room::get_players() const
+{
+	std::vector<Player*> ret;
+	for (const auto& player_ptr : get_objects_by_type_index(typeid(Player))) {
+		ret.push_back(static_cast<Player*>(player_ptr));
+	}
+	return ret;
 }

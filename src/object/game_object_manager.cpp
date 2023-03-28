@@ -65,6 +65,7 @@ void GameObjectManager::flush_game_objects()
 	m_game_objects.erase(
 		std::remove_if(m_game_objects.begin(), m_game_objects.end(),
 			[this](const std::unique_ptr<GameObject>& object) {
+				if (object.get() == nullptr) return true;
 				if (!object->is_valid()) {
 					this_before_object_remove(*object);
 					before_object_remove(*object);

@@ -4,6 +4,7 @@
 #include "object/game_object_manager.hpp"
 #include "object/tile.hpp"
 
+class Camera;
 class CollisionSystem;
 class Player;
 class Rectf;
@@ -46,6 +47,8 @@ public:
 	bool can_see_player(const Vector& eye) const;
 	bool inside(const Rectf& rect) const;
 	Player* get_nearest_player(const Vector& pos) const;
+	Camera& get_camera() const;
+	std::vector<Player*> get_players() const;
 };
 
 #endif

@@ -10,6 +10,7 @@
 #include "control/input_manager.hpp"
 #include "qbskr/constants.hpp"
 #include "qbskr/globals.hpp"
+#include "object/camera.hpp"
 #include "object/tile_map.hpp"
 #include "object/tile_set_parser.hpp"
 #include "object/tile_set.hpp"
@@ -85,6 +86,7 @@ int Main::run([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
 
 	Room::get().add<TileMap>(tileset.get(), cr.get_root()->get_child("tilemap"));
 	Room::get().add<Player>(0, 1);
+	Room::get().add<Camera>();
 	Room::get().add_object(BadGuySet::current()->get_badguy(1).clone(Vector(100.0f, 100.0f)));
 	Room::get().add_object(BadGuySet::current()->get_badguy(1).clone(Vector(100.0f, 100.0f)));
 	Room::get().add_object(BadGuySet::current()->get_badguy(1).clone(Vector(100.0f, 100.0f)));
@@ -111,6 +113,10 @@ int Main::run([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
 
 		int steps = elapsed_ticks / ms_per_step;
 
+		// cap max step per frame
+		// 4 step per frame = 16 fps
+		steps = std::min(steps, 4);
+
 		for (int i = 0; i < steps; ++i) {
 			float d_time = seconds_per_step;
 			g_game_time += d_time;
@@ -131,7 +137,14 @@ int Main::run([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
 		if (steps > 0) {
 			Compositor compositor(*VideoSystem::current());
 			auto& drawing_context = compositor.make_context();
-			room->draw(drawing_context);
+			Camera& camera = Room::get().get_camera();
+			
+			drawing_context.push_transform();
+			
+			drawing_context.set_translation(camera.get_translation());
+			Room::get().draw(drawing_context);
+			
+			drawing_context.pop_transform();
 			compositor.render();
 		}
 	}
