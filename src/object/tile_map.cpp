@@ -11,7 +11,6 @@
 #include "util/crappy_reader_data.hpp"
 
 TileMap::TileMap() :
-	m_tileset(),
 	m_tiles(),
 	m_is_solid(),
 	m_width(),
@@ -23,8 +22,7 @@ TileMap::TileMap() :
 TileMap::~TileMap()
 {}
 
-TileMap::TileMap(TileSet* tileset, CrappyReaderData* crd) :
-	m_tileset(tileset),
+TileMap::TileMap(CrappyReaderData* crd) :
 	m_tiles(),
 	m_is_solid(),
 	m_width(),
@@ -71,7 +69,7 @@ void TileMap::draw(DrawingContext& drawing_context)
 			assert(index < m_width * m_height);
 
 			if (m_tiles[index] == 0) continue;
-			const Tile& tile = m_tileset->get(m_tiles[index]);
+			const Tile& tile = TileSet::current()->get(m_tiles[index]);
 
 			tile.draw(canvas, pos, m_layer);
 		}
@@ -104,13 +102,13 @@ uint32_t TileMap::get_tile_id_at(const Vector& pos) const
 const Tile& TileMap::get_tile(int x, int y) const
 {
 	uint32_t id = get_tile_id(x, y);
-	return m_tileset->get(id);
+	return TileSet::current()->get(id);
 }
 
 const Tile& TileMap::get_tile_at(const Vector& pos) const
 {
 	uint32_t id = get_tile_id_at(pos);
-	return m_tileset->get(id);
+	return TileSet::current()->get(id);
 }
 
 void TileMap::change(int x, int y, uint32_t new_tile)

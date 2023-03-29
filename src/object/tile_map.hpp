@@ -24,7 +24,6 @@ private:
 	TileMap& operator=(const TileMap&) = delete;
 
 private:
-	const TileSet* m_tileset;
 	using Tiles = std::vector<uint32_t>;
 	Tiles m_tiles;
 
@@ -38,7 +37,7 @@ private:
 	Vector m_offset;
 
 public:
-	TileMap(TileSet* tileset, CrappyReaderData* crd);
+	TileMap(CrappyReaderData* crd);
 
 	virtual void update(float dt_sec) override;
 	virtual void draw(DrawingContext& context) override;

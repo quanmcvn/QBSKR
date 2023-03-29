@@ -6,16 +6,17 @@
 #include <string>
 
 #include "object/tile.hpp"
+#include "util/currenton.hpp"
 
 class CrappyReader;
 
-class TileSet final {
+class TileSet final : public Currenton<TileSet> {
 public:
 	static std::unique_ptr<TileSet> from_file(const std::string& filename);
 
 public:
 	TileSet();
-	~TileSet();
+	~TileSet() override;
 
 private:
 	std::vector<std::unique_ptr<Tile>> m_tiles;

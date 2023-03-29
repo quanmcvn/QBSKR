@@ -74,7 +74,6 @@ int Main::run([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
 	auto weapon_set = std::make_unique<WeaponSet>();
 	auto projectile_set = std::make_unique<ProjectileSet>();
 	auto badguy_set = std::make_unique<BadGuySet>();
-
 	auto tileset = TileSet::from_file("images/tiles/tiles-tileset.txt");
 
 	CrappyReader cr("levels/level0/level0-tilemap.txt");
@@ -84,7 +83,7 @@ int Main::run([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
 
 	room->activate();
 
-	Room::get().add<TileMap>(tileset.get(), cr.get_root()->get_child("tilemap"));
+	Room::get().add<TileMap>(cr.get_root()->get_child("tilemap"));
 	Room::get().add<Player>(0, 1);
 	Room::get().add<Camera>();
 	Room::get().add_object(BadGuySet::current()->get_badguy(1).clone(Vector(100.0f, 100.0f)));
