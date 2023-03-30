@@ -4,7 +4,7 @@ badguy-set-start
 		id 1
 		badguy-type generic-badguy
 		badguy-specific-start
-			health 1200
+			health 12
 			weapon-id 2
 			weapon-pos-offset-start
 				x 0

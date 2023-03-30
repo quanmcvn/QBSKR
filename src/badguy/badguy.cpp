@@ -7,7 +7,7 @@ BadGuy::BadGuy(const std::string& sprite_filename) :
 	m_physic(),
 	m_direction(Direction::RIGHT),
 	m_health(0),
-	m_die(),
+	m_die(false),
 	m_hit_damage()
 {}
 
@@ -16,7 +16,7 @@ BadGuy::BadGuy(const Sprite* sprite) :
 	m_physic(),
 	m_direction(Direction::RIGHT),
 	m_health(0),
-	m_die(),
+	m_die(false),
 	m_hit_damage()
 {}
 
@@ -45,8 +45,5 @@ std::string BadGuy::class_name() { return "bad-guy"; }
 std::string BadGuy::get_class_name() const { return class_name(); }
 
 int BadGuy::get_health() const { return m_health; };
-
-bool BadGuy::can_see_player() const
-{
-	return Room::get().can_see_player(get_pos());
-}
+bool BadGuy::can_see_player() const { return Room::get().can_see_player(get_pos()); }
+bool BadGuy::is_dead() const { return m_die; }

@@ -48,6 +48,7 @@ public:
 	int get_health() const;
 	// (potentialy) expensive
 	bool can_see_player() const;
+	bool is_dead() const;
 };
 
 #endif

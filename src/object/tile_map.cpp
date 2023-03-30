@@ -1,14 +1,15 @@
 #include "object/tile_map.hpp"
 
+#include <cmath>
+#include <sstream>
 #include <stdexcept>
-#include <math.h>
 
 #include "math/rectf.hpp"
 #include "qbskr/constants.hpp"
 #include "object/tile.hpp"
 #include "object/tile_set.hpp"
 #include "video/drawing_context.hpp"
-#include "util/crappy_reader_data.hpp"
+#include "util/crappy_reader.hpp"
 
 TileMap::TileMap() :
 	m_tiles(),
@@ -22,7 +23,16 @@ TileMap::TileMap() :
 TileMap::~TileMap()
 {}
 
-TileMap::TileMap(CrappyReaderData* crd) :
+TileMap::TileMap(const TileMap& other) :
+	m_tiles(other.m_tiles),
+	m_is_solid(other.m_is_solid),
+	m_width(other.m_width),
+	m_height(other.m_height),
+	m_layer(other.m_layer),
+	m_offset(other.m_offset)
+{}
+
+TileMap::TileMap(const CrappyReaderData* crd) :
 	m_tiles(),
 	m_is_solid(),
 	m_width(),
@@ -47,8 +57,20 @@ TileMap::TileMap(CrappyReaderData* crd) :
 	}
 }
 
-void TileMap::update(float)
-{}
+std::unique_ptr<TileMap> TileMap::from_file(const std::string& filename)
+{
+	CrappyReader cr(filename);
+	while (cr.parse("tilemap")) {}
+	if (const CrappyReaderData* crd = cr.get_root()->get_child("tilemap")) {
+		return std::make_unique<TileMap>(crd);
+	} else {
+		std::ostringstream msg;
+		msg << "File '" << filename << "' is not tilemap file";
+		throw std::runtime_error(msg.str());
+	}
+}
+
+void TileMap::update(float /* dt_sec */) {}
 
 void TileMap::draw(DrawingContext& drawing_context)
 {
@@ -135,10 +157,10 @@ Rect TileMap::get_tiles_overlap(const Rectf& rectf) const
 {
 	Rectf rectf2 = rectf.moved(-m_offset);
 
-	int t_left    = std::max(0, static_cast<int>(floorf(rectf2.get_left() / BLOCK_SIZE)));
-	int t_top     = std::max(0, static_cast<int>(floorf(rectf2.get_top() / BLOCK_SIZE)));
-	int t_right   = std::min(m_width , static_cast<int>(ceilf(rectf2.get_right() / BLOCK_SIZE)));
-	int t_bottom  = std::min(m_height, static_cast<int>(ceilf(rectf2.get_bottom() / BLOCK_SIZE)));
+	int t_left    = std::max(0, static_cast<int>(std::floor(rectf2.get_left() / BLOCK_SIZE)));
+	int t_top     = std::max(0, static_cast<int>(std::floor(rectf2.get_top() / BLOCK_SIZE)));
+	int t_right   = std::min(m_width , static_cast<int>(std::ceil(rectf2.get_right() / BLOCK_SIZE)));
+	int t_bottom  = std::min(m_height, static_cast<int>(std::ceil(rectf2.get_bottom() / BLOCK_SIZE)));
 	return Rect(t_left, t_top, t_right, t_bottom);
 }
 
@@ -157,7 +179,14 @@ Rectf TileMap::get_bounding_box() const
 	return Rectf(get_tile_posisition(0, 0), get_tile_posisition(m_width, m_height));
 }
 
-void TileMap::parse_tiles(CrappyReaderData* crd)
+std::unique_ptr<TileMap> TileMap::clone(const Vector& offset) const
+{
+	auto tilemap = std::make_unique<TileMap>(*this);
+	tilemap->m_offset = offset;
+	return tilemap;
+}
+
+void TileMap::parse_tiles(const CrappyReaderData* crd)
 {
 	m_tiles.clear();
 	m_tiles.resize(m_width * m_height);

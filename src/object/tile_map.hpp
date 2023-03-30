@@ -1,6 +1,8 @@
 #ifndef HEADER_QBSKR_OBJECT_TILE_MAP_HPP
 #define HEADER_QBSKR_OBJECT_TILE_MAP_HPP
 
+#include <memory>
+
 #include "math/rect.hpp"
 #include "math/vector.hpp"
 #include "object/game_object.hpp"
@@ -19,8 +21,10 @@ public:
 	TileMap();
 	~TileMap() override;
 
+public:
+	TileMap(const TileMap& other);
+
 private:
-	TileMap(const TileMap&) = delete;
 	TileMap& operator=(const TileMap&) = delete;
 
 private:
@@ -37,8 +41,12 @@ private:
 	Vector m_offset;
 
 public:
-	TileMap(CrappyReaderData* crd);
+	TileMap(const CrappyReaderData* crd);
 
+public:
+	static std::unique_ptr<TileMap> from_file(const std::string& filename);
+
+public:
 	virtual void update(float dt_sec) override;
 	virtual void draw(DrawingContext& context) override;
 
@@ -77,8 +85,10 @@ public:
 	// respects m_offset
 	Rectf get_bounding_box() const;
 
+	std::unique_ptr<TileMap> clone(const Vector& offset) const;
+
 private:
-	void parse_tiles(CrappyReaderData* crd);
+	void parse_tiles(const CrappyReaderData* crd);
 };
 
 #endif

@@ -37,8 +37,12 @@ std::vector<std::string> CrappyReaderData::convert_child() const
 }
 
 namespace {
-	void assert_size(const std::vector<std::string>& vec, const size_t size) {
-		assert(vec.size() == size);
+	void assert_size(const std::vector<std::string>& vector, const size_t size) {
+		if (vector.size() != size) {
+			std::ostringstream msg;
+			msg << "Assertion fail, vector.size() is '" << vector.size() << "' not '" << size << "'";
+			throw std::runtime_error(msg.str());
+		}
 	}
 }
 
@@ -105,6 +109,11 @@ bool CrappyReaderData::get(const std::string& name, std::string& value) const
 bool CrappyReaderData::get(const std::string& name, std::vector<int>& values) const
 {
 	GET_VALUES_MACRO(int)
+}
+
+bool CrappyReaderData::get(const std::string& name, std::vector<uint32_t>& values) const
+{
+	GET_VALUES_MACRO(uint32_t)
 }
 
 bool CrappyReaderData::get(const std::string& name, std::vector<float>& values) const

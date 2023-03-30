@@ -40,6 +40,8 @@ OBJ_FILES = src/main.o                                                  \
             src/qbskr/gameconfig.o                                      \
             src/qbskr/globals.o                                         \
             src/qbskr/main.o                                            \
+            src/qbskr/room_data_set.o                                   \
+            src/qbskr/room_data.o                                       \
             src/qbskr/room.o                                            \
             src/sprite/sprite_data.o                                    \
             src/sprite/sprite_manager.o                                 \

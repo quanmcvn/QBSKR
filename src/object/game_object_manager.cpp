@@ -60,6 +60,11 @@ void GameObjectManager::draw(DrawingContext& drawing_context)
 	}
 }
 
+const std::vector<std::unique_ptr<GameObject>>& GameObjectManager::get_objects() const
+{
+	return m_game_objects;
+}
+
 void GameObjectManager::flush_game_objects()
 {
 	m_game_objects.erase(
@@ -84,6 +89,20 @@ void GameObjectManager::flush_game_objects()
 				m_game_objects.push_back(std::move(object));
 			}
 		}
+	}
+}
+
+#include "util/log.hpp"
+
+const std::vector<GameObject*>& GameObjectManager::get_objects_by_type_index(std::type_index type_idx) const
+{
+	auto it = m_objects_by_type_index.find(type_idx);
+	if (it == m_objects_by_type_index.end()) {
+		// use a dummy return value to avoid making non-const
+		static std::vector<GameObject*> dummy;
+		return dummy;
+	} else {
+		return it->second;
 	}
 }
 

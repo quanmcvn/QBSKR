@@ -89,7 +89,7 @@ void ProjectileSet::add_projectile_sprite(uint32_t id, std::unique_ptr<Projectil
 	m_projectiles[id] = std::move(projectile);
 }
 
-const Projectile& ProjectileSet::get(uint32_t id) const
+const Projectile& ProjectileSet::get_projectile(uint32_t id) const
 {
 	if (id >= static_cast<uint32_t>(m_projectiles.size())) {
 		log_warning << "Invalid projectile id: " << id << std::endl;

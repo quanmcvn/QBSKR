@@ -50,6 +50,8 @@ public:
 	void update(float dt_sec);
 	void draw(DrawingContext& drawing_context);
 
+	const std::vector<std::unique_ptr<GameObject> >& get_objects() const;
+
 	// do the actual work of adding object
 	void flush_game_objects();
 
@@ -67,17 +69,7 @@ public:
 		}
 	}
 
-	const std::vector<GameObject*>& get_objects_by_type_index(std::type_index type_idx) const
-	{
-		auto it = m_objects_by_type_index.find(type_idx);
-		if (it == m_objects_by_type_index.end()) {
-			// use a dummy return value to avoid making non-const
-			static std::vector<GameObject*> dummy;
-			return dummy;
-		} else {
-			return it->second;
-		}
-	}
+	const std::vector<GameObject*>& get_objects_by_type_index(std::type_index type_idx) const;
 
 	template<class T>
 	T& get_singleton_by_type() const

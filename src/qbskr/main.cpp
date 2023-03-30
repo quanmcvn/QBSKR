@@ -8,13 +8,14 @@
 #include "badguy/badguy_set.hpp"
 #include "badguy/badguy.hpp"
 #include "control/input_manager.hpp"
-#include "qbskr/constants.hpp"
-#include "qbskr/globals.hpp"
 #include "object/camera.hpp"
 #include "object/tile_map.hpp"
 #include "object/tile_set_parser.hpp"
 #include "object/tile_set.hpp"
 #include "object/tile.hpp"
+#include "qbskr/constants.hpp"
+#include "qbskr/globals.hpp"
+#include "qbskr/room_data_set.hpp"
 #include "qbskr/room.hpp"
 #include "util/log.hpp"
 #include "util/crappy_reader.hpp"
@@ -34,7 +35,6 @@
 SDLSubSystem::SDLSubSystem() 
 {
 	Uint32 flags = SDL_INIT_VIDEO;
-
 	if (SDL_Init(flags) < 0) {
 		std::ostringstream msg;
 		msg << "Couldn't init SDL: " << SDL_GetError();
@@ -65,7 +65,7 @@ Main::Main() :
 	m_video_system()
 {}
 
-int Main::run([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
+int Main::run(int /* argc */, char** /* argv */)
 {
 	m_sdl_subsystem = std::make_unique<SDLSubSystem>();
 	m_input_manager = std::make_unique<InputManager>(g_config->keyboard_config, g_config->mouse_button_config);
@@ -75,20 +75,14 @@ int Main::run([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
 	auto projectile_set = std::make_unique<ProjectileSet>();
 	auto badguy_set = std::make_unique<BadGuySet>();
 	auto tileset = TileSet::from_file("images/tiles/tiles-tileset.txt");
+	auto roomdataset = std::make_unique<RoomDataSet>("levels/level0/level-0-room-data-set.txt");
 
-	CrappyReader cr("levels/level0/level0-tilemap.txt");
-	while (cr.parse("tilemap")) {}
-
-	auto room = std::make_unique<Room>();
+	auto room = std::make_unique<Room>(roomdataset->get_room_data(2).clone(Vector(0.0f, 0.0f)));
 
 	room->activate();
 
-	Room::get().add<TileMap>(cr.get_root()->get_child("tilemap"));
 	Room::get().add<Player>(0, 1);
 	Room::get().add<Camera>();
-	Room::get().add_object(BadGuySet::current()->get_badguy(1).clone(Vector(100.0f, 100.0f)));
-	Room::get().add_object(BadGuySet::current()->get_badguy(1).clone(Vector(100.0f, 100.0f)));
-	Room::get().add_object(BadGuySet::current()->get_badguy(1).clone(Vector(100.0f, 100.0f)));
 
 	const Uint32 ms_per_step = static_cast<Uint32>(1000.0f / LOGICAL_FPS);
 	const float seconds_per_step = static_cast<float>(ms_per_step) / 1000.0f;

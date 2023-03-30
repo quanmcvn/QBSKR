@@ -3,6 +3,7 @@
 
 #include "object/game_object_manager.hpp"
 #include "object/tile.hpp"
+#include "qbskr/room_data.hpp"
 
 class Camera;
 class CollisionSystem;
@@ -14,17 +15,23 @@ public:
 	friend class CollisionSystem;
 
 private:
-	Room(const Room&) = delete;
-	Room& operator=(const Room&) = delete;
+	Room() = delete;
 
 public:
-	Room();
 	~Room() override;
+
+private:
+	Room(const Room&) = delete;
+	Room& operator=(const Room&) = delete;
 
 private:
 	static Room* s_current;
 
 	std::unique_ptr<CollisionSystem> m_collision_system;
+	std::unique_ptr<RoomData> m_room_data;
+
+public:
+	Room(std::unique_ptr<RoomData> room_data);
 
 public:
 	static Room& get();
@@ -46,9 +53,13 @@ public:
 	bool free_line_of_sight(const Vector& line_start, const Vector& line_end) const;
 	bool can_see_player(const Vector& eye) const;
 	bool inside(const Rectf& rect) const;
+	Rectf get_bounding_box() const;
 	Player* get_nearest_player(const Vector& pos) const;
 	Camera& get_camera() const;
 	std::vector<Player*> get_players() const;
+	void spawn_badguy();
+	// is all badguy dead?
+	bool is_turn_cleared() const;
 };
 
 #endif

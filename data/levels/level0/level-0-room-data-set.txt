@@ -1,0 +1,20 @@
+room-data-set-start
+
+	room-data-start
+		id 1
+		room-type start
+		badguys 0
+		tilemap-filename start-tilemap.txt
+	room-data-end
+
+	room-data-start
+		id 2
+		room-type normal
+		badguys 1
+		turns 2
+		min-per-turn 1
+		max-per-turn 4
+		tilemap-filename normal-0-tilemap.txt
+	room-data-end
+
+room-data-set-end

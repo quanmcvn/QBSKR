@@ -58,7 +58,7 @@ bool GenericShootingWeapon::check_timer() { return m_timer.check(); }
 Vector GenericShootingWeapon::get_projectile_spawn_pos() const
 {
 	Vector to_rotate = m_projectile_spawn_pos;
-	return get_bounding_box().get_middle() - ProjectileSet::current()->get(get_projectile_id()).get_bounding_box().get_middle() + math::rotate(to_rotate, get_angle());
+	return get_bounding_box().get_middle() - ProjectileSet::current()->get_projectile(get_projectile_id()).get_bounding_box().get_middle() + math::rotate(to_rotate, get_angle());
 }
 
 uint32_t GenericShootingWeapon::get_projectile_id() const { return m_projectile_id; }

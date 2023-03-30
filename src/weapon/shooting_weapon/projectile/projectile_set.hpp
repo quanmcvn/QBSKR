@@ -37,7 +37,7 @@ private:
 
 public:
 	void add_projectile_sprite(uint32_t id, std::unique_ptr<Projectile> projectiles);
-	const Projectile& get(uint32_t id) const;
+	const Projectile& get_projectile(uint32_t id) const;
 };
 
 #endif

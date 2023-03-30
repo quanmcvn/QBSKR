@@ -60,6 +60,7 @@ public:
 	bool get(const std::string& name, float& value) const;
 	bool get(const std::string& name, std::string& value) const;
 	bool get(const std::string& name, std::vector<int>& values) const;
+	bool get(const std::string& name, std::vector<uint32_t>& values) const;
 	bool get(const std::string& name, std::vector<float>& values) const;
 	bool get(const std::string& name, std::vector<std::string>& values) const;
 
