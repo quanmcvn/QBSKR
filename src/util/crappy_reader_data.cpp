@@ -138,6 +138,11 @@ bool CrappyReaderData::get(const std::string& name, std::vector<std::string>& va
 	}                                                              \
 	return true;                                                   \
 
+bool CrappyReaderData::get_child_values(std::vector<int>& values) const
+{
+	GET_CHILD_VALUES_MACRO(int)
+}
+
 bool CrappyReaderData::get_child_values(std::vector<uint32_t>& values) const
 {
 	GET_CHILD_VALUES_MACRO(uint32_t)

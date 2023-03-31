@@ -9,6 +9,7 @@ GameObject::~GameObject()
 {}
 
 UID GameObject::get_uid() const { return m_uid; }
+void GameObject::clear_uid() { m_uid = UID(); }
 
 void GameObject::remove_me() { m_schedule_for_remove = true; }
 

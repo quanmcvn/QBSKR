@@ -4,17 +4,26 @@
 
 #include "util/crappy_reader_data.hpp"
 
-namespace {
-	RoomType string_to_room_type(const std::string& string)
-	{
-		if (string == "start") return START;
-		if (string == "bridge") return BRIDGE;
-		if (string == "goal") return GOAL;
-		if (string == "normal") return NORMAL;
-		std::ostringstream msg;
-		msg << "Unknown room type: '" << string << "'";
-		throw std::runtime_error(msg.str());
-	}
+RoomType string_to_room_type(const std::string& string)
+{
+	if (string == "start") return RoomType::START;
+	if (string == "bridge") return RoomType::BRIDGE;
+	if (string == "goal") return RoomType::GOAL;
+	if (string == "normal") return RoomType::NORMAL;
+	std::ostringstream msg;
+	msg << "Unknown room type: '" << string << "'";
+	throw std::runtime_error(msg.str());
+}
+
+std::string room_type_to_string(const RoomType& room_type)
+{
+	if (room_type == RoomType::START) return "start";
+	if (room_type == RoomType::BRIDGE) return "bridge";
+	if (room_type == RoomType::GOAL) return "goal";
+	if (room_type == RoomType::NORMAL) return "normal";
+	std::ostringstream msg;
+	msg << "Unknown room type: '" << static_cast<int>(room_type) << "'";
+	throw std::runtime_error(msg.str());
 }
 
 RoomData::RoomData() :
@@ -39,6 +48,16 @@ RoomData::RoomData(const RoomData& other) :
 	m_turns(other.m_turns),
 	m_min_per_turn(other.m_min_per_turn),
 	m_max_per_turn(other.m_max_per_turn)
+{}
+
+RoomData::RoomData(RoomType type, std::unique_ptr<TileMap> tilemap, std::vector<uint32_t> badguys, 
+                   int turns, int min_per_turn, int max_per_turn) :
+	m_type(type),
+	m_tilemap(std::move(tilemap)),
+	m_badguys(std::move(badguys)),
+	m_turns(turns),
+	m_min_per_turn(min_per_turn),
+	m_max_per_turn(max_per_turn)
 {}
 
 std::unique_ptr<RoomData> RoomData::from_reader(const CrappyReaderData* crd)

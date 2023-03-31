@@ -13,7 +13,7 @@
 
 TileMap::TileMap() :
 	m_tiles(),
-	m_is_solid(),
+	m_is_solid(true),
 	m_width(),
 	m_height(),
 	m_layer(),
@@ -34,7 +34,7 @@ TileMap::TileMap(const TileMap& other) :
 
 TileMap::TileMap(const CrappyReaderData* crd) :
 	m_tiles(),
-	m_is_solid(),
+	m_is_solid(true),
 	m_width(),
 	m_height(),
 	m_layer(),
@@ -104,6 +104,16 @@ bool TileMap::is_solid() const { return m_is_solid; }
 
 Vector TileMap::get_offset() const { return m_offset; }
 void TileMap::set_offset(const Vector& new_offset) { m_offset = new_offset; }
+
+void TileMap::resize(int width, int height)
+{
+	if (width <= 0 || height <= 0) {
+		throw std::runtime_error("Invalid width/height");
+	}
+	m_width = width;
+	m_height = height;
+	m_tiles.resize(width * height);
+}
 
 uint32_t TileMap::get_tile_id(int x, int y) const
 {

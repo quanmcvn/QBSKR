@@ -30,6 +30,18 @@ Player::Player(int player_id, uint32_t weapon_id) :
 Player::~Player()
 {}
 
+Player::Player(const Player& other) :
+	m_id(other.m_id),
+	m_controller(other.m_controller),
+	m_direction(other.m_direction),
+	m_physic(other.m_physic),
+	m_sprite(other.m_sprite->clone()),
+	m_weapon(other.m_weapon->clone(this))
+{
+	set_pos(other.get_pos());
+	m_collision_object.set_size(m_sprite->get_current_hitbox_width(), m_sprite->get_current_hitbox_height());
+}
+
 void Player::update(float dt_sec)
 {
 	handle_input();
@@ -132,4 +144,10 @@ void Player::handle_weapon()
 	if (m_controller->hold(Control::ATTACK)) {
 		m_weapon->attack();
 	}
+}
+
+std::unique_ptr<Player> Player::clone() const
+{
+	auto player = std::make_unique<Player>(*this);
+	return player;
 }

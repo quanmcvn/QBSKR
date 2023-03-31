@@ -53,6 +53,8 @@ public:
 	bool free_line_of_sight(const Vector& line_start, const Vector& line_end) const;
 	bool can_see_player(const Vector& eye) const;
 	bool inside(const Rectf& rect) const;
+
+public:
 	Rectf get_bounding_box() const;
 	Player* get_nearest_player(const Vector& pos) const;
 	Camera& get_camera() const;
@@ -60,6 +62,11 @@ public:
 	void spawn_badguy();
 	// is all badguy dead?
 	bool is_turn_cleared() const;
+	RoomType get_room_type() const;
+	// misleading name
+	// clone camera and players to other room and remove
+	// can't move since move is hard (can't just std::move() and just leave it there)
+	void clone_camera_and_players_to(Room& other);
 };
 
 #endif

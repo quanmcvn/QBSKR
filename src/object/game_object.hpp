@@ -27,6 +27,7 @@ private:
 
 public:
 	UID get_uid() const;
+	void clear_uid();
 
 	virtual void update(float dt_sec) = 0;
 	virtual void draw(DrawingContext& drawing_context) = 0;
@@ -44,7 +45,6 @@ public:
 
 private:
 	void set_uid(const UID& uid);
-
 };
 
 #endif

@@ -1,4 +1,5 @@
 .vscode/
 bin/
-*.exe
-*.dll
+# decided to also push the exe
+# data/QBSKR.exe
+# data/*.dll

@@ -20,7 +20,7 @@ tile-end
 tile-start
 	id 3
 	attributes-start
-		solid 1
+		solid 0
 	attributes-end
 	images-start
 		fence-0.png

@@ -17,37 +17,29 @@ namespace std {
 
 class UID {
 	friend class UIDGenerator;
-	friend std::ostream& operator<<(std::ostream& os, const UID& uid);
-	friend size_t std::hash<UID>::operator()(const UID&) const;
+
+public:
+	UID();
+
+public:
+	UID(const UID& other) = default;
+	UID& operator=(const UID& other) = default;
+
 protected:
 	uint32_t m_value;
 
 private:
-	explicit UID(uint32_t value) :
-		m_value(value) {
-		assert(m_value != 0);
-	}
+	explicit UID(uint32_t value);
 
 public:
-	UID() : m_value(0) {}
-	UID(const UID& other) = default;
-	UID& operator=(const UID& other) = default;
+	operator bool() const;
+	bool operator<(const UID& other) const;
+	bool operator==(const UID& other) const;
+	bool operator!=(const UID& other) const;
 
-	inline operator bool() const {
-		return m_value != 0;
-	}
-
-	inline bool operator<(const UID& other) const {
-		return m_value < other.m_value;
-	}
-
-	inline bool operator==(const UID& other) const {
-		return m_value == other.m_value;
-	}
-
-	inline bool operator!=(const UID& other) const {
-		return m_value != other.m_value;
-	}
+public:
+	friend std::ostream& operator<<(std::ostream& os, const UID& uid);
+	friend size_t std::hash<UID>::operator()(const UID&) const;
 };
 
 std::ostream& operator<<(std::ostream& os, const UID& uid);

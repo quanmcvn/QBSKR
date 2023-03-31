@@ -1,6 +1,8 @@
 #ifndef HEADER_QBSKR_OBJECT_CAMERA_HPP
 #define HEADER_QBSKR_OBJECT_CAMERA_HPP
 
+#include <memory>
+
 #include "object/game_object.hpp"
 #include "math/size.hpp"
 #include "math/vector.hpp"
@@ -10,8 +12,10 @@ public:
 	Camera();
 	~Camera() override;
 
+public:
+	Camera(const Camera& other);
+
 private:
-	Camera(const Camera&) = delete;
 	Camera& operator=(const Camera&) = delete;
 
 private:
@@ -28,6 +32,7 @@ public:
 
 public:
 	Vector get_translation() const;
+	std::unique_ptr<Camera> clone() const;
 };
 
 #endif

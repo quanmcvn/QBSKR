@@ -64,6 +64,7 @@ public:
 	bool get(const std::string& name, std::vector<float>& values) const;
 	bool get(const std::string& name, std::vector<std::string>& values) const;
 
+	bool get_child_values(std::vector<int>& values) const;
 	bool get_child_values(std::vector<uint32_t>& values) const;
 
 	void dfs_print(std::ostream& os, int depth = 0) const;

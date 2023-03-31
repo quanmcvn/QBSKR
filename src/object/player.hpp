@@ -13,8 +13,10 @@ class Player final : public MovingObject {
 public:
 	~Player() override;
 
+public:
+	Player(const Player& other);
+
 private:
-	Player(const Player&) = delete;
 	Player& operator=(const Player&) = delete;
 
 public:
@@ -44,6 +46,9 @@ private:
 	void handle_input();
 	void handle_movement_input();
 	void handle_weapon();
+
+public:
+	std::unique_ptr<Player> clone() const;
 };
 
 #endif

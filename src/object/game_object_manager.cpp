@@ -65,12 +65,18 @@ const std::vector<std::unique_ptr<GameObject>>& GameObjectManager::get_objects()
 	return m_game_objects;
 }
 
+std::vector<std::unique_ptr<GameObject>>& GameObjectManager::get_objects_non_const()
+{
+	return m_game_objects;
+}
+
 void GameObjectManager::flush_game_objects()
 {
 	m_game_objects.erase(
-		std::remove_if(m_game_objects.begin(), m_game_objects.end(),
-			[this](const std::unique_ptr<GameObject>& object) {
-				if (object.get() == nullptr) return true;
+		std::remove_if(
+			m_game_objects.begin(),
+			m_game_objects.end(),
+			[this] (const std::unique_ptr<GameObject>& object) {
 				if (!object->is_valid()) {
 					this_before_object_remove(*object);
 					before_object_remove(*object);
@@ -78,8 +84,10 @@ void GameObjectManager::flush_game_objects()
 				} else {
 					return false;
 				}
-			}),
-		m_game_objects.end());
+			}
+		),
+		m_game_objects.end()
+	);
 
 	while (!m_game_objects_new.empty()) {
 		auto new_objects = std::move(m_game_objects_new);
@@ -91,8 +99,6 @@ void GameObjectManager::flush_game_objects()
 		}
 	}
 }
-
-#include "util/log.hpp"
 
 const std::vector<GameObject*>& GameObjectManager::get_objects_by_type_index(std::type_index type_idx) const
 {

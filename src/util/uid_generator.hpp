@@ -4,21 +4,22 @@
 #include "util/uid.hpp"
 
 class UIDGenerator {
-private:
-	static uint8_t s_magic_counter;
-
 public:
 	UIDGenerator();
 
-	UID next();
+private:
+	UIDGenerator(const UIDGenerator&) = delete;
+	UIDGenerator& operator=(const UIDGenerator&) = delete;
+
+private:
+	static uint8_t s_magic_counter;
 
 private:
 	uint8_t m_magic;
 	uint32_t m_id_counter;
 
-private:
-	UIDGenerator(const UIDGenerator&) = delete;
-	UIDGenerator& operator=(const UIDGenerator&) = delete;
+public:
+	UID next();
 };
 
 #endif

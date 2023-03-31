@@ -50,8 +50,9 @@ public:
 	void update(float dt_sec);
 	void draw(DrawingContext& drawing_context);
 
-	const std::vector<std::unique_ptr<GameObject> >& get_objects() const;
-
+	const std::vector<std::unique_ptr<GameObject>>& get_objects() const;
+	// use with care
+	std::vector<std::unique_ptr<GameObject>>& get_objects_non_const();
 	// do the actual work of adding object
 	void flush_game_objects();
 

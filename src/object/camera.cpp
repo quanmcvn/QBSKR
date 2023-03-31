@@ -13,6 +13,12 @@ Camera::Camera() :
 Camera::~Camera()
 {}
 
+Camera::Camera(const Camera& other) :
+	m_translation(other.m_translation),
+	m_screen_size(other.m_screen_size),
+	m_scale(other.m_scale)
+{}
+
 void Camera::update(float /* dt_sec */)
 {
 	// simple move the camera to the first player
@@ -33,3 +39,9 @@ std::string Camera::get_class_name() const { return class_name(); }
 bool Camera::is_singleton() const { return true; }
 
 Vector Camera::get_translation() const { return m_translation; }
+
+std::unique_ptr<Camera> Camera::clone() const
+{
+	auto camera = std::make_unique<Camera>(*this);
+	return camera;
+}

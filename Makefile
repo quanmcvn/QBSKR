@@ -39,6 +39,8 @@ OBJ_FILES = src/main.o                                                  \
             src/qbskr/constants.o                                       \
             src/qbskr/gameconfig.o                                      \
             src/qbskr/globals.o                                         \
+            src/qbskr/level.o                                           \
+            src/qbskr/level_data.o                                      \
             src/qbskr/main.o                                            \
             src/qbskr/room_data_set.o                                   \
             src/qbskr/room_data.o                                       \

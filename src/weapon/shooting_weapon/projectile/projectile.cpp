@@ -1,5 +1,7 @@
 #include "weapon/shooting_weapon/projectile/projectile.hpp"
 
+#include "qbskr/room.hpp"
+
 Projectile::Projectile(const std::string& sprite_name) :
 	MovingSprite(Vector(0.0f, 0.0f), sprite_name, LAYER_PROJECTILES)
 {}
@@ -8,7 +10,14 @@ Projectile::Projectile(const Sprite* sprite) :
 	MovingSprite(Vector(0.0f, 0.0f), sprite, LAYER_PROJECTILES)
 {}
 
-void Projectile::update(float dt_sec) { set_movement(m_physic.get_movement(dt_sec)); }
+void Projectile::update(float dt_sec)
+{
+	// if the projectile is out of bound then it is removed
+	if (!Room::get().inside(get_bounding_box())) {
+		remove_me();
+	}
+	set_movement(m_physic.get_movement(dt_sec)); 
+}
 
 std::string Projectile::class_name() { return "projectile"; }
 std::string Projectile::get_class_name() const { return class_name(); } 

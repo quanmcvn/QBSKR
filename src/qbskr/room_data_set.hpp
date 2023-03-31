@@ -10,6 +10,9 @@ class CrappyReaderData;
 class RoomData;
 
 class RoomDataSet {
+private:
+	friend class LevelData;
+
 public:
 	~RoomDataSet();
 

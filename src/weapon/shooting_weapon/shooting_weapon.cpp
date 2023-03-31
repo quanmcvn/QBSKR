@@ -25,7 +25,12 @@ void ShootingWeapon::shoot_projectile(float angle) const
 	// wtf is this
 	// peak bad design
 	const Projectile& projectile = ProjectileSet::current()->get_projectile(get_projectile_id());
-	if (Room::get().is_free_of_tiles(Rectf(get_projectile_spawn_pos(), projectile.get_bounding_box().get_size()))) {
+	// only spawn if 
+	// free of tile
+	// in bound
+	Rectf projectile_spawn_bounding_box = Rectf(get_projectile_spawn_pos(), projectile.get_bounding_box().get_size());
+	if (Room::get().is_free_of_tiles(projectile_spawn_bounding_box) &&
+	    Room::get().inside(projectile_spawn_bounding_box)) {
 		Room::get().add_object(projectile.clone(get_projectile_spawn_pos(), get_hurt_attributes(), angle));
 	}
 }

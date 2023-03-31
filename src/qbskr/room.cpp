@@ -173,28 +173,30 @@ std::vector<Player*> Room::get_players() const
 void Room::spawn_badguy()
 {
 	if (m_room_data->m_turns <= 0) return;
+	if (m_room_data->m_badguys.empty()) return;
 	if (!is_turn_cleared()) return;
 
 	-- m_room_data->m_turns;
 	int badguy_spawns = g_game_random.rand_inclusive(m_room_data->m_min_per_turn, m_room_data->m_max_per_turn);
 	
-	// spawn badguy
+	// spawn badguy randomly
 	// try at most 10 times
 	// if fail then give up
+	// potentially bad
+	const int MAX_TRIES = 10;
+	const Rectf bounding_box = get_bounding_box();
 	for (int i = 0; i < badguy_spawns; ++ i) {
 		int spawn_id = m_room_data->m_badguys[g_game_random.rand(0, m_room_data->m_badguys.size())];
-		Rectf bounding_box = get_bounding_box();
 		Vector spawn_pos(g_game_random.randf(bounding_box.get_left(), bounding_box.get_right()), g_game_random.randf(bounding_box.get_top(), bounding_box.get_bottom()));
 		Rectf badguy_bounding_box = BadGuySet::current()->get_badguy(spawn_id).get_bounding_box();
 		
-		const int max_tries = 10;
-		for (int tries = 0; tries < max_tries; ++ tries) {
+		for (int tries = 0; tries < MAX_TRIES; ++ tries) {
 			badguy_bounding_box.set_pos(spawn_pos);
-			if (is_free_of_tiles(badguy_bounding_box)) break;
+			if (inside(badguy_bounding_box) && is_free_of_tiles(badguy_bounding_box)) break;
 			spawn_pos = Vector(g_game_random.randf(bounding_box.get_left(), bounding_box.get_right()), g_game_random.randf(bounding_box.get_top(), bounding_box.get_bottom()));
 		}
 
-		if (!is_free_of_tiles(badguy_bounding_box)) {
+		if (!(inside(badguy_bounding_box) && is_free_of_tiles(badguy_bounding_box))) {
 			log_warning << "Can't spawn badguy id '" << spawn_id << "'" << std::endl;
 			continue;
 		}
@@ -205,7 +207,7 @@ void Room::spawn_badguy()
 
 bool Room::is_turn_cleared() const
 {
-	// if any of gameobjects are badguy and not dead
+	// if not (any of gameobjects are (badguy and not dead))
 	// note that can't use std::all_of() here since need to get badguys and its inherits 
 	// get_objects_by_type_index use typeid, and typeid is exact match, not considering inheritance
 	return !std::any_of(get_objects().begin(), get_objects().end(), 
@@ -213,5 +215,21 @@ bool Room::is_turn_cleared() const
 			auto badguy_ptr = dynamic_cast<BadGuy*>(object.get());
 			if (!badguy_ptr) return false;
 			return !badguy_ptr->is_dead();
-		});
+		}
+	);
+}
+
+RoomType Room::get_room_type() const { return m_room_data->m_type; }
+
+void Room::clone_camera_and_players_to(Room& other)
+{
+	for (auto& object : get_objects_non_const()) {
+		if (dynamic_cast<Camera*>(object.get())) {
+			other.add_object(static_cast<Camera*>(object.get())->clone());
+			object->remove_me();
+		} else if (dynamic_cast<Player*>(object.get())) {
+			other.add_object(static_cast<Player*>(object.get())->clone());
+			object->remove_me();
+		}
+	}
 }

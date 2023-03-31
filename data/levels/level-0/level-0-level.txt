@@ -1,0 +1,6 @@
+level-start
+	room-numbers-start
+		normal 1 2
+	room-numbers-end
+	room-data-set-filename level-0-room-data-set.txt
+level-end

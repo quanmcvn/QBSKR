@@ -31,7 +31,6 @@ private:
 	using Tiles = std::vector<uint32_t>;
 	Tiles m_tiles;
 
-	// is any of tile in this tilemap is solid
 	bool m_is_solid;
 
 	int m_width;
@@ -54,6 +53,8 @@ public:
 
 	Vector get_offset() const;
 	void set_offset(const Vector& new_offset);
+
+	void resize(int width, int height);
 
 	// NOT respects m_offset
 	uint32_t get_tile_id(int x, int y) const;

@@ -5,32 +5,19 @@
 #include <iostream>
 #include <sstream>
 
-#include "badguy/badguy_set.hpp"
-#include "badguy/badguy.hpp"
-#include "control/input_manager.hpp"
 #include "object/camera.hpp"
-#include "object/tile_map.hpp"
-#include "object/tile_set_parser.hpp"
-#include "object/tile_set.hpp"
 #include "object/tile.hpp"
 #include "qbskr/constants.hpp"
 #include "qbskr/globals.hpp"
+#include "qbskr/level_data.hpp"
+#include "qbskr/level.hpp"
 #include "qbskr/room_data_set.hpp"
 #include "qbskr/room.hpp"
 #include "util/log.hpp"
-#include "util/crappy_reader.hpp"
-#include "sprite/sprite_data.hpp"
-#include "sprite/sprite_ptr.hpp"
-#include "sprite/sprite.hpp"
 #include "video/canvas.hpp"
 #include "video/compositor.hpp"
 #include "video/drawing_context.hpp"
-#include "video/surface.hpp"
 #include "video/sdl/sdl_video_system.hpp"
-#include "video/sdl/sdl_renderer.hpp"
-#include "weapon/weapon_set.hpp"
-#include "weapon/weapon.hpp"
-#include "weapon/shooting_weapon/projectile/projectile_set.hpp"
 
 SDLSubSystem::SDLSubSystem() 
 {
@@ -62,8 +49,25 @@ SDLSubSystem::~SDLSubSystem()
 Main::Main() :
 	m_sdl_subsystem(),
 	m_input_manager(),
-	m_video_system()
+	m_video_system(),
+	m_sprite_manager(),
+	m_weapon_set(),
+	m_projectile_set(),
+	m_badguy_set(),
+	m_tile_set()
 {}
+
+Main::~Main()
+{
+	m_tile_set.release();
+	m_badguy_set.release();
+	m_projectile_set.release();
+	m_weapon_set.release();
+	m_sprite_manager.release();
+	m_video_system.release();
+	m_input_manager.release();
+	m_sdl_subsystem.release();
+}
 
 int Main::run(int /* argc */, char** /* argv */)
 {
@@ -71,15 +75,14 @@ int Main::run(int /* argc */, char** /* argv */)
 	m_input_manager = std::make_unique<InputManager>(g_config->keyboard_config, g_config->mouse_button_config);
 	m_video_system = VideoSystem::create(VideoSystem::VIDEO_SDL);
 	m_sprite_manager = std::make_unique<SpriteManager>();
-	auto weapon_set = std::make_unique<WeaponSet>();
-	auto projectile_set = std::make_unique<ProjectileSet>();
-	auto badguy_set = std::make_unique<BadGuySet>();
-	auto tileset = TileSet::from_file("images/tiles/tiles-tileset.txt");
-	auto roomdataset = std::make_unique<RoomDataSet>("levels/level0/level-0-room-data-set.txt");
+	m_weapon_set = std::make_unique<WeaponSet>();
+	m_projectile_set = std::make_unique<ProjectileSet>();
+	m_badguy_set = std::make_unique<BadGuySet>();
+	m_tile_set = TileSet::from_file("images/tiles/tiles-tileset.txt");
 
-	auto room = std::make_unique<Room>(roomdataset->get_room_data(2).clone(Vector(0.0f, 0.0f)));
-
-	room->activate();
+	auto level_data = std::make_unique<LevelData>("levels/level-0/level-0-level.txt");
+	auto level = level_data->make_level();
+	level->activate();
 
 	Room::get().add<Player>(0, 1);
 	Room::get().add<Camera>();
@@ -123,7 +126,7 @@ int Main::run(int /* argc */, char** /* argv */)
 					InputManager::current()->process_event(event);
 				}
 			}
-			room->update(d_time);
+			level->update(d_time);
 			elapsed_ticks -= ms_per_step;
 		}
 
@@ -135,7 +138,7 @@ int Main::run(int /* argc */, char** /* argv */)
 			drawing_context.push_transform();
 			
 			drawing_context.set_translation(camera.get_translation());
-			Room::get().draw(drawing_context);
+			level->draw(drawing_context);
 			
 			drawing_context.pop_transform();
 			compositor.render();
