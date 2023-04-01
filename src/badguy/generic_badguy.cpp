@@ -29,7 +29,7 @@ namespace {
 
 GenericBadGuy::~GenericBadGuy()
 {
-	m_weapon.release();
+	m_weapon.reset();
 }
 
 GenericBadGuy::GenericBadGuy(const std::string& sprite_filename) :

@@ -1,5 +1,6 @@
 #include "qbskr/level.hpp"
 
+#include "object/camera.hpp"
 #include "object/player.hpp"
 #include "video/drawing_context.hpp"
 
@@ -16,15 +17,15 @@ Level::~Level()
 
 void Level::update(float dt_sec)
 {
-	bool has_active_room = std::any_of(
-		m_rooms.begin(), 
-		m_rooms.end(), 
-		[] (const std::unique_ptr<Room>& room) {
-			return room.get() == Room::current();
-		}
-	);
+	// bool has_active_room = std::any_of(
+	// 	m_rooms.begin(), 
+	// 	m_rooms.end(), 
+	// 	[] (const std::unique_ptr<Room>& room) {
+	// 		return room.get() == Room::current();
+	// 	}
+	// );
 
-	if (!has_active_room) return;
+	// if (!has_active_room) return;
 	const auto& players = Room::get().get_players();
 	if (!players.empty()) {
 		const auto& player_ptr = players[0];
@@ -42,7 +43,8 @@ void Level::update(float dt_sec)
 			}
 		}
 	}
-	Room::get().update(dt_sec);
+	// Room::get().update(dt_sec);
+	for (const auto& room : m_rooms) room->update(dt_sec);
 }
 
 void Level::draw(DrawingContext& drawing_context)
@@ -61,8 +63,12 @@ void Level::activate()
 {
 	for (const auto& room : m_rooms) {
 		if (room->get_room_type() == RoomType::START) {
+			room->add<Player>(0, 1);
+			room->add<Camera>();
 			room->activate();
-			break;
+		}
+		if (room->get_room_type() != RoomType::BRIDGE) {
+			room->open_room();
 		}
 	}
 }

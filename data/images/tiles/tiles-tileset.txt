@@ -27,4 +27,14 @@ tile-start
 	images-end
 tile-end
 
+tile-start
+	id 4
+	attributes-start
+		solid 1
+	attributes-end
+	images-start
+		fence-1.png
+	images-end
+tile-end
+
 tileset-end

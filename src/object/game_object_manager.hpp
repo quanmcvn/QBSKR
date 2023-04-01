@@ -87,6 +87,8 @@ public:
 	virtual void before_object_remove(GameObject& object) = 0;
 
 	const std::vector<TileMap*>& get_solid_tilemaps() const;
+	// use with care
+	std::vector<TileMap*>& get_solid_tilemaps_non_const();
 
 private:
 	// to avoid being overriden

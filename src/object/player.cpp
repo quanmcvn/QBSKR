@@ -22,7 +22,7 @@ Player::Player(int player_id, uint32_t weapon_id) :
 	m_sprite(SpriteManager::current()->create("images/charactors/knight/knight_sprite.txt")),
 	m_weapon()
 {
-	set_pos(Vector(17.0f, 17.0f));
+	set_pos(Vector(0.0f, 0.0f));
 	m_collision_object.set_size(m_sprite->get_current_hitbox_width(), m_sprite->get_current_hitbox_height());
 	if (weapon_id > 0) m_weapon = WeaponSet::current()->get_weapon(weapon_id).clone(this);
 }

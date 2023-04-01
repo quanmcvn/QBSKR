@@ -51,6 +51,9 @@ public:
 
 	bool is_solid() const;
 
+	int get_width() const;
+	int get_height() const;
+
 	Vector get_offset() const;
 	void set_offset(const Vector& new_offset);
 

@@ -20,7 +20,6 @@ namespace {
 	// bad design but anyway...
 	std::unique_ptr<RoomData> bridge_maker(int length, Direction direction, const Vector& offset, uint32_t road_tile, uint32_t wall_tile)
 	{
-
 		std::unique_ptr<TileMap> tilemap = std::make_unique<TileMap>();
 		if (direction == Direction::LEFT || direction == Direction::RIGHT) {
 			tilemap->resize(length, BRIDGE_SIZE);
@@ -121,6 +120,7 @@ std::unique_ptr<Level> LevelData::make_level() const
 	const auto& normal_room_ids = m_rooms_info.at(RoomType::NORMAL);
 	const auto& goal_room_ids = m_rooms_info.at(RoomType::GOAL);
 
+	Room* prev_room = nullptr;
 	Rectf prev_bounding_box;
 	// spawn room in such a way that its center is center_pos
 	Vector center_pos(0.0f, 0.0f);
@@ -129,6 +129,7 @@ std::unique_ptr<Level> LevelData::make_level() const
 		Vector spawn_room_pos = center_pos - m_room_data_set->get_room_data(start_room_id).m_tilemap->get_bounding_box().get_middle();
 		prev_bounding_box = Rectf(spawn_room_pos, m_room_data_set->get_room_data(start_room_id).m_tilemap->get_bounding_box().get_size());
 		auto start_room = std::make_unique<Room>(m_room_data_set->get_room_data(start_room_id).clone(spawn_room_pos));
+		prev_room = start_room.get();
 		level->add_room(std::move(start_room));
 	}
 	// note that there is no Direction::LEFT
@@ -190,6 +191,20 @@ std::unique_ptr<Level> LevelData::make_level() const
 		level->add_room(std::make_unique<Room>(std::move(bridge_room_data)));
 
 		auto room = std::make_unique<Room>(m_room_data_set->get_room_data(room_id).clone(room_pos));
+
+		if (dir_now == Direction::RIGHT) {
+			prev_room->room_right = true;
+			room->room_left = true;
+		} else if (dir_now == Direction::UP) {
+			prev_room->room_up = true;
+			room->room_down = true;
+		} else if (dir_now == Direction::DOWN) {
+			prev_room->room_down = true;
+			room->room_up = true;
+		} else throw;
+
+		prev_room = room.get();
+		
 		level->add_room(std::move(room));
 
 		center_pos = center_pos_next;

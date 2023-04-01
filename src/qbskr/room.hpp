@@ -13,6 +13,7 @@ class Rectf;
 class Room final : public GameObjectManager {
 public:
 	friend class CollisionSystem;
+	friend class LevelData;
 
 private:
 	Room() = delete;
@@ -29,6 +30,12 @@ private:
 
 	std::unique_ptr<CollisionSystem> m_collision_system;
 	std::unique_ptr<RoomData> m_room_data;
+
+	// use exclusively in changing fence and floor tile
+	bool room_left;
+	bool room_right;
+	bool room_up;
+	bool room_down;
 
 public:
 	Room(std::unique_ptr<RoomData> room_data);
@@ -62,11 +69,16 @@ public:
 	void spawn_badguy();
 	// is all badguy dead?
 	bool is_turn_cleared() const;
+	bool is_room_cleared() const;
 	RoomType get_room_type() const;
 	// misleading name
 	// clone camera and players to other room and remove
 	// can't move since move is hard (can't just std::move() and just leave it there)
 	void clone_camera_and_players_to(Room& other);
+	// misleading name,
+	// game play-wise
+	void close_room();
+	void open_room();
 };
 
 #endif

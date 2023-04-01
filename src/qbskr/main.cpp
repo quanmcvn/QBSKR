@@ -4,11 +4,16 @@
 #include <string>
 #include <iostream>
 #include <sstream>
+#include <chrono>
 
+#include "math/random.hpp"
 #include "object/camera.hpp"
 #include "object/tile.hpp"
 #include "qbskr/constants.hpp"
+#include "qbskr/gameconfig.hpp"
 #include "qbskr/globals.hpp"
+#include "qbskr/game_session.hpp"
+#include "qbskr/screen_manager.hpp"
 #include "qbskr/level_data.hpp"
 #include "qbskr/level.hpp"
 #include "qbskr/room_data_set.hpp"
@@ -54,19 +59,23 @@ Main::Main() :
 	m_weapon_set(),
 	m_projectile_set(),
 	m_badguy_set(),
-	m_tile_set()
+	m_tile_set(),
+	m_level_data_set(),
+	m_screen_manager()
 {}
 
 Main::~Main()
 {
-	m_tile_set.release();
-	m_badguy_set.release();
-	m_projectile_set.release();
-	m_weapon_set.release();
-	m_sprite_manager.release();
-	m_video_system.release();
-	m_input_manager.release();
-	m_sdl_subsystem.release();
+	m_screen_manager.reset();
+	m_level_data_set.reset();
+	m_tile_set.reset();
+	m_badguy_set.reset();
+	m_projectile_set.reset();
+	m_weapon_set.reset();
+	m_sprite_manager.reset();
+	m_video_system.reset();
+	m_input_manager.reset();
+	m_sdl_subsystem.reset();
 }
 
 int Main::run(int /* argc */, char** /* argv */)
@@ -79,71 +88,13 @@ int Main::run(int /* argc */, char** /* argv */)
 	m_projectile_set = std::make_unique<ProjectileSet>();
 	m_badguy_set = std::make_unique<BadGuySet>();
 	m_tile_set = TileSet::from_file("images/tiles/tiles-tileset.txt");
+	m_level_data_set = std::make_unique<LevelDataSet>();
+	m_screen_manager = std::make_unique<ScreenManager>(*m_video_system, *m_input_manager);
 
-	auto level_data = std::make_unique<LevelData>("levels/level-0/level-0-level.txt");
-	auto level = level_data->make_level();
-	level->activate();
+	g_game_random.seed(std::chrono::system_clock::now().time_since_epoch().count());
 
-	Room::get().add<Player>(0, 1);
-	Room::get().add<Camera>();
-
-	const Uint32 ms_per_step = static_cast<Uint32>(1000.0f / LOGICAL_FPS);
-	const float seconds_per_step = static_cast<float>(ms_per_step) / 1000.0f;
-
-	// SDL_GetTicks64() is recommended
-	Uint64 last_ticks = SDL_GetTicks64();
-	// elapsed_ticks for sure can't get to ~49 days
-	// or can it? (ref?)
-	Uint32 elapsed_ticks = 0;
-
-	bool quit = false;
-
-	while (!quit) {
-		Uint64 ticks = SDL_GetTicks64();
-		elapsed_ticks += static_cast<Uint32>(ticks - last_ticks);
-		last_ticks = ticks;
-
-		if (elapsed_ticks < ms_per_step) {
-			SDL_Delay(ms_per_step - elapsed_ticks);
-		}
-
-		int steps = elapsed_ticks / ms_per_step;
-
-		// cap max step per frame
-		// 4 step per frame = 16 fps
-		steps = std::min(steps, 4);
-
-		for (int i = 0; i < steps; ++i) {
-			float d_time = seconds_per_step;
-			g_game_time += d_time;
-			{
-				SDL_Event event;
-				while (SDL_PollEvent(&event) != 0) {
-					if (event.type == SDL_QUIT) {
-						quit = true;
-						break;
-					}
-					InputManager::current()->process_event(event);
-				}
-			}
-			level->update(d_time);
-			elapsed_ticks -= ms_per_step;
-		}
-
-		if (steps > 0) {
-			Compositor compositor(*VideoSystem::current());
-			auto& drawing_context = compositor.make_context();
-			Camera& camera = Room::get().get_camera();
-			
-			drawing_context.push_transform();
-			
-			drawing_context.set_translation(camera.get_translation());
-			level->draw(drawing_context);
-			
-			drawing_context.pop_transform();
-			compositor.render();
-		}
-	}
+	ScreenManager::current()->push_screen(std::make_unique<GameSession>("levels/level-0/level-0-level.txt"));
+	ScreenManager::current()->run();
 
 	return 0;
 }

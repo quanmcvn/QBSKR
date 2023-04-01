@@ -26,7 +26,11 @@ Room::~Room()
 
 Room::Room(std::unique_ptr<RoomData> room_data) :
 	m_collision_system(std::make_unique<CollisionSystem>(*this)),
-	m_room_data(std::move(room_data))
+	m_room_data(std::move(room_data)),
+	room_left(),
+	room_right(),
+	room_up(),
+	room_down()
 {
 	// stealing tilemap from room_data, sorry
 	add_object(std::move(m_room_data->m_tilemap));
@@ -38,15 +42,24 @@ Room* Room::current() { return s_current; }
 
 void Room::update(float dt_sec)
 {
-	spawn_badguy();
 	GameObjectManager::update(dt_sec);
 	m_collision_system->update();
+	if (!get_players().empty()) {
+		if (!is_room_cleared()) {
+			close_room();
+			spawn_badguy();
+		}
+	}
 	flush_game_objects();
+	if (is_room_cleared()) open_room();
 }
 
 void Room::draw(DrawingContext& drawing_context)
 {
 	drawing_context.push_transform();
+
+	Camera& camera = Room::get().get_camera();
+	drawing_context.set_translation(camera.get_translation());
 
 	GameObjectManager::draw(drawing_context);
 	
@@ -219,6 +232,11 @@ bool Room::is_turn_cleared() const
 	);
 }
 
+bool Room::is_room_cleared() const
+{
+	return (m_room_data->m_turns <= 0) && is_turn_cleared();
+}
+
 RoomType Room::get_room_type() const { return m_room_data->m_type; }
 
 void Room::clone_camera_and_players_to(Room& other)
@@ -231,5 +249,29 @@ void Room::clone_camera_and_players_to(Room& other)
 			other.add_object(static_cast<Player*>(object.get())->clone());
 			object->remove_me();
 		}
+	}
+}
+
+void Room::close_room()
+{
+	const uint32_t FENCE_DOWN = 3;
+	const uint32_t FENCE_UP = 4;
+	for (auto& solid : get_solid_tilemaps_non_const()) {
+		if (room_left) for (int y = 0; y < solid->get_height(); ++ y) if (solid->get_tile_id(0, y) == FENCE_DOWN) solid->change(0, y, FENCE_UP);
+		if (room_right) for (int y = 0; y < solid->get_height(); ++ y) if (solid->get_tile_id(solid->get_width() - 1, y) == FENCE_DOWN) solid->change(solid->get_width() - 1, y, FENCE_UP);
+		if (room_up) for (int x = 0; x < solid->get_width(); ++ x) if (solid->get_tile_id(x, 0) == FENCE_DOWN) solid->change(x, 0, FENCE_UP);
+		if (room_down) for (int x = 0; x < solid->get_width(); ++ x) if (solid->get_tile_id(x, solid->get_height() - 1) == FENCE_DOWN) solid->change(x, solid->get_height() - 1, FENCE_UP);
+	}
+}
+
+void Room::open_room()
+{
+	const uint32_t FENCE_DOWN = 3;
+	const uint32_t FENCE_UP = 4;
+	for (auto& solid : get_solid_tilemaps_non_const()) {
+		if (room_left) for (int y = 0; y < solid->get_height(); ++ y) if (solid->get_tile_id(0, y) == FENCE_UP) solid->change(0, y, FENCE_DOWN);
+		if (room_right) for (int y = 0; y < solid->get_height(); ++ y) if (solid->get_tile_id(solid->get_width() - 1, y) == FENCE_UP) solid->change(solid->get_width() - 1, y, FENCE_DOWN);
+		if (room_up) for (int x = 0; x < solid->get_width(); ++ x) if (solid->get_tile_id(x, 0) == FENCE_UP) solid->change(x, 0, FENCE_DOWN);
+		if (room_down) for (int x = 0; x < solid->get_width(); ++ x) if (solid->get_tile_id(x, solid->get_height() - 1) == FENCE_UP) solid->change(x, solid->get_height() - 1, FENCE_DOWN);
 	}
 }

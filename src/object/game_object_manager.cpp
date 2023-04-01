@@ -113,6 +113,7 @@ const std::vector<GameObject*>& GameObjectManager::get_objects_by_type_index(std
 }
 
 const std::vector<TileMap*>& GameObjectManager::get_solid_tilemaps() const { return m_solid_tilemaps; }
+std::vector<TileMap*>& GameObjectManager::get_solid_tilemaps_non_const() { return m_solid_tilemaps; }
 
 void GameObjectManager::this_before_object_add(GameObject& object)
 {

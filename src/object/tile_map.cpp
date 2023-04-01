@@ -102,6 +102,9 @@ void TileMap::draw(DrawingContext& drawing_context)
 
 bool TileMap::is_solid() const { return m_is_solid; }
 
+int TileMap::get_width() const { return m_width; }
+int TileMap::get_height() const { return m_height; }
+
 Vector TileMap::get_offset() const { return m_offset; }
 void TileMap::set_offset(const Vector& new_offset) { m_offset = new_offset; }
 

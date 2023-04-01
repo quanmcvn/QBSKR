@@ -13,6 +13,7 @@ Projectile::Projectile(const Sprite* sprite) :
 void Projectile::update(float dt_sec)
 {
 	// if the projectile is out of bound then it is removed
+	// design is bad
 	if (!Room::get().inside(get_bounding_box())) {
 		remove_me();
 	}

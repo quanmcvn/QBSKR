@@ -4,8 +4,9 @@
 #include "badguy/badguy_set.hpp"
 #include "control/input_manager.hpp"
 #include "object/player.hpp"
-#include "qbskr/gameconfig.hpp"
 #include "object/tile_set.hpp"
+#include "qbskr/level_data_set.hpp"
+#include "qbskr/screen_manager.hpp"
 #include "sprite/sprite_manager.hpp"
 #include "video/texture_manager.hpp"
 #include "video/video_system.hpp"
@@ -36,6 +37,8 @@ private:
 	std::unique_ptr<ProjectileSet> m_projectile_set;
 	std::unique_ptr<BadGuySet> m_badguy_set;
 	std::unique_ptr<TileSet> m_tile_set;
+	std::unique_ptr<LevelDataSet> m_level_data_set;
+	std::unique_ptr<ScreenManager> m_screen_manager;
 
 public:
 	int run(int argc, char** argv);

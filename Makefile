@@ -38,13 +38,17 @@ OBJ_FILES = src/main.o                                                  \
             src/object/tile.o                                           \
             src/qbskr/constants.o                                       \
             src/qbskr/gameconfig.o                                      \
+            src/qbskr/game_session.o                                    \
             src/qbskr/globals.o                                         \
-            src/qbskr/level.o                                           \
+            src/qbskr/level_data_set.o                                  \
             src/qbskr/level_data.o                                      \
+            src/qbskr/level.o                                           \
             src/qbskr/main.o                                            \
             src/qbskr/room_data_set.o                                   \
             src/qbskr/room_data.o                                       \
             src/qbskr/room.o                                            \
+            src/qbskr/screen_manager.o                                  \
+            src/qbskr/screen.o                                          \
             src/sprite/sprite_data.o                                    \
             src/sprite/sprite_manager.o                                 \
             src/sprite/sprite.o                                         \
