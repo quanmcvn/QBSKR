@@ -3,6 +3,9 @@
 ### So I will delete definition code in *.hpp files :D
 
 OBJ_FILES = src/main.o                                                  \
+            src/audio/sdl_mix_chunk.o                                   \
+            src/audio/sdl_mix_music.o                                   \
+            src/audio/sound_manager.o                                   \
             src/badguy/badguy_set.o                                     \
             src/badguy/badguy.o                                         \
             src/badguy/generic_badguy.o                                 \
@@ -86,15 +89,21 @@ CC = g++
 
 SDL2_PATH = D:/Libraries/SDL2/x86_64-w64-mingw32
 SDL2_IMAGE_PATH = D:/Libraries/SDL2_image/x86_64-w64-mingw32
+SDL2_MIXER_PATH = D:/Libraries/SDL2_mixer/x86_64-w64-mingw32
+SDL2_TTF_PATH = D:/Libraries/SDL2_ttf/x86_64-w64-mingw32
 
 #INCLUDE_PATHS specifies the additional include paths we'll need
 INCLUDE_PATHS = -I$(SDL2_PATH)/include/SDL2          \
                 -I$(SDL2_IMAGE_PATH)/include/SDL2    \
+                -I$(SDL2_MIXER_PATH)/include/SDL2    \
+                -I$(SDL2_TTF_PATH)/include/SDL2    \
                 -I./src                              \
 
 #LIBRARY_PATHS specifies the additional library paths we'll need
 LIBRARY_PATHS = -L$(SDL2_PATH)/lib                   \
                 -L$(SDL2_IMAGE_PATH)/lib             \
+                -L$(SDL2_MIXER_PATH)/lib             \
+                -L$(SDL2_TTF_PATH)/lib             \
 
 #COMPILER_FLAGS specifies the additional compilation options we're using
 COMPILER_FLAGS = -std=c++17 -Wall -Wextra
@@ -104,6 +113,8 @@ LINKER_FLAGS = -lmingw32           \
                -lSDL2main          \
                -lSDL2              \
                -lSDL2_image        \
+               -lSDL2_mixer        \
+               -lSDL2_ttf          \
 
 #OBJ_NAME specifies the name of our exectuable
 OBJ_NAME = QBSKR

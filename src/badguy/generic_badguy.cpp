@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <stdexcept>
 
+#include "audio/sound_manager.hpp"
 #include "math/interpolate.hpp"
 #include "math/random.hpp"
 #include "math/util.hpp"
@@ -91,6 +92,7 @@ void GenericBadGuy::update(float dt_sec)
 	if (m_hit_damage.has_value()) {
 		m_health -= *m_hit_damage;
 		m_hit_damage.reset();
+		SoundManager::current()->play_sound("sounds/badguy/generic_badguy_hurt.wav");
 	}
 
 	if (!m_knockback_animation_timer.started()) {

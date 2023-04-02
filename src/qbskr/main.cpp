@@ -1,6 +1,7 @@
 #include "qbskr/main.hpp"
 
 #include <SDL_image.h>
+#include <SDL_mixer.h>
 #include <string>
 #include <iostream>
 #include <sstream>
@@ -26,27 +27,29 @@
 
 SDLSubSystem::SDLSubSystem() 
 {
-	Uint32 flags = SDL_INIT_VIDEO;
+	Uint32 flags = SDL_INIT_VIDEO | SDL_INIT_AUDIO;
 	if (SDL_Init(flags) < 0) {
 		std::ostringstream msg;
 		msg << "Couldn't init SDL: " << SDL_GetError();
 		throw std::runtime_error(msg.str());
 	}
 
-	int imgFlags = IMG_INIT_PNG;
-	if (!(IMG_Init(imgFlags) & imgFlags)) {
+	int img_flags = IMG_INIT_PNG;
+	if (!(IMG_Init(img_flags) & img_flags)) {
 		std::ostringstream msg;
 		msg << "Couldn't init SDL_Image: " << SDL_GetError();
 		throw std::runtime_error(msg.str());
 	}
 
 	// apparently I can do this, extra safe
+	atexit(Mix_Quit);
 	atexit(IMG_Quit);
 	atexit(SDL_Quit);
 }
 
 SDLSubSystem::~SDLSubSystem()
 {
+	Mix_Quit();
 	IMG_Quit();
 	SDL_Quit();
 }
@@ -55,6 +58,7 @@ Main::Main() :
 	m_sdl_subsystem(),
 	m_input_manager(),
 	m_video_system(),
+	m_sound_manager(),
 	m_sprite_manager(),
 	m_weapon_set(),
 	m_projectile_set(),
@@ -73,6 +77,7 @@ Main::~Main()
 	m_projectile_set.reset();
 	m_weapon_set.reset();
 	m_sprite_manager.reset();
+	m_sound_manager.reset();
 	m_video_system.reset();
 	m_input_manager.reset();
 	m_sdl_subsystem.reset();
@@ -83,6 +88,7 @@ int Main::run(int /* argc */, char** /* argv */)
 	m_sdl_subsystem = std::make_unique<SDLSubSystem>();
 	m_input_manager = std::make_unique<InputManager>(g_config->keyboard_config, g_config->mouse_button_config);
 	m_video_system = VideoSystem::create(VideoSystem::VIDEO_SDL);
+	m_sound_manager = std::make_unique<SoundManager>();
 	m_sprite_manager = std::make_unique<SpriteManager>();
 	m_weapon_set = std::make_unique<WeaponSet>();
 	m_projectile_set = std::make_unique<ProjectileSet>();

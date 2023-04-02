@@ -1,5 +1,6 @@
 #include "object/player.hpp"
 
+#include "audio/sound_manager.hpp"
 #include "badguy/badguy.hpp"
 #include "control/input_manager.hpp"
 #include "sprite/sprite_manager.hpp"
@@ -142,6 +143,7 @@ void Player::handle_weapon()
 	}
 
 	if (m_controller->hold(Control::ATTACK)) {
+		SoundManager::current()->play_sound("sounds/sound_player_shoot.wav");
 		m_weapon->attack();
 	}
 }

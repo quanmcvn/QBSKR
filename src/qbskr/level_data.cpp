@@ -11,7 +11,7 @@
 
 namespace {
 	// distance between room, in tiles
-	const int DISTANCE_BETWEEN_ROOM = 20;
+	const int DISTANCE_BETWEEN_ROOM = 30;
 	// hardcode bridge size
 	const int BRIDGE_SIZE = 7;
 	// for shifting to make bridge at the center
