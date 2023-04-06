@@ -20,7 +20,6 @@ private:
 
 public:
 	GenericProjectile(const std::string& sprite_name);
-	GenericProjectile(const Sprite* sprite);
 
 public:
 	static std::unique_ptr<GenericProjectile> from_reader(const CrappyReaderData* crd, const std::string& parent_path);

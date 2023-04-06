@@ -10,12 +10,6 @@ Weapon::Weapon(const std::string& sprite_name) :
 	m_hurt_attributes()
 {}
 
-Weapon::Weapon(const Sprite* sprite) :
-	MovingSprite(Vector(0.0f, 0.0f), sprite, LAYER_WEAPONS, COLLISION_GROUP_DISABLED),
-	m_parent(),
-	m_hurt_attributes()
-{}
-
 void Weapon::update(float /* dt_sec */)
 {}
 

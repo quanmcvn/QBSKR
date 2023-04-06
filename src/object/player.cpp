@@ -143,7 +143,7 @@ void Player::handle_weapon()
 	}
 
 	if (m_controller->hold(Control::ATTACK)) {
-		SoundManager::current()->play_sound("sounds/sound_player_shoot.wav");
+		SoundManager::current()->play_sound("sounds/player/shoot.wav");
 		m_weapon->attack();
 	}
 }

@@ -3,20 +3,12 @@
 #include "object/tile_set_parser.hpp"
 #include "util/log.hpp"
 
-std::unique_ptr<TileSet> TileSet::from_file(const std::string& filename)
-{
-	std::unique_ptr<TileSet> tileset = std::make_unique<TileSet>();
-
-	TileSetParser parser(*tileset, filename);
-
-	parser.parse();
-
-	return tileset;
-}
-
 TileSet::TileSet() :
 	m_tiles(1)
-{}
+{
+	TileSetParser parser(*this, "images/tiles/tiles-tileset.txt");
+	parser.parse();
+}
 
 TileSet::~TileSet()
 {

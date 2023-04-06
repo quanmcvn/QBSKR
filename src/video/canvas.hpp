@@ -5,6 +5,8 @@
 #include <memory>
 
 #include "video/drawing_request.hpp"
+#include "video/font_ptr.hpp"
+#include "video/font.hpp"
 #include "video/layer.hpp"
 #include "video/surface_ptr.hpp"
 
@@ -41,7 +43,8 @@ public:
 	void draw_surface(const SurfacePtr& surface, const Vector& position, float angle, const Color& color, int layer);
 
 	void draw_filled_rect(const Rectf& rect, const Color& color, int layer);
-
+	void draw_text(const FontPtr& font, const std::string& text,
+	               const Vector& position, FontAlignment alignment, int layer, const Color& color = Color(1.0f, 1.0f, 1.0f, 1.0f));
 	void clear();
 
 	DrawingContext& get_drawing_context();

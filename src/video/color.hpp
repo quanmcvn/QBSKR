@@ -8,6 +8,10 @@ public:
 	Color();
 
 public:
+	static const Color RED;
+	static const Color WHITE;
+
+public:
 	float red, green, blue, alpha;
 
 public:

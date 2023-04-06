@@ -10,6 +10,7 @@
 #include "object/player.hpp"
 #include "qbskr/room.hpp"
 #include "util/crappy_reader_data.hpp"
+#include "qbskr/resources.hpp"
 #include "weapon/shooting_weapon/projectile/projectile.hpp"
 #include "weapon/hurt.hpp"
 #include "weapon/weapon.hpp"
@@ -25,6 +26,8 @@ namespace {
 	// arbitrary choice
 	const float KNOCKBACK_ANIMATION_TIME = 0.1f;
 	// arbitrary choice
+	const float HIT_TEXT_TIME = 1.0f;
+	// arbitrary choice
 	const float KNOCKBACK_SPEED = 100.0f;
 }
 
@@ -35,11 +38,6 @@ GenericBadGuy::~GenericBadGuy()
 
 GenericBadGuy::GenericBadGuy(const std::string& sprite_filename) :
 	BadGuy(sprite_filename),
-	m_weapon()
-{}
-
-GenericBadGuy::GenericBadGuy(const Sprite* sprite) :
-	BadGuy(sprite),
 	m_weapon()
 {}
 
@@ -90,7 +88,8 @@ void GenericBadGuy::update(float dt_sec)
 	}
 
 	if (m_hit_damage.has_value()) {
-		m_health -= *m_hit_damage;
+		m_last_hit_damage = m_hit_damage.value();
+		m_health -= m_hit_damage.value();
 		m_hit_damage.reset();
 		SoundManager::current()->play_sound("sounds/badguy/generic_badguy_hurt.wav");
 	}
@@ -156,6 +155,7 @@ void GenericBadGuy::draw(DrawingContext& drawing_context)
 
 	if (m_hit_damage.has_value()) {
 		m_knockback_animation_timer.start(KNOCKBACK_ANIMATION_TIME, false);
+		m_hit_text_timer.start(HIT_TEXT_TIME, false);
 	}
 
 	if (m_die) {
@@ -165,6 +165,9 @@ void GenericBadGuy::draw(DrawingContext& drawing_context)
 			m_sprite->set_action("knockback" + action_postfix);
 		} else {
 			m_sprite->set_action("idle" + action_postfix);
+		}
+		if (!m_hit_text_timer.ended()) {
+			drawing_context.get_canvas().draw_text(Resources::fixed_font, std::to_string(m_last_hit_damage), get_pos(), ALIGN_LEFT, LAYER_HUD, Color::RED);
 		}
 	}
 
@@ -234,7 +237,7 @@ void GenericBadGuy::try_change_state()
 
 std::unique_ptr<BadGuy> GenericBadGuy::clone(const Vector& pos) const
 {
-	auto badguy = std::make_unique<GenericBadGuy>(m_sprite.get());
+	auto badguy = std::make_unique<GenericBadGuy>(m_sprite_name);
 	badguy->set_pos(pos);
 	badguy->m_weapon = m_weapon->clone(badguy.get());
 	badguy->m_weapon->set_pos_offset(m_weapon->get_pos_offset());

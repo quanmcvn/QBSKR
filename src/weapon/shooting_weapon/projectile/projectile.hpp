@@ -21,7 +21,6 @@ protected:
 
 public:
 	Projectile(const std::string& sprite_name);
-	Projectile(const Sprite* sprite);
 
 public:
 	virtual void update(float dt_sec) override;

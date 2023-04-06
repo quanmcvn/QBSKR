@@ -193,10 +193,10 @@ void Room::spawn_badguy()
 	int badguy_spawns = g_game_random.rand_inclusive(m_room_data->m_min_per_turn, m_room_data->m_max_per_turn);
 	
 	// spawn badguy randomly
-	// try at most 10 times
+	// try at most 100 times
 	// if fail then give up
 	// potentially bad
-	const int MAX_TRIES = 10;
+	const int MAX_TRIES = 100;
 	const Rectf bounding_box = get_bounding_box();
 	for (int i = 0; i < badguy_spawns; ++ i) {
 		int spawn_id = m_room_data->m_badguys[g_game_random.rand(0, m_room_data->m_badguys.size())];

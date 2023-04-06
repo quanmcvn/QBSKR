@@ -17,7 +17,9 @@ enum {
 	// weapons
 	LAYER_WEAPONS = 300,
 
-	LAYER_FOREGROUND = 400
+	LAYER_FOREGROUND = 400,
+
+	LAYER_HUD = 500
 };
 
 #endif

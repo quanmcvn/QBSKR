@@ -18,10 +18,13 @@ Canvas::Canvas(DrawingContext& drawing_context, std::vector<std::unique_ptr<Draw
 
 void Canvas::render(Renderer& renderer)
 {
-	std::stable_sort(m_requests.begin(), m_requests.end(), 
-	                [](const DrawingRequest* lhs, const DrawingRequest* rhs) {
-	                	return lhs->layer < rhs->layer;
-	                });
+	std::stable_sort(
+		m_requests.begin(), 
+		m_requests.end(), 
+		[] (const DrawingRequest* lhs, const DrawingRequest* rhs) {
+			return lhs->layer < rhs->layer;
+		}
+	);
 	
 	Painter& painter = renderer.get_painter();
 
@@ -72,8 +75,8 @@ void Canvas::draw_surface(const SurfacePtr& surface, const Vector& position, flo
 	request->texture = surface->get_texture().get();
 	request->srcrects.emplace_back(Rectf(surface->get_region()));
 	request->dstrects.emplace_back(Rectf(apply_translate(position) * scale(),
-	                               Sizef(static_cast<float>(surface->get_width()) * scale(),
-	                                     static_cast<float>(surface->get_height()) * scale())));
+	                                     Sizef(static_cast<float>(surface->get_width()) * scale(),
+	                                           static_cast<float>(surface->get_height()) * scale())));
 	request->angles.push_back(angle);
 	request->color = color;
 
@@ -98,6 +101,12 @@ void Canvas::draw_filled_rect(const Rectf& rect, const Color& color, int layer)
 	request->color.alpha = color.alpha * m_drawing_context.get_alpha();
 
 	m_requests.push_back(static_cast<DrawingRequest*>(request));
+}
+
+void Canvas::draw_text(const FontPtr& font, const std::string& text,
+                       const Vector& position, FontAlignment alignment, int layer, const Color& color)
+{
+	font->draw_text(*this, text, position, alignment, layer, color);
 }
 
 void Canvas::clear()

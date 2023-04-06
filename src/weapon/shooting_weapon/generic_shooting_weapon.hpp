@@ -19,10 +19,10 @@ private:
 	uint32_t m_projectile_id;
 	Timer m_timer;
 	Vector m_projectile_spawn_pos;
+	std::string m_sound_file;
 
 public:
 	GenericShootingWeapon(const std::string& sprite_name);
-	GenericShootingWeapon(const Sprite* sprite);
 
 public:
 	static std::unique_ptr<GenericShootingWeapon> from_reader(const CrappyReaderData* crd);
@@ -33,6 +33,7 @@ public:
 	virtual bool check_timer() override;
 	virtual Vector get_projectile_spawn_pos() const override;
 	virtual uint32_t get_projectile_id() const override;
+	void play_shoot_sound() const override;
 	virtual std::unique_ptr<Weapon> clone(MovingObject* parent) const override;
 };
 

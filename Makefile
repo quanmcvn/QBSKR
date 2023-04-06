@@ -47,6 +47,7 @@ OBJ_FILES = src/main.o                                                  \
             src/qbskr/level_data.o                                      \
             src/qbskr/level.o                                           \
             src/qbskr/main.o                                            \
+            src/qbskr/resources.o                                       \
             src/qbskr/room_data_set.o                                   \
             src/qbskr/room_data.o                                       \
             src/qbskr/room.o                                            \
@@ -57,6 +58,7 @@ OBJ_FILES = src/main.o                                                  \
             src/sprite/sprite.o                                         \
             src/util/crappy_reader_data.o                               \
             src/util/crappy_reader.o                                    \
+            src/util/line_iterator.o                                    \
             src/util/log.o                                              \
             src/util/timer.o                                            \
             src/util/uid_generator.o                                    \
@@ -71,9 +73,13 @@ OBJ_FILES = src/main.o                                                  \
             src/video/color.o                                           \
             src/video/compositor.o                                      \
             src/video/drawing_context.o                                 \
+            src/video/font.o                                            \
             src/video/surface.o                                         \
             src/video/texture_manager.o                                 \
             src/video/texture.o                                         \
+            src/video/ttf_font.o                                        \
+            src/video/ttf_surface_manager.o                             \
+            src/video/ttf_surface.o                                     \
             src/video/video_system.o                                    \
             src/video/viewport.o                                        \
             src/weapon/shooting_weapon/projectile/generic_projectile.o  \

@@ -6,10 +6,6 @@ Projectile::Projectile(const std::string& sprite_name) :
 	MovingSprite(Vector(0.0f, 0.0f), sprite_name, LAYER_PROJECTILES)
 {}
 
-Projectile::Projectile(const Sprite* sprite) :
-	MovingSprite(Vector(0.0f, 0.0f), sprite, LAYER_PROJECTILES)
-{}
-
 void Projectile::update(float dt_sec)
 {
 	// if the projectile is out of bound then it is removed

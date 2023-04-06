@@ -27,8 +27,6 @@ protected:
 public:
 	MovingSprite(const Vector& pos, const std::string& sprite_name, 
 	             int layer = LAYER_OBJECTS, CollisionGroup collision_group = COLLISION_GROUP_MOVING);
-	MovingSprite(const Vector& pos, const Sprite* sprite,
-	             int layer = LAYER_OBJECTS, CollisionGroup collision_group = COLLISION_GROUP_MOVING);
 
 public:
 	virtual void update(float dt_sec) override;

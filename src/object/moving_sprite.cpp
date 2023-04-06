@@ -22,18 +22,6 @@ MovingSprite::MovingSprite(const Vector& pos, const std::string& sprite_name,
 	set_group(collision_group);
 }
 
-MovingSprite::MovingSprite(const Vector& pos, const Sprite* sprite,
-	                         int layer, CollisionGroup collision_group) :
-	m_sprite_name(""),
-	m_sprite(sprite->clone()),
-	m_layer(layer),
-	m_flip(NO_FLIP)
-{
-	m_collision_object.set_pos(pos);
-	m_collision_object.m_bounding_box.set_size(m_sprite->get_current_hitbox_width(), m_sprite->get_current_hitbox_height());
-	set_group(collision_group);
-}
-
 void MovingSprite::update(float /* dt_sec */) {}
 
 void MovingSprite::draw(DrawingContext& drawing_context)

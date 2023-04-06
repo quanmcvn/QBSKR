@@ -23,7 +23,6 @@ protected:
 
 public:
 	Weapon(const std::string& sprite_name);
-	Weapon(const Sprite* sprite);
 
 public:
 	virtual void update(float dt_sec) override;

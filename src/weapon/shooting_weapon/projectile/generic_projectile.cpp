@@ -11,11 +11,6 @@ GenericProjectile::GenericProjectile(const std::string& sprite_filename) :
 	m_bounce_wall_count()
 {}
 
-GenericProjectile::GenericProjectile(const Sprite* sprite) :
-	Projectile(sprite),
-	m_bounce_wall_count()
-{}
-
 std::unique_ptr<GenericProjectile> GenericProjectile::from_reader(const CrappyReaderData* crd, const std::string& parent_path)
 {
 	float speed = 100.0f;
@@ -94,14 +89,14 @@ HitResponse GenericProjectile::collision(GameObject& other, const CollisionHit& 
 
 std::unique_ptr<Projectile> GenericProjectile::clone(const Vector& pos, uint32_t hurt_attributes, float angle) const
 {
-	auto projectile = std::make_unique<GenericProjectile>(m_sprite.get());
+	auto projectile = std::make_unique<GenericProjectile>(m_sprite_name);
 	projectile->set_pos(pos);
 	projectile->set_hurt_attributes(hurt_attributes);
 	projectile->set_angle(angle);
 	projectile->m_bounce_wall_count = m_bounce_wall_count;
-	// get speed oriented Ox
-	Vector speed = Vector(math::length(m_physic.get_velocity()), 0.0f);
-	projectile->m_physic.set_velocity(math::rotate(speed, angle));
+	// get velocity oriented Ox
+	Vector velocity = Vector(math::length(m_physic.get_velocity()), 0.0f);
+	projectile->m_physic.set_velocity(math::rotate(velocity, angle));
 	projectile->m_damage = m_damage;
 
 	return projectile;

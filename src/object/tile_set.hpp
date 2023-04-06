@@ -12,9 +12,6 @@ class CrappyReader;
 
 class TileSet final : public Currenton<TileSet> {
 public:
-	static std::unique_ptr<TileSet> from_file(const std::string& filename);
-
-public:
 	TileSet();
 	~TileSet() override;
 

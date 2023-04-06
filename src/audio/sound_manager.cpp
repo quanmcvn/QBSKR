@@ -25,7 +25,9 @@ void SoundManager::load_sound(const std::string& filename)
 {
 	auto it = m_mix_chunks.find(filename);
 	if (it != m_mix_chunks.end()) return;
-	else m_mix_chunks[filename] = std::move(std::make_unique<SDLMixChunk>(Mix_LoadWAV(filename.c_str())));
+	// no SDL_Mixer error checking here
+	// idk why but Mix_LoadWAV() always return non NULL
+	m_mix_chunks[filename] = std::move(std::make_unique<SDLMixChunk>(Mix_LoadWAV(filename.c_str())));
 }
 
 void SoundManager::play_sound(const std::string& filename, int loops)
@@ -38,7 +40,7 @@ void SoundManager::load_music(const std::string& filename)
 {
 	auto it = m_mix_musics.find(filename);
 	if (it != m_mix_musics.end()) return;
-	else m_mix_musics[filename] = std::move(std::make_unique<SDLMixMusic>(Mix_LoadMUS(filename.c_str())));
+	m_mix_musics[filename] = std::move(std::make_unique<SDLMixMusic>(Mix_LoadMUS(filename.c_str())));
 }
 
 void SoundManager::play_music(const std::string& filename, int loops)

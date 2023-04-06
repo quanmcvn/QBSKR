@@ -13,7 +13,6 @@ private:
 
 public:
 	ShootingWeapon(const std::string& sprite_name);
-	ShootingWeapon(const Sprite* sprite);
 
 public:
 	virtual void attack(int times = 1) override;
@@ -23,6 +22,7 @@ public:
 	// spawn the projectile there is weird
 	virtual Vector get_projectile_spawn_pos() const = 0;
 	virtual uint32_t get_projectile_id() const = 0;
+	virtual void play_shoot_sound() const = 0;
 };
 
 #endif

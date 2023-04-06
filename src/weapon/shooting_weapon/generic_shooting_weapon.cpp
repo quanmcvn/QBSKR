@@ -2,20 +2,17 @@
 
 #include <stdexcept>
 
+#include "audio/sound_manager.hpp"
 #include "util/crappy_reader_data.hpp"
 #include "weapon/shooting_weapon/projectile/projectile_set.hpp"
 #include "weapon/shooting_weapon/projectile/projectile.hpp"
 
 GenericShootingWeapon::GenericShootingWeapon(const std::string& sprite_name) :
 	ShootingWeapon(sprite_name),
+	m_timer(),
 	m_projectile_id(0),
-	m_projectile_spawn_pos(Vector(0, 0))
-{}
-
-GenericShootingWeapon::GenericShootingWeapon(const Sprite* sprite) :
-	ShootingWeapon(sprite),
-	m_projectile_id(0),
-	m_projectile_spawn_pos(Vector(0, 0))
+	m_projectile_spawn_pos(Vector(0, 0)),
+	m_sound_file()
 {}
 
 std::unique_ptr<GenericShootingWeapon> GenericShootingWeapon::from_reader(const CrappyReaderData* crd)
@@ -42,10 +39,14 @@ std::unique_ptr<GenericShootingWeapon> GenericShootingWeapon::from_reader(const 
 		throw std::runtime_error("Missing sprite-filename in weapon-specific");
 	}
 
+	std::string sound_file;
+	crd->get("shoot-sound-file", sound_file);
+
 	auto weapon = std::make_unique<GenericShootingWeapon>(crd->m_parent_path + sprite_filename);
 	weapon->m_projectile_id = projectile_id;
 	weapon->m_timer.start_true(1.0f / projectiles_per_sec, true);
 	weapon->m_projectile_spawn_pos = projectile_spawn_pos;
+	weapon->m_sound_file = sound_file;
 
 	return weapon;
 }
@@ -63,13 +64,16 @@ Vector GenericShootingWeapon::get_projectile_spawn_pos() const
 
 uint32_t GenericShootingWeapon::get_projectile_id() const { return m_projectile_id; }
 
+void GenericShootingWeapon::play_shoot_sound() const { if (!m_sound_file.empty()) SoundManager::current()->play_sound(m_sound_file); }
+
 std::unique_ptr<Weapon> GenericShootingWeapon::clone(MovingObject* parent) const
 {
-	auto weapon = std::make_unique<GenericShootingWeapon>(m_sprite.get());
+	auto weapon = std::make_unique<GenericShootingWeapon>(m_sprite_name);
 	weapon->change_parent(parent);
 	weapon->m_projectile_id = m_projectile_id;
 	weapon->m_timer.start_true(m_timer.get_period(), true);
 	weapon->m_projectile_spawn_pos = m_projectile_spawn_pos;
+	weapon->m_sound_file = m_sound_file;
 
 	return weapon;
 }

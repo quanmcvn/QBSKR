@@ -30,10 +30,10 @@ protected:
 	bool m_die;
 	// if hit this frame
 	std::optional<int> m_hit_damage;
+	int m_last_hit_damage;
 
 public:
 	BadGuy(const std::string& sprite_filename);
-	BadGuy(const Sprite* sprite);
 
 public:
 	virtual void update(float dt_sec) override;
