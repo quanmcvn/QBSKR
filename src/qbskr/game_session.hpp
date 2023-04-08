@@ -24,6 +24,10 @@ public:
 	virtual void update(float dt_sec, const Controller& controller) override;
 	virtual void draw(Compositor& compositor) override;
 
+	void toggle_pause();
+
+private:
+	void on_escape_press();
 };
 
 #endif

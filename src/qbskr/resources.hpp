@@ -2,9 +2,10 @@
 #define HEADER_QBSKR_QBSKR_RESOURCES_HPP
 
 #include <memory>
-#include <string>
 
 #include "video/font_ptr.hpp"
+
+class MouseCursor;
 
 class Resources final {
 public:
@@ -12,6 +13,7 @@ public:
 	~Resources();
 
 public:
+	static std::unique_ptr<MouseCursor> mouse_cursor;
 	// used for hud
 	static FontPtr fixed_font;
 	// used for menu

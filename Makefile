@@ -19,6 +19,14 @@ OBJ_FILES = src/main.o                                                  \
             src/control/mouse_button_config.o                           \
             src/control/mouse_button_manager.o                          \
             src/control/mouse_motion_manager.o                          \
+            src/gui/item_action.o                                       \
+            src/gui/item_horizontal_line.o                              \
+            src/gui/menu_item.o                                         \
+            src/gui/menu_manager.o                                      \
+            src/gui/menu_set.o                                          \
+            src/gui/menu_transition.o                                   \
+            src/gui/menu.o                                              \
+            src/gui/mouse_cursor.o                                      \
             src/math/anchor_point.o                                     \
             src/math/interpolate.o                                      \
             src/math/random.o                                           \
@@ -39,6 +47,9 @@ OBJ_FILES = src/main.o                                                  \
             src/object/tile_set_parser.o                                \
             src/object/tile_set.o                                       \
             src/object/tile.o                                           \
+            src/qbskr/menu/game_menu.o                                  \
+            src/qbskr/menu/main_menu.o                                  \
+            src/qbskr/color_scheme.o                                    \
             src/qbskr/constants.o                                       \
             src/qbskr/gameconfig.o                                      \
             src/qbskr/game_session.o                                    \

@@ -9,6 +9,8 @@
 #include "qbskr/screen.hpp"
 #include "util/currenton.hpp"
 
+class MenuManager;
+class MenuSet;
 class InputManager;
 class VideoSystem;
 
@@ -19,6 +21,8 @@ public:
 private:
 	VideoSystem& m_video_system;
 	InputManager& m_input_manager;
+	std::unique_ptr<MenuSet> m_menu_set;
+	std::unique_ptr<MenuManager> m_menu_manager;
 
 	Uint32 last_ticks;
 	Uint32 elapsed_ticks;

@@ -19,7 +19,11 @@ enum {
 
 	LAYER_FOREGROUND = 400,
 
-	LAYER_HUD = 500
+	// damage, ...
+	LAYER_HUD = 500,
+
+	// menus, mouse cursor
+	LAYER_GUI = 600
 };
 
 #endif

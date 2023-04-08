@@ -8,8 +8,14 @@
 
 class Config;
 
+// a little bit of trolling
+#define SCREEN_WIDTH (VideoSystem::current()->get_viewport().get_screen_width())
+// a little bit of trolling
+#define SCREEN_HEIGHT (VideoSystem::current()->get_viewport().get_screen_height())
+
 extern std::unique_ptr<Config> g_config;
 
 extern float g_game_time;
+extern float g_real_time;
 
 #endif

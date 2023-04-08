@@ -1,0 +1,21 @@
+sprite-start
+
+	action-start
+		name normal
+		hitbox 8 8 0 0
+		images mouse-cursor.png
+	action-end
+
+	action-start
+		name click
+		hitbox 8 8 0 0
+		images mouse-cursor-click.png
+	action-end
+	3
+	action-start
+		name link
+		hitbox 8 8 0 0
+		images mouse-cursor-link.png
+	action-end
+
+sprite-end

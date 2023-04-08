@@ -170,7 +170,10 @@ Player* Room::get_nearest_player(const Vector& pos) const
 Camera& Room::get_camera() const
 {
 	auto cameras = get_objects_by_type_index(std::type_index(typeid(Camera)));
-	assert(cameras.size() == 1);
+	if (static_cast<int>(cameras.size()) != 1) {
+		log_fatal << "cameras.size() is " << cameras.size() << " not 1" << std::endl;
+		assert(cameras.size() == 1);
+	}
 	return *static_cast<Camera*>(cameras[0]);
 }
 

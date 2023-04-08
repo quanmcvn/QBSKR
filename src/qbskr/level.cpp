@@ -65,6 +65,7 @@ void Level::activate()
 		if (room->get_room_type() == RoomType::START) {
 			room->add<Player>(0, 1);
 			room->add<Camera>();
+			room->flush_game_objects();
 			room->activate();
 		}
 		if (room->get_room_type() != RoomType::BRIDGE) {

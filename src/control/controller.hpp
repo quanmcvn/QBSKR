@@ -15,6 +15,9 @@ enum class Control {
 
 	ATTACK,
 
+	ESCAPE,
+	MENU_SELECT,
+
 	CONTROLCOUNT
 };
 

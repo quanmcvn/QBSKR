@@ -3,6 +3,7 @@
 #include <sstream>
 
 #include "util/line_iterator.hpp"
+#include "util/log.hpp"
 #include "video/canvas.hpp"
 #include "video/ttf_surface.hpp"
 #include "video/ttf_surface_manager.hpp"
@@ -29,6 +30,27 @@ TTFFont::TTFFont(const std::string& filename, int font_size, float line_spacing)
 TTF_Font* TTFFont::get_ttf_font() const { return m_font; }
 int TTFFont::get_font_size() const { return m_font_size; }
 float TTFFont::get_height() const { return static_cast<float>(m_font_size) * m_line_spacing; }
+
+float TTFFont::get_text_width(const std::string& text) const
+{
+	if (text.empty()) return 0.0f;
+
+	float max_width = 0.0f;
+
+	LineIterator it(text);
+	while (it.next()) {
+		const std::string& line = it.get();
+		int w;
+		int h;
+		int ret = TTF_SizeUTF8(m_font, line.c_str(), &w, &h);
+		if (ret < 0) {
+			log_warning << "TTFFont::get_text_width(): " << TTF_GetError() << std::endl;
+		}
+		max_width = std::max(max_width, static_cast<float>(w));
+	}
+
+	return max_width;
+}
 
 void TTFFont::draw_text(Canvas& canvas, const std::string& text,
                         const Vector& pos, FontAlignment alignment, int layer, const Color& color)

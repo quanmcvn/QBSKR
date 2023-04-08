@@ -10,6 +10,7 @@
 #include "object/player.hpp"
 #include "qbskr/room.hpp"
 #include "util/crappy_reader_data.hpp"
+#include "qbskr/color_scheme.hpp"
 #include "qbskr/resources.hpp"
 #include "weapon/shooting_weapon/projectile/projectile.hpp"
 #include "weapon/hurt.hpp"
@@ -167,7 +168,13 @@ void GenericBadGuy::draw(DrawingContext& drawing_context)
 			m_sprite->set_action("idle" + action_postfix);
 		}
 		if (!m_hit_text_timer.ended()) {
-			drawing_context.get_canvas().draw_text(Resources::fixed_font, std::to_string(m_last_hit_damage), get_pos(), ALIGN_LEFT, LAYER_HUD, Color::RED);
+			drawing_context.get_canvas().draw_text(
+				Resources::fixed_font, 
+				std::to_string(m_last_hit_damage), 
+				get_pos(), 
+				ALIGN_LEFT, 
+				LAYER_HUD, 
+				ColorScheme::HUD::damage_color);
 		}
 	}
 

@@ -5,3 +5,4 @@
 std::unique_ptr<Config> g_config = std::make_unique<Config>(std::string("gameconfig.txt"));
 
 float g_game_time = 0;
+float g_real_time = 0;

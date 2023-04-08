@@ -3,6 +3,9 @@
 #include <assert.h>
 
 #include "control/input_manager.hpp"
+#include "gui/menu_manager.hpp"
+#include "gui/menu_set.hpp"
+#include "gui/menu.hpp"
 #include "qbskr/constants.hpp"
 #include "qbskr/globals.hpp"
 #include "video/compositor.hpp"
@@ -15,6 +18,8 @@ ScreenManager::Action::Action(Type type_, std::unique_ptr<Screen> screen_) :
 ScreenManager::ScreenManager(VideoSystem& video_system, InputManager& input_manager) :
 	m_video_system(video_system),
 	m_input_manager(input_manager),
+	m_menu_set(std::make_unique<MenuSet>()),
+	m_menu_manager(std::make_unique<MenuManager>()),
 	last_ticks(0),
 	elapsed_ticks(0),
 	ms_per_step(static_cast<Uint32>(1000.0f / LOGICAL_FPS)),
@@ -40,6 +45,8 @@ void ScreenManager::process_events()
 	while (SDL_PollEvent(&event)) {
 		m_input_manager.process_event(event);
 
+		m_menu_manager->process_event(event);
+
 		switch (event.type) {
 			case SDL_QUIT:
 				quit();
@@ -54,6 +61,8 @@ void ScreenManager::update_gamelogic(float dt_sec)
 	if (!m_screen_stack.empty()) {
 		m_screen_stack.back()->update(dt_sec, controller);
 	}
+
+	m_menu_manager->process_input(controller);
 }
 
 void ScreenManager::draw(Compositor& compositor)
@@ -61,6 +70,9 @@ void ScreenManager::draw(Compositor& compositor)
 	assert(!m_screen_stack.empty());
 
 	m_screen_stack.back()->draw(compositor);
+
+	auto& drawing_context = compositor.make_context();
+	m_menu_manager->draw(drawing_context);
 
 	compositor.render();
 }
@@ -100,9 +112,19 @@ void ScreenManager::loop()
 	elapsed_ticks += static_cast<Uint32>(ticks - last_ticks);
 	last_ticks = ticks;
 
+	if (elapsed_ticks > ms_per_step * 8) {
+		// when the game loads up or levels are switched the
+		// elapsed_ticks grows extremely large, so we just ignore those
+		// large time jumps
+		elapsed_ticks = 0;
+	}
+
 	if (elapsed_ticks < ms_per_step) {
 		SDL_Delay(ms_per_step - elapsed_ticks);
+		return;
 	}
+
+	g_real_time = static_cast<float>(ticks) / 1000.0f;
 
 	int steps = elapsed_ticks / ms_per_step;
 

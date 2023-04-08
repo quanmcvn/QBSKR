@@ -114,6 +114,8 @@ int Main::run(int /* argc */, char** /* argv */)
 		m_resources = std::make_unique<Resources>();
 		m_screen_manager = std::make_unique<ScreenManager>(*m_video_system, *m_input_manager);
 
+		SDL_ShowCursor(SDL_DISABLE);
+
 		g_game_random.seed(std::chrono::system_clock::now().time_since_epoch().count());
 
 		ScreenManager::current()->push_screen(std::make_unique<GameSession>("levels/level-0/level-0-level.txt"));

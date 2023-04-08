@@ -8,16 +8,20 @@ template<class C>
 class Currenton {
 private:
 	static Currenton<C>* s_current;
+
 protected:
-	Currenton() {
+	Currenton()
+	{
 		s_current = this;
 	}
 
-	virtual ~Currenton() {
+	virtual ~Currenton()
+	{
 		if (s_current == this) {
 			s_current = nullptr;
 		}
 	}
+
 public:
 	static C* current() { return static_cast<C*>(s_current); }
 };

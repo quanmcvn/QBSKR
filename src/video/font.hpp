@@ -24,6 +24,8 @@ public:
 public:
 	virtual float get_height() const = 0;
 
+	virtual float get_text_width(const std::string& text) const = 0;
+
 	virtual void draw_text(Canvas& canvas, const std::string& text,
 	                       const Vector& pos, FontAlignment alignment, int layer, const Color& color) = 0;
 };
