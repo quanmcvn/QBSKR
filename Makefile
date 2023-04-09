@@ -27,7 +27,6 @@ OBJ_FILES = src/main.o                                                  \
             src/gui/menu_transition.o                                   \
             src/gui/menu.o                                              \
             src/gui/mouse_cursor.o                                      \
-            src/math/anchor_point.o                                     \
             src/math/interpolate.o                                      \
             src/math/random.o                                           \
             src/math/rect.o                                             \
@@ -37,6 +36,7 @@ OBJ_FILES = src/main.o                                                  \
             src/math/util.o                                             \
             src/math/vector.o                                           \
             src/object/camera.o                                         \
+            src/object/floating_text.o                                  \
             src/object/game_object_manager.o                            \
             src/object/game_object.o                                    \
             src/object/moving_object.o                                  \

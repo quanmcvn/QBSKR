@@ -8,8 +8,7 @@ BadGuy::BadGuy(const std::string& sprite_filename) :
 	m_direction(Direction::RIGHT),
 	m_health(0),
 	m_die(false),
-	m_hit_damage(),
-	m_last_hit_damage()
+	m_hit_damage()
 {}
 
 void BadGuy::update(float dt_sec)

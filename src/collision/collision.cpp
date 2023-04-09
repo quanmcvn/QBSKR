@@ -1,5 +1,6 @@
 #include "collision/collision.hpp"
 
+#include <algorithm>
 #include <limits>
 
 #include "math/rectf.hpp"

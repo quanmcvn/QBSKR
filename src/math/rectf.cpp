@@ -83,18 +83,14 @@ bool Rectf::contains(const Rectf& other) const
 	        get_top() <= other.get_top() && other.get_bottom() <= get_bottom());
 }
 
-float Rectf::distance(const Vector& other, const AnchorPoint ap) const
+float Rectf::distance(const Vector& other) const
 {
-	Vector v = get_anchor_pos(*this, ap);
-	return math::distance(v, other);
+	return math::distance(get_middle(), other);
 }
 
-float Rectf::distance(const Rectf& other, const AnchorPoint ap) const
+float Rectf::distance(const Rectf& other) const
 {
-	Vector v1 = get_anchor_pos(*this, ap);
-	Vector v2 = get_anchor_pos(other, ap);
-
-	return math::distance(v1, v2);
+	return math::distance(get_middle(), other.get_middle());
 }
 
 Rectf Rectf::grown(float border) const

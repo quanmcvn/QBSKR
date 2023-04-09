@@ -7,6 +7,7 @@
 #include "math/interpolate.hpp"
 #include "math/random.hpp"
 #include "math/util.hpp"
+#include "object/floating_text.hpp"
 #include "object/player.hpp"
 #include "qbskr/room.hpp"
 #include "util/crappy_reader_data.hpp"
@@ -26,8 +27,6 @@ namespace {
 	const float DIE_ANIMATION_TIME = 0.4f;
 	// arbitrary choice
 	const float KNOCKBACK_ANIMATION_TIME = 0.1f;
-	// arbitrary choice
-	const float HIT_TEXT_TIME = 1.0f;
 	// arbitrary choice
 	const float KNOCKBACK_SPEED = 100.0f;
 }
@@ -89,8 +88,8 @@ void GenericBadGuy::update(float dt_sec)
 	}
 
 	if (m_hit_damage.has_value()) {
-		m_last_hit_damage = m_hit_damage.value();
 		m_health -= m_hit_damage.value();
+		Room::get().add<FloatingText>(get_bounding_box().get_middle(), m_hit_damage.value(), ColorScheme::HUD::damage_color);
 		m_hit_damage.reset();
 		SoundManager::current()->play_sound("sounds/badguy/generic_badguy_hurt.wav");
 	}
@@ -156,7 +155,6 @@ void GenericBadGuy::draw(DrawingContext& drawing_context)
 
 	if (m_hit_damage.has_value()) {
 		m_knockback_animation_timer.start(KNOCKBACK_ANIMATION_TIME, false);
-		m_hit_text_timer.start(HIT_TEXT_TIME, false);
 	}
 
 	if (m_die) {
@@ -166,15 +164,6 @@ void GenericBadGuy::draw(DrawingContext& drawing_context)
 			m_sprite->set_action("knockback" + action_postfix);
 		} else {
 			m_sprite->set_action("idle" + action_postfix);
-		}
-		if (!m_hit_text_timer.ended()) {
-			drawing_context.get_canvas().draw_text(
-				Resources::fixed_font, 
-				std::to_string(m_last_hit_damage), 
-				get_pos(), 
-				ALIGN_LEFT, 
-				LAYER_HUD, 
-				ColorScheme::HUD::damage_color);
 		}
 	}
 

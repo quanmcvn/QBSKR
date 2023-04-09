@@ -1,6 +1,8 @@
 #ifndef HEADER_QBSKR_COLLISION_COLLISION_OBJECT_HPP
 #define HEADER_QBSKR_COLLISION_COLLISION_OBJECT_HPP
 
+#include <stdint.h>
+
 #include "collision/collision_group.hpp"
 #include "collision/collision_hit.hpp"
 #include "math/rectf.hpp"

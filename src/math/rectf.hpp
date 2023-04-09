@@ -4,7 +4,6 @@
 #include <assert.h>
 #include <iosfwd>
 
-#include "math/anchor_point.hpp"
 #include "math/sizef.hpp"
 #include "math/vector.hpp"
 
@@ -58,8 +57,8 @@ public:
 	bool contains(const Vector& v) const;
 	bool contains(const Rectf& other) const;
 
-	float distance(const Vector& other, const AnchorPoint ap = ANCHOR_MIDDLE) const;
-	float distance(const Rectf& other, const AnchorPoint ap = ANCHOR_MIDDLE) const;
+	float distance(const Vector& other) const;
+	float distance(const Rectf& other) const;
 
 	Rectf grown(float border) const;
 	Vector p1() const;

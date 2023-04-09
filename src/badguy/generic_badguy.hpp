@@ -21,7 +21,6 @@ private:
 	float m_attack_chance;
 	Timer m_die_animation_timer;
 	Timer m_knockback_animation_timer;
-	Timer m_hit_text_timer;
 
 public:
 	GenericBadGuy(const std::string& sprite_filename);
