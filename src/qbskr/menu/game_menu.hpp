@@ -4,7 +4,8 @@
 #include "gui/menu.hpp"
 
 enum GameMenuIDs {
-	MNID_CONTINUE
+	MNID_CONTINUE,
+	MNID_ABORTLEVEL
 };
 
 class GameMenu final : public Menu {

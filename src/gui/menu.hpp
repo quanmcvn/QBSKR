@@ -12,6 +12,7 @@ class Controller;
 class DrawingContext;
 class ItemAction;
 class ItemHorizontalLine;
+class ItemLabel;
 class MenuItem;
 union SDL_Event;
 
@@ -36,6 +37,7 @@ protected:
 	int m_active_item;
 
 public:
+	// core of this design
 	virtual void item_do_menu_action(MenuItem& item) = 0;
 	// called before the menu is exited
 	// return true if it should do the back action
@@ -69,6 +71,7 @@ protected:
 public:
 	ItemHorizontalLine& add_horizontal_line();
 	ItemAction& add_entry(int id, const std::string& text);
+	ItemLabel& add_label(const std::string& text);
 
 protected:
 	// recalculate the width

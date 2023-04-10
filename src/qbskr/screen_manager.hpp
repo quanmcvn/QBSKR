@@ -29,6 +29,8 @@ private:
 	const Uint32 ms_per_step;
 	const float seconds_per_step;
 
+	float m_speed;
+
 	struct Action {
 		enum Type { PUSH_ACTION, POP_ACTION, QUIT_ACTION };
 		Type type;
@@ -44,6 +46,8 @@ public:
 	ScreenManager(VideoSystem& video_system, InputManager& input_manager);
 
 public:
+	float get_speed() const;
+	void set_speed(float speed);
 	void push_screen(std::unique_ptr<Screen> screen);
 	void pop_screen();
 
@@ -51,7 +55,11 @@ private:
 	void process_events();
 	void update_gamelogic(float dt_sec);
 	void draw(Compositor& compositor);
+
+public:
 	void quit();
+
+private:
 	void handle_screen_switch();
 
 public:

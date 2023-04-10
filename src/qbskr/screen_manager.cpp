@@ -23,10 +23,14 @@ ScreenManager::ScreenManager(VideoSystem& video_system, InputManager& input_mana
 	last_ticks(0),
 	elapsed_ticks(0),
 	ms_per_step(static_cast<Uint32>(1000.0f / LOGICAL_FPS)),
-	seconds_per_step(static_cast<float>(ms_per_step) / 1000.0f)
+	seconds_per_step(static_cast<float>(ms_per_step) / 1000.0f),
+	m_speed(1.0f)
 {}
 
 ScreenManager::~ScreenManager() {}
+
+float ScreenManager::get_speed() const { return m_speed; }
+void ScreenManager::set_speed(float speed) { m_speed = speed;}
 
 void ScreenManager::push_screen(std::unique_ptr<Screen> screen)
 {
@@ -54,6 +58,7 @@ void ScreenManager::process_events()
 		}
 	}
 }
+
 void ScreenManager::update_gamelogic(float dt_sec)
 {
 	Controller& controller = m_input_manager.get_controller();
@@ -85,11 +90,18 @@ void ScreenManager::quit()
 void ScreenManager::handle_screen_switch()
 {
 	while (!m_actions.empty()) {
+		// needed for call leave()
+		Screen* current_screen = m_screen_stack.empty() ? nullptr : m_screen_stack.back().get();
 		auto actions = std::move(m_actions);
 
 		for (auto& action : actions) {
 			switch (action.type) {
 				case Action::POP_ACTION:
+					assert(!m_screen_stack.empty());
+					if (current_screen == m_screen_stack.back().get()) {
+						m_screen_stack.back()->leave();
+						current_screen = nullptr;
+					}
 					m_screen_stack.pop_back();
 					break;
 
@@ -100,7 +112,16 @@ void ScreenManager::handle_screen_switch()
 
 				case Action::QUIT_ACTION:
 					m_screen_stack.clear();
+					current_screen = nullptr;
 					break;
+			}
+		}
+
+		if (!m_screen_stack.empty()) {
+			if (current_screen != m_screen_stack.back().get()) {
+				if (current_screen) current_screen->leave();
+				m_screen_stack.back()->setup();
+				m_speed = 1.0f;
 			}
 		}
 	}
@@ -133,7 +154,7 @@ void ScreenManager::loop()
 	steps = std::min(steps, 4);
 
 	for (int i = 0; i < steps; ++i) {
-		float dtime = seconds_per_step;
+		float dtime = seconds_per_step * m_speed;
 		g_game_time += dtime;
 		process_events();
 		update_gamelogic(dtime);

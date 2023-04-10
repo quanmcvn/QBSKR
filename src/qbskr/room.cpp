@@ -37,7 +37,14 @@ Room::Room(std::unique_ptr<RoomData> room_data) :
 	flush_game_objects();
 }
 
-Room& Room::get() { assert(s_current != nullptr); return *s_current; }
+Room& Room::get() 
+{
+	if (s_current) return *s_current;
+	assert(s_current != nullptr);
+	// make compiler happy 
+	return *s_current;
+}
+
 Room* Room::current() { return s_current; }
 
 void Room::update(float dt_sec)
@@ -223,14 +230,15 @@ void Room::spawn_badguy()
 
 bool Room::is_turn_cleared() const
 {
-	// if not (any of gameobjects are (badguy and not dead))
-	// note that can't use std::all_of() here since need to get badguys and its inherits 
-	// get_objects_by_type_index use typeid, and typeid is exact match, not considering inheritance
-	return !std::any_of(get_objects().begin(), get_objects().end(), 
+	// if all of gameobjects are either (not badguy or (is badguy and dead))
+	// = if all of badguy (if cast-down-able) is dead
+	// note that can't use get_objects_by_type_index()
+	// since it use typeid, and typeid is exact match, not considering inheritance
+	return std::all_of(get_objects().begin(), get_objects().end(), 
 		[] (const std::unique_ptr<GameObject>& object) {
 			auto badguy_ptr = dynamic_cast<BadGuy*>(object.get());
-			if (!badguy_ptr) return false;
-			return !badguy_ptr->is_dead();
+			if (!badguy_ptr) return true;
+			return badguy_ptr->is_dead();
 		}
 	);
 }

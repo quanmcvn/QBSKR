@@ -14,8 +14,10 @@ MenuManager::MenuManager() :
 
 void MenuManager::process_event(const SDL_Event& event)
 {
-	if (current_menu()) {
-		current_menu()->process_event(event);
+	if (!m_menu_transition->is_active()) {
+		if (current_menu()) {
+			current_menu()->process_event(event);
+		}
 	}
 }
 

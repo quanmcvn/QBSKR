@@ -48,6 +48,8 @@ public:
 	// default to do nothing
 	virtual void process_event(const SDL_Event& event);
 
+	// get color of text
+	// default to ColorScheme::Menu::default_color
 	virtual Color get_color() const;
 };
 

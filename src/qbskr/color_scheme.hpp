@@ -11,6 +11,7 @@ public:
 		static Color horizontal_line_color;
 		static Color default_color;
 		static Color active_color;
+		static Color label_color;
 	};
 
 	class Text final {

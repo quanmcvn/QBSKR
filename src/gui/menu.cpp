@@ -5,6 +5,7 @@
 #include "control/controller.hpp"
 #include "gui/item_action.hpp"
 #include "gui/item_horizontal_line.hpp"
+#include "gui/item_label.hpp"
 #include "gui/menu_manager.hpp"
 #include "gui/menu_item.hpp"
 #include "gui/mouse_cursor.hpp"
@@ -13,8 +14,7 @@
 #include "video/video_system.hpp"
 
 Menu::Menu() :
-	m_center_pos(Vector(static_cast<float>(SCREEN_WIDTH) / 2.0f,
-	                    static_cast<float>(SCREEN_HEIGHT) / 2.0f)),
+	m_center_pos(Vector(static_cast<float>(SCREEN_WIDTH) / 2.0f, static_cast<float>(SCREEN_HEIGHT) / 2.0f)),
 	m_items(),
 	m_active_item(-1)
 {}
@@ -27,7 +27,6 @@ bool Menu::on_back_action() { return true; }
 void Menu::process_event(const SDL_Event& event)
 {
 	m_items[m_active_item]->process_event(event);
-	// break normal convention of switch here (break is same indent as case/default)
 	switch (event.type) {
 		case SDL_MOUSEBUTTONDOWN:
 			if (event.button.button == SDL_BUTTON_LEFT) {
@@ -36,7 +35,7 @@ void Menu::process_event(const SDL_Event& event)
 					process_action(MenuAction::HIT);
 				}
 			}
-		break;
+			break;
 
 		case SDL_MOUSEMOTION: {
 			Vector mouse_pos = VideoSystem::current()->get_viewport().to_logical(event.motion.x, event.motion.y);
@@ -65,17 +64,16 @@ void Menu::process_event(const SDL_Event& event)
 			} else {
 				MouseCursor::current()->set_state(MouseCursorState::NORMAL);
 			}
+			break;
 		}
-		break;
 
 		default:
-		break;
+			break;
 	}
 }
 
 void Menu::draw(DrawingContext& drawing_context)
 {
-	const float menu_height = get_height();
 	float y_pos = get_menu_rect().get_top();
 	for (size_t i = 0; i < m_items.size(); ++ i) {
 		draw_item(drawing_context, i, y_pos + static_cast<float>(m_items[i]->get_height()) / 2.0f);
@@ -138,6 +136,14 @@ ItemAction& Menu::add_entry(int id, const std::string& text)
 	return item_ref;
 }
 
+ItemLabel& Menu::add_label(const std::string& text)
+{
+	auto item = std::make_unique<ItemLabel>(text);
+	auto& item_ref = *item;
+	add_item(std::move(item));
+	return item_ref;
+}
+
 void Menu::calculate_width()
 {
 	// width = max width of every item
@@ -175,8 +181,7 @@ void Menu::process_input(const Controller& controller)
 	if (controller.pressed(Control::RIGHT)) {
 		menu_action = MenuAction::RIGHT;
 	}
-	if (controller.pressed(Control::ATTACK) ||
-		controller.pressed(Control::MENU_SELECT)) {
+	if (controller.pressed(Control::MENU_SELECT)) {
 		menu_action = MenuAction::HIT;
 	}
 	if (controller.pressed(Control::ESCAPE)) {

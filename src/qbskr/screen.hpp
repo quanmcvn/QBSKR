@@ -8,6 +8,10 @@ class Screen {
 public:
 	virtual ~Screen();
 
+public:
+	virtual void setup();
+	virtual void leave();
+
 	virtual void update(float dt_sec, const Controller& controller) = 0;
 	virtual void draw(Compositor& compositor) = 0;
 };

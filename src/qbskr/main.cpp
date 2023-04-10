@@ -9,22 +9,12 @@
 #include <chrono>
 
 #include "math/random.hpp"
-#include "object/camera.hpp"
-#include "object/tile.hpp"
-#include "qbskr/constants.hpp"
 #include "qbskr/gameconfig.hpp"
 #include "qbskr/globals.hpp"
-#include "qbskr/game_session.hpp"
 #include "qbskr/screen_manager.hpp"
-#include "qbskr/level_data.hpp"
-#include "qbskr/level.hpp"
-#include "qbskr/room_data_set.hpp"
-#include "qbskr/room.hpp"
+#include "qbskr/title_screen.hpp"
 #include "util/log.hpp"
-#include "video/canvas.hpp"
-#include "video/compositor.hpp"
-#include "video/drawing_context.hpp"
-#include "video/sdl/sdl_video_system.hpp"
+#include "video/video_system.hpp"
 
 SDLSubSystem::SDLSubSystem() 
 {
@@ -118,7 +108,7 @@ int Main::run(int /* argc */, char** /* argv */)
 
 		g_game_random.seed(std::chrono::system_clock::now().time_since_epoch().count());
 
-		ScreenManager::current()->push_screen(std::make_unique<GameSession>("levels/level-0/level-0-level.txt"));
+		ScreenManager::current()->push_screen(std::make_unique<TitleScreen>());
 		ScreenManager::current()->run();
 	} catch (std::exception& e) {
 		log_fatal << "Unexpected exception: " << e.what() << std::endl;

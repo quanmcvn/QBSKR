@@ -18,6 +18,8 @@ public:
 	static FontPtr fixed_font;
 	// used for menu
 	static FontPtr normal_font;
+	// used for label
+	static FontPtr big_font;
 
 public:
 	void load();

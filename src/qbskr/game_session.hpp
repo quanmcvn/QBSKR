@@ -16,6 +16,7 @@ private:
 private:
 	std::unique_ptr<Level> m_level;
 	bool m_game_pause;
+	float m_speed_before_pause;
 
 public:
 	GameSession(const std::string& level_filename);
@@ -25,9 +26,7 @@ public:
 	virtual void draw(Compositor& compositor) override;
 
 	void toggle_pause();
-
-private:
-	void on_escape_press();
+	void abort_level();
 };
 
 #endif

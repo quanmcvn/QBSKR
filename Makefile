@@ -21,6 +21,7 @@ OBJ_FILES = src/main.o                                                  \
             src/control/mouse_motion_manager.o                          \
             src/gui/item_action.o                                       \
             src/gui/item_horizontal_line.o                              \
+            src/gui/item_label.o                                        \
             src/gui/menu_item.o                                         \
             src/gui/menu_manager.o                                      \
             src/gui/menu_set.o                                          \
@@ -64,6 +65,7 @@ OBJ_FILES = src/main.o                                                  \
             src/qbskr/room.o                                            \
             src/qbskr/screen_manager.o                                  \
             src/qbskr/screen.o                                          \
+            src/qbskr/title_screen.o                                    \
             src/sprite/sprite_data.o                                    \
             src/sprite/sprite_manager.o                                 \
             src/sprite/sprite.o                                         \
@@ -113,14 +115,14 @@ SDL2_TTF_PATH = D:/Libraries/SDL2_ttf/x86_64-w64-mingw32
 INCLUDE_PATHS = -I$(SDL2_PATH)/include/SDL2          \
                 -I$(SDL2_IMAGE_PATH)/include/SDL2    \
                 -I$(SDL2_MIXER_PATH)/include/SDL2    \
-                -I$(SDL2_TTF_PATH)/include/SDL2    \
+                -I$(SDL2_TTF_PATH)/include/SDL2      \
                 -I./src                              \
 
 #LIBRARY_PATHS specifies the additional library paths we'll need
 LIBRARY_PATHS = -L$(SDL2_PATH)/lib                   \
                 -L$(SDL2_IMAGE_PATH)/lib             \
                 -L$(SDL2_MIXER_PATH)/lib             \
-                -L$(SDL2_TTF_PATH)/lib             \
+                -L$(SDL2_TTF_PATH)/lib               \
 
 #COMPILER_FLAGS specifies the additional compilation options we're using
 COMPILER_FLAGS = -std=c++17 -Wall -Wextra
