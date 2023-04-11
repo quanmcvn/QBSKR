@@ -16,6 +16,9 @@ class ItemLabel;
 class MenuItem;
 union SDL_Event;
 
+/**
+ *  This is the menu, (somewhat) abstract base class
+*/
 class Menu {
 public:
 	Menu();
@@ -38,6 +41,7 @@ protected:
 
 public:
 	// core of this design
+	// action will be done based on item's id, through overriding this method
 	virtual void item_do_menu_action(MenuItem& item) = 0;
 	// called before the menu is exited
 	// return true if it should do the back action

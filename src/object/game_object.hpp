@@ -7,6 +7,9 @@
 
 class DrawingContext;
 
+/**
+ *  Base class for every game object
+*/
 class GameObject {
 	friend class GameObjectManager;
 

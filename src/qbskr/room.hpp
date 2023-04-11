@@ -10,6 +10,10 @@ class CollisionSystem;
 class Player;
 class Rectf;
 
+/**
+ *  Room is an indivisible chunk where badguy spawn
+ *  A level consists of a whole bunch of room
+*/
 class Room final : public GameObjectManager {
 public:
 	friend class CollisionSystem;

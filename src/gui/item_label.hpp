@@ -3,6 +3,10 @@
 
 #include "gui/menu_item.hpp"
 
+/**
+ *  Label,
+ *  use big font
+*/
 class ItemLabel final : public MenuItem {
 private:
 	ItemLabel(const ItemLabel&) = delete;

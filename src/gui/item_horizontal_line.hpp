@@ -3,6 +3,9 @@
 
 #include "gui/menu_item.hpp"
 
+/**
+ *  A horizontal line, that's it
+*/
 class ItemHorizontalLine final : public MenuItem {
 public:
 	ItemHorizontalLine();

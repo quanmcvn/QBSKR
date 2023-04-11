@@ -10,6 +10,9 @@
 class CollisionListener;
 class GameObject;
 
+/**
+ *  Indivisible object, used in collisionw
+*/
 class CollisionObject final {
 	friend class CollisionSystem;
 
@@ -31,7 +34,7 @@ private:
 	// the movement that will happen next frame
 	Vector m_movement;
 
-	// anticipated destination of the object during collision detection 
+	// anticipated destination of the object during collision detection
 	Rectf m_dest;
 
 public:
@@ -50,7 +53,7 @@ public:
 
 	void set_movement(const Vector& movement);
 	Vector get_movement() const;
-	
+
 	Vector get_pos() const;
 	void set_pos(const Vector& pos);
 

@@ -7,6 +7,9 @@
 
 class MouseCursor;
 
+/**
+ *  Glorified, somewhat constant variable
+*/
 class Resources final {
 public:
 	Resources();

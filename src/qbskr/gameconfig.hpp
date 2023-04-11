@@ -7,6 +7,9 @@
 #include "control/mouse_button_config.hpp"
 #include "math/size.hpp"
 
+/**
+ *  Class to hold some config (although I NYI the change config thing)
+*/
 class Config final {
 public:
 	Config();

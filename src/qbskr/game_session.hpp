@@ -8,6 +8,10 @@
 
 class Level;
 
+/**
+ *  This class holds a level
+ *  Run the in-game gameplay
+*/
 class GameSession final : public Screen, public Currenton<GameSession> {
 private:
 	GameSession(const GameSession&) = delete;

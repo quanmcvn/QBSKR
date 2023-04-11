@@ -10,7 +10,7 @@
 
 class Renderer;
 
-/** 
+/**
  * How all of this (suppose) to work:
  *   - VideoSystem is an abstract (?) (kind of) class (Java OOP?)
  *   - Renderer, Painter are interfaces (?) (kind of)
@@ -20,13 +20,13 @@ class Renderer;
  *   - Texture is abstract, TexturePtr is... abstract (not!)
  *   - SDLTexture is a wrapper around SDL_Texture*, implements Texture
  *   - SDLSurfacePtr is a wrapper around SDL_Surface*
- *     (What is this design...) 
- *   - SDLSurfaceCreator is the class full of static functions to create SDLSurfacePtr
+ *     (What is this design...)
+ *   - SDLSurfaceCreator is the class full (not so) of static functions to create SDLSurfacePtr
  *   - TextureManager is the class to get/cache textures by itself, but create textures through VideoSystem
 */
 
 /**
- * Generic (?) video system class
+ * VideoSystem is an abstract (?) (kind of) class (Java OOP?)sss
 */
 class VideoSystem : public Currenton<VideoSystem> {
 public:
@@ -48,7 +48,7 @@ public:
 	virtual const Viewport& get_viewport() const = 0;
 	virtual void apply_config() = 0;
 	// swap (flip (?)) the backbuffer to frontbuffer
-	virtual void present() = 0; 
+	virtual void present() = 0;
 };
 
 #endif

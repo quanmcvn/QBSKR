@@ -3,6 +3,10 @@
 
 #include "qbskr/screen.hpp"
 
+/**
+ *  The title screen
+ *  Contains nothing (?)
+*/
 class TitleScreen final : public Screen {
 public:
 	TitleScreen();

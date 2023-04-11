@@ -9,6 +9,10 @@ class Renderer;
 struct TextureRequest;
 struct SDL_Renderer;
 
+/**
+ *  Will only draw if given request
+ *  SDLPainter implement Painter
+*/
 class SDLPainter : public Painter {
 private:
 	SDLPainter(const SDLPainter&) = delete;

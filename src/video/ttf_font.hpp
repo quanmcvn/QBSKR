@@ -6,6 +6,9 @@
 
 #include "video/font.hpp"
 
+/**
+ *  This class implement Font, storing real data
+*/
 class TTFFont final : public Font {
 public:
 	~TTFFont() override;

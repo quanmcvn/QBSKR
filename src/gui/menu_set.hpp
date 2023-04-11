@@ -7,6 +7,10 @@
 
 class Menu;
 
+/**
+ *  Class to create menu
+ *  It's different from other xxxSet that it only create on-demand menu (no cloning)
+*/
 class MenuSet final : public Currenton<MenuSet> {
 public:
 	MenuSet();

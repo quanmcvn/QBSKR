@@ -8,7 +8,7 @@
 #include "math/rect.hpp"
 
 /**
- * Wrapper class for texture
+ * Abstract class for texture
  * Stores the texture width and height
 */
 class Texture {

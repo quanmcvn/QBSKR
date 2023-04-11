@@ -10,6 +10,9 @@
 class CrappyReaderData;
 class BadGuy;
 
+/**
+ *  A xxxSet for cloning (same as WeaponSet, ProjectileSet)
+*/
 class BadGuySet final : public Currenton<BadGuySet> {
 public:
 	BadGuySet();

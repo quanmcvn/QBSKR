@@ -4,7 +4,7 @@
 #include "weapon/weapon.hpp"
 
 /**
- * Abastract base class for weapon that shoot projectile
+ * Abstract base class for weapon that shoot projectile
 */
 class ShootingWeapon : public Weapon {
 private:

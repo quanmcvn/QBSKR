@@ -5,6 +5,9 @@
 
 struct Mix_Chunk;
 
+/**
+ *  Wrapper around Mix_Chunk*
+*/
 class SDLMixChunk final {
 public:
 	~SDLMixChunk();

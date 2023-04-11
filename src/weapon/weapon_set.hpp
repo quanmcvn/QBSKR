@@ -13,7 +13,8 @@ class MovingObject;
 class Weapon;
 
 /**
- * Class to hold Weapon for Weapon cloning
+ *  Class to hold Weapon for Weapon cloning
+ *  Should've used a different design...
 */
 class WeaponSet : public Currenton<WeaponSet> {
 public:

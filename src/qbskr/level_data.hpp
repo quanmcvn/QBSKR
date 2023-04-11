@@ -9,6 +9,11 @@
 class DrawingContext;
 class Level;
 
+/**
+ *  Class to hold level's data
+ *  (how many room per room type)
+ *  Make a level base on it's data
+*/
 class LevelData final {
 private:
 	LevelData(const LevelData&) = delete;

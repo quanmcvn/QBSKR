@@ -12,6 +12,7 @@ class TTFFont;
 /**
  * Class to cache loaded text surface
  * It's different from TextureManager it's only cache recently used text
+ * Use a quite stupid algorithm (let the std::map do the heavy lifting tho)
 */
 class TTFSurfaceManager final : public Currenton<TTFSurfaceManager> {
 public:
@@ -34,7 +35,7 @@ private:
 	};
 
 private:
-	// could have been TTFFont* instead of void*
+	// could have been TTF_Font* instead of void*
 	using Key = std::tuple<void*, std::string>;
 	std::map<Key, CacheEntry> m_cache;
 	std::map<CacheEntry, Key> m_cache_support;

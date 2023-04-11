@@ -12,6 +12,10 @@
 class DrawingContext;
 class TileMap;
 
+/**
+ *  Class to manage game object (and its inheritors)
+ *  (which is auto update and draw)
+*/
 class GameObjectManager {
 public:
 	GameObjectManager();

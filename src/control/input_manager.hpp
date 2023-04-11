@@ -15,6 +15,10 @@ class MouseButtonManager;
 class MouseButtonConfig;
 class MouseMotionManager;
 
+/**
+ *  The class for managing input
+ *  The SDL_Event will be fed to respective manager
+*/
 class InputManager final : public Currenton<InputManager> {
 public:
 	~InputManager() override;

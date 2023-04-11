@@ -14,6 +14,10 @@ class MenuSet;
 class InputManager;
 class VideoSystem;
 
+/**
+ *  This class holds a screen stack (only one the screen at the top is used)
+ *  Also run the main loop
+*/
 class ScreenManager final : public Currenton<ScreenManager> {
 public:
 	~ScreenManager() override;

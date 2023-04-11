@@ -8,6 +8,9 @@ enum GameMenuIDs {
 	MNID_ABORTLEVEL
 };
 
+/**
+ *  In-game menu
+*/
 class GameMenu final : public Menu {
 public:
 	GameMenu();

@@ -15,6 +15,7 @@ private:
 protected:
 	// have to be MovingObject* instead of MovingObject&
 	MovingObject* m_parent;
+	// see src/weapon/hurt.hpp
 	uint32_t m_hurt_attributes;
 	// position offset with respect to m_parent
 	// this->pos = m_parent->get_pos() + m_pos_offset

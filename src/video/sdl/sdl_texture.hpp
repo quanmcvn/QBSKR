@@ -8,7 +8,7 @@
 struct SDL_Texture;
 
 /**
- * Wrapper class for SDL_Texture*
+ * Wrapper class for SDL_Texture*, implements Texture
 */
 class SDLTexture final : public Texture {
 public:

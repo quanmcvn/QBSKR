@@ -14,11 +14,13 @@ enum class MouseCursorState {
 	 *  tempting to use dekisugi since "HIDEtoshi Dekisugi"
 	 *  ...
 	 *  sorry...
-	 */ 
-	HIDE 
+	 */
+	HIDE
 };
 
-
+/**
+ *  Custom mouse cursor
+*/
 class MouseCursor final : public Currenton<MouseCursor> {
 private:
 	MouseCursor(const MouseCursor&) = delete;

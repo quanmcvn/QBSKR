@@ -7,6 +7,10 @@
 class InputManager;
 struct SDL_MouseButtonEvent;
 
+/**
+ *  Class to process SDL_MouseButtonEvent
+ *  Fed by InputManager
+*/
 class MouseButtonManager final {
 private:
 	MouseButtonManager(const MouseButtonManager&) = delete;

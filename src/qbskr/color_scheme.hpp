@@ -3,6 +3,9 @@
 
 #include "video/color.hpp"
 
+/**
+ * Class to store (not exactly) glorified, somewhat constant colors
+*/
 class ColorScheme final {
 public:
 	class Menu final {

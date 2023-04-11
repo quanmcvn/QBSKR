@@ -7,6 +7,10 @@
 class InputManager;
 struct SDL_KeyboardEvent;
 
+/**
+ *  Class to process SDL_KeyboardEvent
+ *  Fed by InputManager
+*/
 class KeyboardManager final {
 private:
 	KeyboardManager(const KeyboardManager&) = delete;

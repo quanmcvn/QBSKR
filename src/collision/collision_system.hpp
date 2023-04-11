@@ -12,6 +12,10 @@ class CollisionObject;
 class DrawingContext;
 class Room;
 
+/**
+ *  The collision system
+ *  Auto update and fix problem with CollisionObject (stuck in wall, ...)
+*/
 class CollisionSystem final {
 private:
 	CollisionSystem(const CollisionSystem&) = delete;

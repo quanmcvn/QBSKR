@@ -8,6 +8,9 @@ enum MainMenuIDs {
 	MNID_QUITMAINMENU,
 };
 
+/**
+ *  Title screen menu
+*/
 class MainMenu final : public Menu {
 public:
 	MainMenu();

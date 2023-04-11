@@ -11,7 +11,7 @@ class VideoSystem;
 /**
  * How all of this (suppose) to work (pt.2) (pt.1 is in src/video_system.hpp)
  *   - Compositor holds DrawingContext(s), also holds the memory of all DrawingRequests
- *   - DrawingContext holds Canvas(es), also holds a transform stack (although didn't used)
+ *   - DrawingContext holds Canvas(es), also holds a transform stack
  *   - Canvas passes DrawingRequests to Painter
  *   - Surface is NOT SDL_Surface, it's literally a surface
  *     it holds a TexturePtr, an area (region), flip
@@ -19,7 +19,7 @@ class VideoSystem;
 */
 
 /**
- * This class holds memory of drawing requests, 
+ * This class holds memory of drawing requests,
  * holds DrawingContext(s) which hold Canvas(es),
  * also composes the screen (which is the reason of its name)
 */

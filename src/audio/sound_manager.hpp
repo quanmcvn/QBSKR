@@ -10,7 +10,7 @@
 
 /**
  *  An inferior version of TextureManager (by myself)
- *  No extend support aka have to write the whole code again if I want to add auto lib
+ *  No extend support aka have to write the whole code again if I want to add more lib
  *  Simple caching sound
  *  The whole design is bad
 */

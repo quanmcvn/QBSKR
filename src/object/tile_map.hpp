@@ -15,7 +15,6 @@ class CrappyReaderData;
  * This class draws the level tiles
  * The reason TileMap inherit GameObject is that it can be added in GameObjectManager
 */
-
 class TileMap final : public GameObject {
 public:
 	TileMap();
@@ -36,7 +35,7 @@ private:
 	int m_width;
 	int m_height;
 	int m_layer;
-	
+
 	Vector m_offset;
 
 public:
@@ -75,7 +74,7 @@ public:
 
 	// respects m_offset
 	bool is_outside_bounds(const Vector& pos) const;
-	
+
 	// get a rect of indices that overlap the given rectf
 	// respects m_offset
 	Rect get_tiles_overlap(const Rectf& rectf) const;

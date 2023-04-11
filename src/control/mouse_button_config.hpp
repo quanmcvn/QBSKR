@@ -8,6 +8,10 @@
 
 #include <SDL_mouse.h>
 
+/**
+ *  Hold config for mouse (as of its name)
+ *  Doesn't alloy re-bind key, sorry
+*/
 class MouseButtonConfig final {
 	friend class MouseButtonManager;
 
@@ -34,7 +38,7 @@ public:
 	MouseButtonConfig();
 
 	int reversemap_mousebutton(int player, Control control) const;
-	
+
 	// // Bind control of player with button
 	// void bind_mousebutton(int mousebutton, int player, Control control);
 

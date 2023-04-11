@@ -15,6 +15,10 @@ enum class RoomType {
 	NORMAL
 };
 
+/**
+ *  Class to store data of the room
+ *  (what badguy can spawn, how many per turn, what map is it)
+*/
 class RoomData final {
 public:
 	friend class Room;

@@ -6,6 +6,10 @@
 
 #include "control/controller.hpp"
 
+/**
+ *  Hold config for keyboard (as of its name)
+ *  Doesn't alloy re-bind key, sorry
+*/
 class KeyboardConfig final {
 	friend class KeyboardManager;
 
@@ -32,8 +36,8 @@ public:
 	KeyboardConfig();
 
 	SDL_Keycode reversemap_key(int player, Control control) const;
-	
-	// // Bind control of player with key 
+
+	// // Bind control of player with key
 	// void bind_key(SDL_Keycode key, int player, Control control);
 
 };

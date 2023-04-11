@@ -3,6 +3,9 @@
 
 #include "qbskr/room.hpp"
 
+/**
+ *  A level holds whole bunch of room
+*/
 class Level final {
 public:
 	Level();

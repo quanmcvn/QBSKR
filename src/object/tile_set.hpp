@@ -10,6 +10,9 @@
 
 class CrappyReader;
 
+/**
+ *  Class to hold tiles for accessing (no cloning)
+*/
 class TileSet final : public Currenton<TileSet> {
 public:
 	TileSet();

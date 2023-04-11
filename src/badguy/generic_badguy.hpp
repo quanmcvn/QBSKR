@@ -7,6 +7,11 @@
 class DrawingContext;
 class Weapon;
 
+/**
+ *  Class for generic badguy (no special mechanic)
+ *  The design here is quite same with weapon (but maybe can't apply that design to badguy)
+ *  But "If it ain't broke don't fix it" :D
+*/
 class GenericBadGuy final : public BadGuy {
 public:
 	~GenericBadGuy();

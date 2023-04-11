@@ -15,7 +15,8 @@ class Renderer;
 struct DrawingRequest;
 
 /**
- * This class passes DrawingRequests to Painter
+ *  This class passes DrawingRequests to Painter
+ *  Use user-defined layer to make draw more flexible
 */
 class Canvas final {
 public:

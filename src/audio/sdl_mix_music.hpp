@@ -4,6 +4,9 @@
 #include <SDL_mixer.h>
 #include <memory>
 
+/**
+ *  Wrapper around Mix_Music*
+*/
 class SDLMixMusic final {
 public:
 	~SDLMixMusic();

@@ -6,6 +6,9 @@
 #include "util/timer.hpp"
 #include "video/color.hpp"
 
+/**
+ *  Floating Text, example: Damage text
+*/
 class FloatingText final : public GameObject {
 private:
 	static Color text_color;

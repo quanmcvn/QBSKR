@@ -5,6 +5,9 @@
 
 #include "gui/menu_item.hpp"
 
+/**
+ *  Selectable item
+*/
 class ItemAction final : public MenuItem {
 private:
 	ItemAction(const ItemAction&) = delete;

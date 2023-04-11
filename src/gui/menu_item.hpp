@@ -5,6 +5,9 @@
 
 #include "gui/menu.hpp"
 
+/**
+ *  Base class for menu item
+*/
 class MenuItem {
 public:
 	virtual ~MenuItem();

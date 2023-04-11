@@ -6,6 +6,10 @@
 class InputManager;
 struct SDL_MouseMotionEvent;
 
+/**
+ *  Class to process SDL_MouseMotionEvent
+ *  Fed by InputManager
+*/
 class MouseMotionManager final {
 private:
 	MouseMotionManager(const MouseMotionManager&) = delete;

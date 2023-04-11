@@ -7,6 +7,9 @@
 #include "math/size.hpp"
 #include "math/vector.hpp"
 
+/**
+ *  Camare is stuck at player position
+*/
 class Camera final : public GameObject {
 public:
 	Camera();

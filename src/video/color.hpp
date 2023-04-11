@@ -3,6 +3,9 @@
 
 #include <stdint.h>
 
+/**
+ *  Class to store Color (surew)
+*/
 class Color final {
 public:
 	Color();

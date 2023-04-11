@@ -10,6 +10,7 @@ class SDLVideoSystem;
 
 /**
  * This class holds Painter and SDL_Renderer*
+ * SDLRenderer implement Renderer
 */
 class SDLRenderer final : public Renderer {
 public:

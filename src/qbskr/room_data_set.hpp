@@ -9,6 +9,9 @@
 class CrappyReaderData;
 class RoomData;
 
+/**
+ *  Class to hold RoomData for cloning
+*/
 class RoomDataSet {
 private:
 	friend class LevelData;

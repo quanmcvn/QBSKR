@@ -13,7 +13,8 @@ class TextureManager;
 /**
  * The SDL Video System
  * Renderer(s) included
-*/ 
+ * SDLVideoSystem is the class holding Renderer(s), implements VideoSystem
+*/
 class SDLVideoSystem final : public SDLBasedVideoSystem {
 public:
 	SDLVideoSystem();

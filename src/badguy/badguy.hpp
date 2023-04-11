@@ -9,6 +9,9 @@
 
 class DrawingContext;
 
+/**
+ *  Base class for every thing that hurt player
+*/
 class BadGuy : public MovingSprite {
 private:
 	BadGuy(const BadGuy&) = delete;

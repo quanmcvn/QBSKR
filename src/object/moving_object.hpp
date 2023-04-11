@@ -5,6 +5,9 @@
 #include "collision/collision_object.hpp"
 #include "object/game_object.hpp"
 
+/**
+ *  Base class for moving object
+*/
 class MovingObject : public GameObject, public CollisionListener {
 	friend class Room;
 	friend class CollisionSystem;
@@ -32,7 +35,7 @@ public:
 
 	void set_movement(const Vector& movement);
 	Vector get_movement() const;
-	
+
 	Vector get_pos() const;
 	void set_pos(const Vector& pos);
 

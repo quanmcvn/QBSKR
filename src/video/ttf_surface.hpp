@@ -12,6 +12,9 @@ class TTFSurface;
 
 using TTFSurfacePtr = std::shared_ptr<TTFSurface>;
 
+/**
+ *  Class for rendered text
+*/
 class TTFSurface final {
 private:
 	TTFSurface(const TTFSurface&) = delete;

@@ -8,6 +8,10 @@
 
 class LevelData;
 
+/**
+ *  Hold a lot of level datas
+ *  It's different from other xxxSet (no clone)
+*/
 class LevelDataSet final : public Currenton<LevelDataSet> {
 public:
 	LevelDataSet();

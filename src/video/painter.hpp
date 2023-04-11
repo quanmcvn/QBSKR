@@ -10,6 +10,7 @@ struct FilledRectRequest;
 /**
  * Generic painter class
  * This class only draw things when given request
+ * Painter is interface (?) (kind of)
 */
 class Painter {
 public:

@@ -7,6 +7,7 @@ class Painter;
 
 /**
  * Generic renderer class
+ * Renderer is interface (?) (kind of)
 */
 class Renderer {
 public:

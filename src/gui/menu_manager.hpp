@@ -4,15 +4,17 @@
 #include <memory>
 #include <vector>
 
-#include "gui/menu_transition.hpp" 
+#include "gui/menu_transition.hpp"
 #include "util/currenton.hpp"
 
 class Controller;
 class DrawingContext;
 class Menu;
-/* class MenuTransition; */
 union SDL_Event;
 
+/**
+ *  Class to update and draw menu (and transitions)
+*/
 class MenuManager final : public Currenton<MenuManager> {
 public:
 	MenuManager();

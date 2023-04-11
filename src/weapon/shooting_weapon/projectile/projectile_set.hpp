@@ -13,7 +13,8 @@ class Vector;
 class Projectile;
 
 /**
- * Class to hold Projectile for Projectile cloning
+ *  Class to hold Projectile for Projectile cloning
+ *  Should've used a different design...
 */
 class ProjectileSet final : public Currenton<ProjectileSet> {
 public:
