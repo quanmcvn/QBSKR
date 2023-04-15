@@ -17,4 +17,12 @@ badguy-set-start
 		badguy-specific-end
 	badguy-end
 
+	badguy-start
+		id 2
+		badguy-type balbusour
+		badguy-specific-start
+			health 600
+		badguy-specific-end
+	badguy-end
+
 badguy-set-end

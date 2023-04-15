@@ -2,10 +2,12 @@
 
 #include <math.h>
 
+#include "math/interpolate.hpp"
 #include "util/log.hpp"
+#include "video/sdl/sdl_texture.hpp"
 #include "video/drawing_request.hpp"
 #include "video/renderer.hpp"
-#include "video/sdl/sdl_texture.hpp"
+#include "video/video_system.hpp"
 
 namespace {
 
@@ -73,6 +75,67 @@ void SDLPainter::draw_filled_rect(const FilledRectRequest& request)
 	SDL_SetRenderDrawBlendMode(m_sdl_renderer, SDL_BLENDMODE_BLEND);
 	SDL_SetRenderDrawColor(m_sdl_renderer, r, g, b, a);
 	SDL_RenderFillRect(m_sdl_renderer, &rect);
+}
+
+void SDLPainter::draw_inverse_ellipse(const InverseEllipseRequest& request)
+{
+	float center_x = request.center_pos.x;
+	float width = request.size.width;
+	float height = request.size.height;
+
+	int top = static_cast<int>(request.center_pos.y - (height / 2));
+
+	const Viewport& viewport = VideoSystem::current()->get_viewport();
+
+	const int MAX_SLICES = 256;
+	int slices = std::min(static_cast<int>(height), MAX_SLICES);
+	std::vector<SDL_Rect> rects(2 * (slices + 1));
+
+	// drawing the core of the inverse ellipse
+	// draw from top to bottom
+	// filling everything but the ellipse inside
+	for (int i = 0; i < slices; ++ i) {
+		int xoff = static_cast<int>(interpolate::half_ellipse_vertical_ease(
+			static_cast<float>(i) / static_cast<float>(slices - 1),
+			0, width / 2
+		));
+
+		SDL_Rect& left  = rects[2 * i + 0];
+		SDL_Rect& right = rects[2 * i + 1];
+
+		left.x = 0;
+		left.y = top + (i * static_cast<int>(height) / slices);
+		left.w = static_cast<int>(center_x) - xoff;
+		left.h = top + ((i + 1) * static_cast<int>(height) / slices) - left.y;
+
+		right.x = static_cast<int>(center_x) + xoff;
+		right.y = left.y;
+		right.w = viewport.get_screen_width() - right.x;
+		right.h = left.h;
+	}
+
+	// filling the top and bottom
+	SDL_Rect& top_rect    = rects[2 * slices + 0];
+	SDL_Rect& bottom_rect = rects[2 * slices + 1];
+
+	top_rect.x = 0;
+	top_rect.y = 0;
+	top_rect.w = viewport.get_screen_width();
+	top_rect.h = top;
+
+	bottom_rect.x = 0;
+	bottom_rect.y = top + static_cast<int>(height);
+	bottom_rect.w = viewport.get_screen_width();
+	bottom_rect.h = viewport.get_screen_height() - bottom_rect.y;
+
+	Uint8 r = static_cast<Uint8>(request.color.red * 255);
+	Uint8 g = static_cast<Uint8>(request.color.green * 255);
+	Uint8 b = static_cast<Uint8>(request.color.blue * 255);
+	Uint8 a = static_cast<Uint8>(request.color.alpha * 255);
+
+	SDL_SetRenderDrawColor(m_sdl_renderer, r, g, b, a);
+	// using &rects[0] should work here
+	SDL_RenderFillRects(m_sdl_renderer, &rects[0], 2 * (slices + 1));
 }
 
 void SDLPainter::set_clip_rect(const Rect& rect)

@@ -1,6 +1,8 @@
 #include "badguy/badguy.hpp"
 
 #include "qbskr/room.hpp"
+#include "weapon/shooting_weapon/projectile/projectile.hpp"
+#include "weapon/hurt.hpp"
 
 BadGuy::BadGuy(const std::string& sprite_filename) :
 	MovingSprite(Vector(0.0f, 0.0f), sprite_filename),
@@ -34,6 +36,18 @@ void BadGuy::update(float dt_sec)
 
 std::string BadGuy::class_name() { return "bad-guy"; }
 std::string BadGuy::get_class_name() const { return class_name(); }
+
+HitResponse BadGuy::collision(GameObject& other, const CollisionHit& /* hit */)
+{
+	if (auto projectile = dynamic_cast<Projectile*>(&other)) {
+		if (projectile->get_hurt_attributes() & HURT_BADGUY) {
+			m_hit_damage = projectile->get_damage();
+		}
+	}
+
+	// put here to make compiler happy
+	return ABORT_MOVE;
+}
 
 int BadGuy::get_health() const { return m_health; };
 bool BadGuy::can_see_player() const { return Room::get().can_see_player(get_pos()); }

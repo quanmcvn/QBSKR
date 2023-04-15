@@ -41,5 +41,13 @@ bool Timer::check()
 float Timer::get_period() const { return m_period; }
 float Timer::get_timeleft() const { return m_period - (g_game_time - m_cycle_start); }
 float Timer::get_timegone() const { return g_game_time - m_cycle_start; }
+
+float Timer::get_timegone_normalized() const
+{
+	float timegone = get_timegone();
+	if (timegone >= m_period) return 1;
+	return timegone / m_period;
+}
+
 bool Timer::started() const { return m_period != 0; }
 bool Timer::ended() const { return get_timeleft() <= 0; }

@@ -44,6 +44,7 @@ public:
 	void draw_surface(const SurfacePtr& surface, const Vector& position, float angle, const Color& color, int layer);
 
 	void draw_filled_rect(const Rectf& rect, const Color& color, int layer);
+	void draw_inverse_ellipse(const Vector& center_pos, const Sizef& size, const Color& color, int layer);
 	void draw_text(const FontPtr& font, const std::string& text,
 	               const Vector& position, FontAlignment alignment, int layer, const Color& color = Color(1.0f, 1.0f, 1.0f, 1.0f));
 	void clear();

@@ -2,6 +2,7 @@
 
 #include <sstream>
 
+#include "badguy/balbusour.hpp"
 #include "badguy/generic_badguy.hpp"
 #include "util/crappy_reader.hpp"
 #include "util/log.hpp"
@@ -66,8 +67,12 @@ void BadGuySet::parse_badguy(const CrappyReaderData* crd)
 	std::unique_ptr<BadGuy> badguy;
 	if (badguy_type == "generic-badguy") {
 		badguy = GenericBadGuy::from_reader(crd_badguy_specific);
+	} else if (badguy_type == "balbusour") {
+		badguy = Balbusour::from_reader(crd_badguy_specific);
 	} else {
-		throw std::runtime_error("doesn't exist / NYI");
+		std::ostringstream msg;
+		msg << "Badguy " << badguy_type << " doesn't exist / NYI";
+		throw std::runtime_error(msg.str());
 	}
 
 	add_badguy(id, std::move(badguy));

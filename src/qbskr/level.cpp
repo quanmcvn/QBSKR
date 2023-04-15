@@ -13,8 +13,6 @@ Level::~Level()
 	m_rooms.clear();
 }
 
-#include "util/log.hpp"
-
 void Level::update(float dt_sec)
 {
 	// bool has_active_room = std::any_of(

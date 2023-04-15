@@ -1,12 +1,14 @@
 #include "object/camera.hpp"
 
 #include "object/player.hpp"
+#include "qbskr/globals.hpp"
 #include "qbskr/room.hpp"
 #include "video/drawing_context.hpp"
+#include "video/video_system.hpp"
 
 Camera::Camera() :
 	m_translation(0.0f, 0.0f),
-	m_screen_size(),
+	m_screen_size(SCREEN_WIDTH, SCREEN_HEIGHT),
 	m_scale(1.0f)
 {}
 

@@ -8,6 +8,7 @@
 #include "gui/menu.hpp"
 #include "qbskr/constants.hpp"
 #include "qbskr/globals.hpp"
+#include "qbskr/screen_fade.hpp"
 #include "video/compositor.hpp"
 
 ScreenManager::Action::Action(Type type_, std::unique_ptr<Screen> screen_) :
@@ -24,7 +25,10 @@ ScreenManager::ScreenManager(VideoSystem& video_system, InputManager& input_mana
 	elapsed_ticks(0),
 	ms_per_step(static_cast<Uint32>(1000.0f / LOGICAL_FPS)),
 	seconds_per_step(static_cast<float>(ms_per_step) / 1000.0f),
-	m_speed(1.0f)
+	m_speed(1.0f),
+	m_actions(),
+	m_screen_fade(),
+	m_screen_stack()
 {}
 
 ScreenManager::~ScreenManager() {}
@@ -32,13 +36,15 @@ ScreenManager::~ScreenManager() {}
 float ScreenManager::get_speed() const { return m_speed; }
 void ScreenManager::set_speed(float speed) { m_speed = speed;}
 
-void ScreenManager::push_screen(std::unique_ptr<Screen> screen)
+void ScreenManager::push_screen(std::unique_ptr<Screen> screen, std::unique_ptr<ScreenFade> fade)
 {
+	m_screen_fade = std::move(fade);
 	m_actions.emplace_back(Action::PUSH_ACTION, std::move(screen));
 }
 
-void ScreenManager::pop_screen()
+void ScreenManager::pop_screen(std::unique_ptr<ScreenFade> fade)
 {
+	m_screen_fade = std::move(fade);
 	m_actions.emplace_back(Action::POP_ACTION);
 }
 
@@ -67,6 +73,10 @@ void ScreenManager::update_gamelogic(float dt_sec)
 		m_screen_stack.back()->update(dt_sec, controller);
 	}
 
+	if (m_screen_fade) {
+		m_screen_fade->update(dt_sec);
+	}
+
 	m_menu_manager->process_input(controller);
 }
 
@@ -79,16 +89,32 @@ void ScreenManager::draw(Compositor& compositor)
 	auto& drawing_context = compositor.make_context();
 	m_menu_manager->draw(drawing_context);
 
+	if (m_screen_fade) {
+		m_screen_fade->draw(drawing_context);
+	}
+
 	compositor.render();
 }
 
-void ScreenManager::quit()
+void ScreenManager::quit(std::unique_ptr<ScreenFade> fade)
 {
+	m_screen_fade = std::move(fade);
 	m_actions.emplace_back(Action::QUIT_ACTION);
+}
+
+bool ScreenManager::has_pending_fade() const
+{
+	return m_screen_fade && !m_screen_fade->done();
 }
 
 void ScreenManager::handle_screen_switch()
 {
+	if (has_pending_fade()) {
+		// wait till the fade is completed before switching screens
+		return;
+	}
+
+	m_screen_fade.reset();
 	while (!m_actions.empty()) {
 		// needed for call leave()
 		Screen* current_screen = m_screen_stack.empty() ? nullptr : m_screen_stack.back().get();

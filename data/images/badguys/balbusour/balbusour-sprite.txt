@@ -1,0 +1,8 @@
+sprite-start
+	action-start
+		name idle
+		fps 1
+		hitbox 8 14 38 28
+		images balbusour.png
+	action-end
+sprite-end

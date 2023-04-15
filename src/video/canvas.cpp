@@ -39,8 +39,16 @@ void Canvas::render(Renderer& renderer)
 				painter.draw_texture(static_cast<const TextureRequest&>(request));
 				break;
 
-			case FILLEDRECT:
+			case FILLED_RECT:
 				painter.draw_filled_rect(static_cast<const FilledRectRequest&>(request));
+				break;
+
+			case INVERSE_ELLIPSE:
+				painter.draw_inverse_ellipse(static_cast<const InverseEllipseRequest&>(request));
+				break;
+
+			default:
+				assert(false);
 				break;
 		}
 	}
@@ -89,7 +97,7 @@ void Canvas::draw_filled_rect(const Rectf& rect, const Color& color, int layer)
 
 	FilledRectRequest* request = static_cast<FilledRectRequest*>(m_request_holder.back().get());
 	
-	request->type = FILLEDRECT;
+	request->type = FILLED_RECT;
 	request->layer = layer;
 
 	request->flip = m_drawing_context.get_flip();
@@ -99,6 +107,27 @@ void Canvas::draw_filled_rect(const Rectf& rect, const Color& color, int layer)
 	request->rect = Rectf(apply_translate(rect.p1()) * scale(), rect.get_size() * scale());
 	request->color = color;
 	request->color.alpha = color.alpha * m_drawing_context.get_alpha();
+
+	m_requests.push_back(static_cast<DrawingRequest*>(request));
+}
+
+void Canvas::draw_inverse_ellipse(const Vector& center_pos, const Sizef& size, const Color& color, int layer)
+{
+	m_request_holder.emplace_back(static_cast<std::unique_ptr<DrawingRequest>>(std::make_unique<InverseEllipseRequest>()));
+
+	InverseEllipseRequest* request = static_cast<InverseEllipseRequest*>(m_request_holder.back().get());
+
+	request->type = INVERSE_ELLIPSE;
+	request->layer = layer;
+
+	request->flip = m_drawing_context.get_flip();
+	request->alpha = m_drawing_context.get_alpha();
+	request->viewport = m_drawing_context.get_viewport();
+
+	request->center_pos   = apply_translate(center_pos) * scale();
+	request->color        = color;
+	request->color.alpha  = color.alpha * m_drawing_context.get_alpha();
+	request->size         = size * scale();
 
 	m_requests.push_back(static_cast<DrawingRequest*>(request));
 }

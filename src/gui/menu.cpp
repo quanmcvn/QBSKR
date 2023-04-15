@@ -10,7 +10,9 @@
 #include "gui/menu_item.hpp"
 #include "gui/mouse_cursor.hpp"
 #include "math/rectf.hpp"
+#include "math/util.hpp"
 #include "qbskr/globals.hpp"
+#include "video/drawing_context.hpp"
 #include "video/video_system.hpp"
 
 Menu::Menu() :
@@ -37,35 +39,36 @@ void Menu::process_event(const SDL_Event& event)
 			}
 			break;
 
-		case SDL_MOUSEMOTION: {
-			Vector mouse_pos = VideoSystem::current()->get_viewport().to_logical(event.motion.x, event.motion.y);
-			if (get_menu_rect().contains(mouse_pos)) {
-				int new_active_item = 0;
-				float item_y = get_menu_rect().get_top();
-				for (size_t i = 0; i < m_items.size(); ++ i) {
-					float item_height = static_cast<float>(m_items[i]->get_height());
-					if (item_y <= mouse_pos.y && mouse_pos.y <= item_y + item_height) {
-						new_active_item = i;
-						break;
+		case SDL_MOUSEMOTION:
+			{
+				Vector mouse_pos = VideoSystem::current()->get_viewport().to_logical(event.motion.x, event.motion.y);
+				if (get_menu_rect().contains(mouse_pos)) {
+					int new_active_item = 0;
+					float item_y = get_menu_rect().get_top();
+					for (size_t i = 0; i < m_items.size(); ++i) {
+						float item_height = static_cast<float>(m_items[i]->get_height());
+						if (item_y <= mouse_pos.y && mouse_pos.y <= item_y + item_height) {
+							new_active_item = i;
+							break;
+						}
+						item_y += item_height;
 					}
-					item_y += item_height;
-				}
 
-				// only change to a selectable item
-				if (m_items[new_active_item]->is_selectable() && new_active_item != m_active_item) {
-					if (m_active_item != -1) {
-						process_action(MenuAction::UNSELECT);
+					// only change to a selectable item
+					if (m_items[new_active_item]->is_selectable() && new_active_item != m_active_item) {
+						if (m_active_item != -1) {
+							process_action(MenuAction::UNSELECT);
+						}
+						m_active_item = new_active_item;
+						process_action(MenuAction::SELECT);
 					}
-					m_active_item = new_active_item;
-					process_action(MenuAction::SELECT);
+
+					MouseCursor::current()->set_state(MouseCursorState::LINK);
+				} else {
+					MouseCursor::current()->set_state(MouseCursorState::NORMAL);
 				}
-				
-				MouseCursor::current()->set_state(MouseCursorState::LINK);
-			} else {
-				MouseCursor::current()->set_state(MouseCursorState::NORMAL);
+				break;
 			}
-			break;
-		}
 
 		default:
 			break;
@@ -75,7 +78,7 @@ void Menu::process_event(const SDL_Event& event)
 void Menu::draw(DrawingContext& drawing_context)
 {
 	float y_pos = get_menu_rect().get_top();
-	for (size_t i = 0; i < m_items.size(); ++ i) {
+	for (size_t i = 0; i < m_items.size(); ++i) {
 		draw_item(drawing_context, i, y_pos + static_cast<float>(m_items[i]->get_height()) / 2.0f);
 		y_pos += static_cast<float>(m_items[i]->get_height());
 	}
@@ -85,12 +88,32 @@ void Menu::draw_item(DrawingContext& drawing_context, int index, int y_pos)
 {
 	const float x_pos = get_menu_rect().get_left();
 	m_items[index]->draw(drawing_context, Vector(x_pos, y_pos), static_cast<int>(get_width()), m_active_item == index);
+
+	if (m_active_item == index) {
+		float blink = (math::sin_degree(g_real_time * 180.0f) / 2.0f + 0.5f) * 0.5f + 0.25f;
+		const float DENT = 2.5;
+		const float BLINK_DENT = 1.0f;
+		drawing_context.get_canvas().draw_filled_rect(
+			Rectf(
+				Vector(get_menu_rect().get_left()  + BLINK_DENT, y_pos - static_cast<float>(m_items[index]->get_height()) / 2),
+				Vector(get_menu_rect().get_right() - BLINK_DENT, y_pos + static_cast<float>(m_items[index]->get_height()) / 2)
+			),
+			Color(1.0f, 1.0f, 1.0f, blink), LAYER_GUI - 10
+		);
+		drawing_context.get_canvas().draw_filled_rect(
+			Rectf(
+				Vector(get_menu_rect().get_left()  + DENT, y_pos - static_cast<float>(m_items[index]->get_height()) / 2 + (DENT - BLINK_DENT)),
+				Vector(get_menu_rect().get_right() - DENT, y_pos + static_cast<float>(m_items[index]->get_height()) / 2 - (DENT - BLINK_DENT))
+			),
+			Color(1.0f, 1.0f, 1.0f, 0.5f), LAYER_GUI - 10
+		);
+	}
 }
 
 Vector Menu::get_center_pos() const { return m_center_pos; }
 void Menu::set_center_pos(float x, float y) { m_center_pos = Vector(x, y); }
 
-float Menu::get_width() const { return m_menu_width + 24;}
+float Menu::get_width() const { return m_menu_width + 24; }
 float Menu::get_height() const { return m_menu_height; }
 
 Rectf Menu::get_menu_rect() const
@@ -200,18 +223,18 @@ void Menu::process_action(const MenuAction& menu_action)
 	switch (menu_action) {
 		case MenuAction::UP:
 			do {
-				if (m_active_item > 0) -- m_active_item;
+				if (m_active_item > 0) --m_active_item;
 				else m_active_item = static_cast<int>(m_items.size()) - 1;
 			} while (!m_items[m_active_item]->is_selectable()
-					&& (m_active_item != last_active_item));
+				&& (m_active_item != last_active_item));
 			break;
 
 		case MenuAction::DOWN:
 			do {
-				if (m_active_item < static_cast<int>(m_items.size()) - 1) ++ m_active_item;
+				if (m_active_item < static_cast<int>(m_items.size()) - 1) ++m_active_item;
 				else m_active_item = 0;
 			} while (!m_items[m_active_item]->is_selectable()
-					&& (m_active_item != last_active_item));
+				&& (m_active_item != last_active_item));
 			break;
 
 		case MenuAction::BACK:

@@ -37,7 +37,7 @@ int MenuItem::get_width() const
 	return static_cast<int>(Resources::normal_font->get_text_width(m_text)) + 8;
 }
 
-int MenuItem::get_height() const { return 12; }
+int MenuItem::get_height() const { return 16; }
 
 void MenuItem::process_action(const MenuAction& /* action */) {}
 

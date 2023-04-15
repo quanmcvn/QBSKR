@@ -28,6 +28,7 @@ public:
 
 	virtual void draw_texture(const TextureRequest& request) override;
 	virtual void draw_filled_rect(const FilledRectRequest& request) override;
+	virtual void draw_inverse_ellipse(const InverseEllipseRequest& request) override;
 
 	virtual void set_clip_rect(const Rect& rect) override;
 	virtual void clear_clip_rect() override;

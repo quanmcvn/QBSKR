@@ -11,6 +11,7 @@
 #include "math/random.hpp"
 #include "qbskr/gameconfig.hpp"
 #include "qbskr/globals.hpp"
+#include "qbskr/screen_fade.hpp"
 #include "qbskr/screen_manager.hpp"
 #include "qbskr/title_screen.hpp"
 #include "util/log.hpp"

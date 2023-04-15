@@ -9,8 +9,8 @@
 
 GenericShootingWeapon::GenericShootingWeapon(const std::string& sprite_name) :
 	ShootingWeapon(sprite_name),
-	m_timer(),
 	m_projectile_id(0),
+	m_timer(),
 	m_projectile_spawn_pos(Vector(0, 0)),
 	m_sound_file()
 {}

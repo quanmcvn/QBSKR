@@ -15,13 +15,21 @@ projectile-set-start
 
 	projectile-start
 		id 2
-		projectile-name bad-pistol
 		projectile-type generic-projectile
 		projectile-specific-start
-			speed 100
-			bounce-wall-count 0
+			speed 50
 			damage 2
-			sprite-filename bad-pistol-bullet-sprite.txt
+			sprite-filename badguy-bullet-1-sprite.txt
+		projectile-specific-end
+	projectile-end
+
+	projectile-start
+		id 3
+		projectile-type generic-projectile
+		projectile-specific-start
+			speed 25
+			damage 2
+			sprite-filename badguy-bullet-2-sprite.txt
 		projectile-specific-end
 	projectile-end
 projectile-set-end

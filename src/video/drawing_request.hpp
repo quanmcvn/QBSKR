@@ -8,7 +8,8 @@
 
 enum RequestType {
 	TEXTURE = 0,
-	FILLEDRECT = 1
+	FILLED_RECT,
+	INVERSE_ELLIPSE
 };
 
 
@@ -60,17 +61,28 @@ public:
 	Color color;
 };
 
-struct FilledRectRequest : public DrawingRequest
-{
+struct FilledRectRequest : public DrawingRequest {
 	Rectf rect;
 	Color color;
 
 	FilledRectRequest() :
-		DrawingRequest(FILLEDRECT),
+		DrawingRequest(FILLED_RECT),
 		rect(),
 		color()
 	{}
 };
 
+struct InverseEllipseRequest : public DrawingRequest {
+	Vector center_pos;
+	Sizef size;
+	Color color;
+
+	InverseEllipseRequest() : 
+		DrawingRequest(INVERSE_ELLIPSE),
+		center_pos(),
+		size(),
+		color()
+	{}
+};
 
 #endif

@@ -4,6 +4,7 @@
 
 #include "badguy/badguy_set.hpp"
 #include "badguy/badguy.hpp"
+#include "badguy/balbusour.hpp"
 #include "collision/collision_system.hpp"
 #include "math/random.hpp"
 #include "object/camera.hpp"
@@ -78,6 +79,7 @@ void Room::draw(DrawingContext& drawing_context)
 void Room::activate()
 {
 	s_current = this;
+	get_camera().update(1);
 }
 
 void Room::deactivate()
@@ -144,7 +146,7 @@ bool Room::inside(const Rectf& rect) const
 
 Rectf Room::get_bounding_box() const
 {
-	Rectf bounding_box;
+	Rectf bounding_box = get_solid_tilemaps()[0]->get_bounding_box();
 	for (const auto& solids : get_solid_tilemaps()) {
 		Rectf solid_bounding_box = solids->get_bounding_box();
 		if (bounding_box.get_left() > solid_bounding_box.get_left()) bounding_box.set_left(solid_bounding_box.get_left());
@@ -210,18 +212,23 @@ void Room::spawn_badguy()
 	const Rectf bounding_box = get_bounding_box();
 	for (int i = 0; i < badguy_spawns; ++ i) {
 		int spawn_id = m_room_data->m_badguys[g_game_random.rand(0, m_room_data->m_badguys.size())];
-		Vector spawn_pos(g_game_random.randf(bounding_box.get_left(), bounding_box.get_right()), g_game_random.randf(bounding_box.get_top(), bounding_box.get_bottom()));
+		Vector spawn_pos;
 		Rectf badguy_bounding_box = BadGuySet::current()->get_badguy(spawn_id).get_bounding_box();
 		
-		for (int tries = 0; tries < MAX_TRIES; ++ tries) {
-			badguy_bounding_box.set_pos(spawn_pos);
-			if (inside(badguy_bounding_box) && is_free_of_tiles(badguy_bounding_box)) break;
-			spawn_pos = Vector(g_game_random.randf(bounding_box.get_left(), bounding_box.get_right()), g_game_random.randf(bounding_box.get_top(), bounding_box.get_bottom()));
-		}
+		if (dynamic_cast<const Balbusour*>(&BadGuySet::current()->get_badguy(spawn_id))) {
+			// special spawn rule for Balbusour: spawn in the middle of the room
+			spawn_pos = bounding_box.get_middle() - (badguy_bounding_box.get_middle() - badguy_bounding_box.p1());
+		} else {
+			for (int tries = 0; tries < MAX_TRIES; ++ tries) {
+				spawn_pos = Vector(g_game_random.randf(bounding_box.get_left(), bounding_box.get_right()), g_game_random.randf(bounding_box.get_top(), bounding_box.get_bottom()));
+				badguy_bounding_box.set_pos(spawn_pos);
+				if (inside(badguy_bounding_box) && is_free_of_tiles(badguy_bounding_box)) break;
+			}
 
-		if (!(inside(badguy_bounding_box) && is_free_of_tiles(badguy_bounding_box))) {
-			log_warning << "Can't spawn badguy id '" << spawn_id << "'" << std::endl;
-			continue;
+			if (!(inside(badguy_bounding_box) && is_free_of_tiles(badguy_bounding_box))) {
+				log_warning << "Can't spawn badguy id '" << spawn_id << "'" << std::endl;
+				continue;
+			}
 		}
 
 		add_object(BadGuySet::current()->get_badguy(spawn_id).clone(spawn_pos));
@@ -261,6 +268,7 @@ void Room::clone_camera_and_players_to(Room& other)
 			object->remove_me();
 		}
 	}
+	other.flush_game_objects();
 }
 
 void Room::close_room()

@@ -13,8 +13,6 @@
 #include "util/crappy_reader_data.hpp"
 #include "qbskr/color_scheme.hpp"
 #include "qbskr/resources.hpp"
-#include "weapon/shooting_weapon/projectile/projectile.hpp"
-#include "weapon/hurt.hpp"
 #include "weapon/weapon.hpp"
 #include "weapon/weapon_set.hpp"
 
@@ -126,7 +124,7 @@ void GenericBadGuy::draw(DrawingContext& drawing_context)
 		// dim badguy
 		m_sprite->set_color(Color(.5f, .5f, .5f, 1.0f));
 		// use interpolate to calculate the angle to rotate sprite
-		float time_die_animation = std::clamp(m_die_animation_timer.get_timegone() / m_die_animation_timer.get_period(), 0.0f, 1.0f);
+		float time_die_animation = m_die_animation_timer.get_timegone_normalized();
 		if (m_direction == Direction::RIGHT) {
 			m_sprite->set_angle(interpolate::quadratic_ease_out(time_die_animation, 0.0f, 90.0f));
 		} else {
@@ -181,13 +179,9 @@ void GenericBadGuy::collision_solid(const CollisionHit& hit)
 	}
 }
 
-HitResponse GenericBadGuy::collision(GameObject& other, const CollisionHit& /* hit */)
+HitResponse GenericBadGuy::collision(GameObject& other, const CollisionHit& hit)
 {
-	if (auto projectile = dynamic_cast<Projectile*>(&other)) {
-		if (projectile->get_hurt_attributes() & HURT_BADGUY) {
-			m_hit_damage = projectile->get_damage();
-		}
-	}
+	BadGuy::collision(other, hit);
 	return CONTINUE;
 }
 

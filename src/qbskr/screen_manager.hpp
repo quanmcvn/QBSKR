@@ -12,6 +12,7 @@
 class MenuManager;
 class MenuSet;
 class InputManager;
+class ScreenFade;
 class VideoSystem;
 
 /**
@@ -44,6 +45,8 @@ private:
 	};
 
 	std::vector<Action> m_actions;
+
+	std::unique_ptr<ScreenFade> m_screen_fade;
 	std::vector<std::unique_ptr<Screen>> m_screen_stack;
 
 public:
@@ -52,8 +55,8 @@ public:
 public:
 	float get_speed() const;
 	void set_speed(float speed);
-	void push_screen(std::unique_ptr<Screen> screen);
-	void pop_screen();
+	void push_screen(std::unique_ptr<Screen> screen, std::unique_ptr<ScreenFade> fade = {});
+	void pop_screen(std::unique_ptr<ScreenFade> fade = {});
 
 private:
 	void process_events();
@@ -61,7 +64,8 @@ private:
 	void draw(Compositor& compositor);
 
 public:
-	void quit();
+	void quit(std::unique_ptr<ScreenFade> fade = {});
+	bool has_pending_fade() const;
 
 private:
 	void handle_screen_switch();

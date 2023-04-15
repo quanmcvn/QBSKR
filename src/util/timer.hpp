@@ -27,6 +27,9 @@ public:
 	float get_timeleft() const;
 	float get_timegone() const;
 	float get_period() const;
+	// normalize time gone in range [0, 1]
+	// if timegone > period then return 1
+	float get_timegone_normalized() const;
 
 	bool started() const;
 	bool ended() const;

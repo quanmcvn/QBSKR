@@ -2,106 +2,108 @@
 ### It's not fully fool-proof because of no dependency check
 ### So I will delete definition code in *.hpp files :D
 
-OBJ_FILES = src/main.o                                                  \
-            src/audio/sdl_mix_chunk.o                                   \
-            src/audio/sdl_mix_music.o                                   \
-            src/audio/sound_manager.o                                   \
-            src/badguy/badguy_set.o                                     \
-            src/badguy/badguy.o                                         \
-            src/badguy/generic_badguy.o                                 \
-            src/collision/collision_object.o                            \
-            src/collision/collision_system.o                            \
-            src/collision/collision.o                                   \
-            src/control/controller.o                                    \
-            src/control/input_manager.o                                 \
-            src/control/keyboard_config.o                               \
-            src/control/keyboard_manager.o                              \
-            src/control/mouse_button_config.o                           \
-            src/control/mouse_button_manager.o                          \
-            src/control/mouse_motion_manager.o                          \
-            src/gui/item_action.o                                       \
-            src/gui/item_horizontal_line.o                              \
-            src/gui/item_label.o                                        \
-            src/gui/menu_item.o                                         \
-            src/gui/menu_manager.o                                      \
-            src/gui/menu_set.o                                          \
-            src/gui/menu_transition.o                                   \
-            src/gui/menu.o                                              \
-            src/gui/mouse_cursor.o                                      \
-            src/math/interpolate.o                                      \
-            src/math/random.o                                           \
-            src/math/rect.o                                             \
-            src/math/rectf.o                                            \
-            src/math/size.o                                             \
-            src/math/sizef.o                                            \
-            src/math/util.o                                             \
-            src/math/vector.o                                           \
-            src/object/camera.o                                         \
-            src/object/floating_text.o                                  \
-            src/object/game_object_manager.o                            \
-            src/object/game_object.o                                    \
-            src/object/moving_object.o                                  \
-            src/object/moving_sprite.o                                  \
-            src/object/physic.o                                         \
-            src/object/player.o                                         \
-            src/object/tile_map.o                                       \
-            src/object/tile_set_parser.o                                \
-            src/object/tile_set.o                                       \
-            src/object/tile.o                                           \
-            src/qbskr/menu/game_menu.o                                  \
-            src/qbskr/menu/main_menu.o                                  \
-            src/qbskr/color_scheme.o                                    \
-            src/qbskr/constants.o                                       \
-            src/qbskr/gameconfig.o                                      \
-            src/qbskr/game_session.o                                    \
-            src/qbskr/globals.o                                         \
-            src/qbskr/level_data_set.o                                  \
-            src/qbskr/level_data.o                                      \
-            src/qbskr/level.o                                           \
-            src/qbskr/main.o                                            \
-            src/qbskr/resources.o                                       \
-            src/qbskr/room_data_set.o                                   \
-            src/qbskr/room_data.o                                       \
-            src/qbskr/room.o                                            \
-            src/qbskr/screen_manager.o                                  \
-            src/qbskr/screen.o                                          \
-            src/qbskr/title_screen.o                                    \
-            src/sprite/sprite_data.o                                    \
-            src/sprite/sprite_manager.o                                 \
-            src/sprite/sprite.o                                         \
-            src/util/crappy_reader_data.o                               \
-            src/util/crappy_reader.o                                    \
-            src/util/line_iterator.o                                    \
-            src/util/log.o                                              \
-            src/util/timer.o                                            \
-            src/util/uid_generator.o                                    \
-            src/util/uid.o                                              \
-            src/video/sdl/sdl_painter.o                                 \
-            src/video/sdl/sdl_renderer.o                                \
-            src/video/sdl/sdl_surface_creator.o                         \
-            src/video/sdl/sdl_texture.o                                 \
-            src/video/sdl/sdl_video_system.o                            \
-            src/video/sdl/sdlbased_video_system.o                       \
-            src/video/canvas.o                                          \
-            src/video/color.o                                           \
-            src/video/compositor.o                                      \
-            src/video/drawing_context.o                                 \
-            src/video/font.o                                            \
-            src/video/surface.o                                         \
-            src/video/texture_manager.o                                 \
-            src/video/texture.o                                         \
-            src/video/ttf_font.o                                        \
-            src/video/ttf_surface_manager.o                             \
-            src/video/ttf_surface.o                                     \
-            src/video/video_system.o                                    \
-            src/video/viewport.o                                        \
-            src/weapon/shooting_weapon/projectile/generic_projectile.o  \
-            src/weapon/shooting_weapon/projectile/projectile_set.o      \
-            src/weapon/shooting_weapon/projectile/projectile.o          \
-            src/weapon/shooting_weapon/generic_shooting_weapon.o        \
-            src/weapon/shooting_weapon/shooting_weapon.o                \
-            src/weapon/weapon_set.o                                     \
-            src/weapon/weapon.o                                         \
+OBJ_FILES = main.o                                                  \
+            audio/sdl_mix_chunk.o                                   \
+            audio/sdl_mix_music.o                                   \
+            audio/sound_manager.o                                   \
+            badguy/badguy_set.o                                     \
+            badguy/badguy.o                                         \
+            badguy/balbusour.o                                      \
+            badguy/generic_badguy.o                                 \
+            collision/collision_object.o                            \
+            collision/collision_system.o                            \
+            collision/collision.o                                   \
+            control/controller.o                                    \
+            control/input_manager.o                                 \
+            control/keyboard_config.o                               \
+            control/keyboard_manager.o                              \
+            control/mouse_button_config.o                           \
+            control/mouse_button_manager.o                          \
+            control/mouse_motion_manager.o                          \
+            gui/item_action.o                                       \
+            gui/item_horizontal_line.o                              \
+            gui/item_label.o                                        \
+            gui/menu_item.o                                         \
+            gui/menu_manager.o                                      \
+            gui/menu_set.o                                          \
+            gui/menu_transition.o                                   \
+            gui/menu.o                                              \
+            gui/mouse_cursor.o                                      \
+            math/interpolate.o                                      \
+            math/random.o                                           \
+            math/rect.o                                             \
+            math/rectf.o                                            \
+            math/size.o                                             \
+            math/sizef.o                                            \
+            math/util.o                                             \
+            math/vector.o                                           \
+            object/camera.o                                         \
+            object/floating_text.o                                  \
+            object/game_object_manager.o                            \
+            object/game_object.o                                    \
+            object/moving_object.o                                  \
+            object/moving_sprite.o                                  \
+            object/physic.o                                         \
+            object/player.o                                         \
+            object/tile_map.o                                       \
+            object/tile_set_parser.o                                \
+            object/tile_set.o                                       \
+            object/tile.o                                           \
+            qbskr/menu/game_menu.o                                  \
+            qbskr/menu/main_menu.o                                  \
+            qbskr/color_scheme.o                                    \
+            qbskr/constants.o                                       \
+            qbskr/gameconfig.o                                      \
+            qbskr/game_session.o                                    \
+            qbskr/globals.o                                         \
+            qbskr/level_data_set.o                                  \
+            qbskr/level_data.o                                      \
+            qbskr/level.o                                           \
+            qbskr/main.o                                            \
+            qbskr/resources.o                                       \
+            qbskr/room_data_set.o                                   \
+            qbskr/room_data.o                                       \
+            qbskr/room.o                                            \
+            qbskr/screen_fade.o                                     \
+            qbskr/screen_manager.o                                  \
+            qbskr/screen.o                                          \
+            qbskr/title_screen.o                                    \
+            sprite/sprite_data.o                                    \
+            sprite/sprite_manager.o                                 \
+            sprite/sprite.o                                         \
+            util/crappy_reader_data.o                               \
+            util/crappy_reader.o                                    \
+            util/line_iterator.o                                    \
+            util/log.o                                              \
+            util/timer.o                                            \
+            util/uid_generator.o                                    \
+            util/uid.o                                              \
+            video/sdl/sdl_painter.o                                 \
+            video/sdl/sdl_renderer.o                                \
+            video/sdl/sdl_surface_creator.o                         \
+            video/sdl/sdl_texture.o                                 \
+            video/sdl/sdl_video_system.o                            \
+            video/sdl/sdlbased_video_system.o                       \
+            video/canvas.o                                          \
+            video/color.o                                           \
+            video/compositor.o                                      \
+            video/drawing_context.o                                 \
+            video/font.o                                            \
+            video/surface.o                                         \
+            video/texture_manager.o                                 \
+            video/texture.o                                         \
+            video/ttf_font.o                                        \
+            video/ttf_surface_manager.o                             \
+            video/ttf_surface.o                                     \
+            video/video_system.o                                    \
+            video/viewport.o                                        \
+            weapon/shooting_weapon/projectile/generic_projectile.o  \
+            weapon/shooting_weapon/projectile/projectile_set.o      \
+            weapon/shooting_weapon/projectile/projectile.o          \
+            weapon/shooting_weapon/generic_shooting_weapon.o        \
+            weapon/shooting_weapon/shooting_weapon.o                \
+            weapon/weapon_set.o                                     \
+            weapon/weapon.o                                         \
 
 #CC specifies which compiler we're using
 CC = g++
@@ -135,22 +137,26 @@ LINKER_FLAGS = -lmingw32           \
                -lSDL2_mixer        \
                -lSDL2_ttf          \
 
-#OBJ_NAME specifies the name of our exectuable
-OBJ_NAME = QBSKR
 GFLAGS = -g
 
-OBJDIR := bin
+OBJDIR := bin/obj
 OBJS := $(addprefix $(OBJDIR)/, $(OBJ_FILES))
 
-$(OBJDIR)/%.o : %.cpp
+#OBJ_NAME specifies the name of our exectuable
+OBJ_NAME = QBSKR
+### Move the executable to ./data to (partial) fix the "../data/"
+OBJ_NAME := $(addprefix ./data/, $(OBJ_NAME))
+
+$(OBJDIR)/%.o : src/%.cpp
 	@mkdir -p $(@D)
 	$(CC) -c $(GFLAGS) $(INCLUDE_PATHS) $(COMPILER_FLAGS) $< -o $@
 
 #This is the target that compiles our executable
-### Move the executable to ./data to (partial) fix the "../data/"
 .PHONY : all
-all: $(OBJS)
-	$(CC) $(GFLAGS) $(OBJS) $(LIBRARY_PATHS) $(COMPILER_FLAGS) $(LINKER_FLAGS) -o ./data/$(OBJ_NAME)
+all: $(OBJ_NAME)
+
+$(OBJ_NAME) : $(OBJS)
+	$(CC) $(GFLAGS) $(OBJS) $(LIBRARY_PATHS) $(COMPILER_FLAGS) $(LINKER_FLAGS) -o $(OBJ_NAME)
 
 $(OBJS): | $(OBJDIR)
 
@@ -158,5 +164,5 @@ $(OBJS): | $(OBJDIR)
 ### idk why it can execute shell/bash (idk what it is even more)
 ### anyway...
 clean:
-	rm -rf ./bin/src/
+	rm -rf ./bin/
 	rm ./data/QBSKR.exe

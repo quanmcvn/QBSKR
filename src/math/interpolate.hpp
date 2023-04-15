@@ -7,6 +7,7 @@ namespace interpolate {
 	float quadratic_ease_out(float t, float start = 0.0f, float end = 1.0f);
 	float cubic_ease_in(float t, float start = 0.0f, float end = 1.0f);
 	float cubic_ease_out(float t, float start = 0.0f, float end = 1.0f);
+	float half_ellipse_vertical_ease(float t, float start = 0.0f, float end = 1.0f);
 } // namespace interpolate
 
 #endif

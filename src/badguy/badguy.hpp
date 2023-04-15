@@ -41,6 +41,7 @@ public:
 	virtual void update(float dt_sec) override;
 	static std::string class_name();
 	virtual std::string get_class_name() const;
+	virtual HitResponse collision(GameObject& other, const CollisionHit& hit) override;
 	virtual void active_update(float dt_sec) = 0;
 	virtual void inactive_update(float dt_sec) = 0;
 	virtual void try_change_state() = 0;

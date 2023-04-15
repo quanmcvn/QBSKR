@@ -6,6 +6,7 @@
 struct DrawingRequest;
 struct TextureRequest;
 struct FilledRectRequest;
+struct InverseEllipseRequest;
 
 /**
  * Generic painter class
@@ -20,6 +21,7 @@ public:
 public:
 	virtual void draw_texture(const TextureRequest& request) = 0;
 	virtual void draw_filled_rect(const FilledRectRequest& request) = 0;
+	virtual void draw_inverse_ellipse(const InverseEllipseRequest& request) = 0;
 
 	virtual void set_clip_rect(const Rect& rect) = 0;
 	virtual void clear_clip_rect() = 0;

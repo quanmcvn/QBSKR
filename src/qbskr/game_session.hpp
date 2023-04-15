@@ -31,6 +31,9 @@ public:
 
 	void toggle_pause();
 	void abort_level();
+
+private:
+	void on_escape_press();
 };
 
 #endif

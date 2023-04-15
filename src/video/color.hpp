@@ -4,13 +4,14 @@
 #include <stdint.h>
 
 /**
- *  Class to store Color (surew)
+ *  Class to store Color (sure)
 */
 class Color final {
 public:
 	Color();
 
 public:
+	static const Color BLACK;
 	static const Color RED;
 	static const Color WHITE;
 
