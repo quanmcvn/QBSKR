@@ -91,6 +91,41 @@ void Canvas::draw_surface(const SurfacePtr& surface, const Vector& position, flo
 	m_requests.push_back(static_cast<DrawingRequest*>(request));
 }
 
+void Canvas::draw_surface_scaled(const SurfacePtr& surface, const Rectf& dstrect, const Color& color, int layer)
+{
+	draw_surface_part(
+		surface, 
+		Rectf(0, 0, 
+			static_cast<float>(surface->get_width()), 
+			static_cast<float>(surface->get_height())
+		),
+		dstrect, color, layer
+	);
+}
+
+void Canvas::draw_surface_part(const SurfacePtr& surface, const Rectf& srcrect, const Rectf& dstrect, const Color& color, int layer)
+{
+	if (!surface) return;
+
+	m_request_holder.emplace_back(static_cast<std::unique_ptr<DrawingRequest>>(std::make_unique<TextureRequest>()));
+
+	TextureRequest* request = static_cast<TextureRequest*>(m_request_holder.back().get());
+
+	request->type = TEXTURE;
+	request->layer = layer;
+	request->flip = m_drawing_context.get_flip() ^ surface->get_flip();
+	request->alpha = m_drawing_context.get_alpha();
+	request->viewport = m_drawing_context.get_viewport();
+
+	request->srcrects.emplace_back(srcrect);
+	request->dstrects.emplace_back(apply_translate(dstrect.p1())*scale(), dstrect.get_size()*scale());
+	request->angles.emplace_back(0.0f);
+	request->texture = surface->get_texture().get();
+	request->color = color;
+
+	m_requests.push_back(static_cast<DrawingRequest*>(request));
+}
+
 void Canvas::draw_filled_rect(const Rectf& rect, const Color& color, int layer)
 {
 	m_request_holder.emplace_back(static_cast<std::unique_ptr<DrawingRequest>>(std::make_unique<FilledRectRequest>()));

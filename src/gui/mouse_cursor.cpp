@@ -10,8 +10,7 @@ MouseCursor::MouseCursor(SpritePtr sprite) :
 	m_sprite(std::move(sprite))
 {}
 
-void
-MouseCursor::draw(DrawingContext& context)
+void MouseCursor::draw(DrawingContext& context)
 {
 	if (m_state != MouseCursorState::HIDE) {
 		int x, y;

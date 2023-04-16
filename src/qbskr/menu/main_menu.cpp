@@ -25,7 +25,7 @@ void MainMenu::item_do_menu_action(MenuItem& item)
 	switch (item.get_id()) {
 		case MNID_STARTGAME:
 			ScreenManager::current()->push_screen(
-				std::make_unique<GameSession>("levels/level-1/level-1-level.txt"),
+				std::make_unique<GameSession>("levels/level-0/level-0-level.txt"),
 				std::make_unique<ScreenFade>(
 					Vector(static_cast<float>(SCREEN_WIDTH), static_cast<float>(SCREEN_HEIGHT)) / 2.0f, 
 					0.5f

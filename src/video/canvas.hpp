@@ -43,6 +43,9 @@ public:
 	void draw_surface(const SurfacePtr& surface, const Vector& position, int layer);
 	void draw_surface(const SurfacePtr& surface, const Vector& position, float angle, const Color& color, int layer);
 
+	void draw_surface_scaled(const SurfacePtr& surface, const Rectf& dstrect, const Color& color, int layer);
+	void draw_surface_part(const SurfacePtr& surface, const Rectf& srcrect, const Rectf& dstrect, const Color& color, int layer);
+
 	void draw_filled_rect(const Rectf& rect, const Color& color, int layer);
 	void draw_inverse_ellipse(const Vector& center_pos, const Sizef& size, const Color& color, int layer);
 	void draw_text(const FontPtr& font, const std::string& text,

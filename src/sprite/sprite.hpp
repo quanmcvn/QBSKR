@@ -25,6 +25,9 @@ public:
 
 	// update and draw sprite
 	void draw(Canvas& canvas, const Vector& pos, int layer, Flip flip = NO_FLIP);
+	// update and draw sprite
+	// not considering angle here, may have to changed later
+	void draw_scaled(Canvas& canvas, const Rectf& dstrect, int layer, Flip flip = NO_FLIP);
 
 	// set action (state)
 	void set_action(const std::string& name);

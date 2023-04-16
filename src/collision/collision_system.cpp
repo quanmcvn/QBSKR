@@ -202,7 +202,18 @@ void CollisionSystem::update()
 		collision_static_tilemap_object(*object);
 	}
 
-	// part ???
+	// part 2: COLLISION_GROUP_MOVING vs tile attributes
+	for (const auto& object : m_objects) {
+		if (!object->is_valid()) continue;
+		if (object->get_group() != COLLISION_GROUP_MOVING &&
+		    object->get_group() != COLLISION_GROUP_STATIC)
+			continue;
+
+		uint32_t tile_attributes = collision_tile_attributes(object->m_dest);
+		if (tile_attributes >= Tile::FIRST_INTERESTING_ATTRIBUTE) {
+			object->collision_tile(tile_attributes);
+		}
+	}
 
 	// part last: COLLISION_GROUP_MOVING vs COLLISION_GROUP_MOVING
 	for (auto it = m_objects.begin(); it != m_objects.end(); ++ it) {
@@ -324,6 +335,24 @@ void CollisionSystem::collision_static_tilemap_object(CollisionObject& object) c
 			object.collision_solid(constraints.hit);
 		}
 	}
+}
+
+uint32_t CollisionSystem::collision_tile_attributes(const Rectf& dest) const
+{
+	uint32_t result = 0;
+	for (auto solid_tilemap : m_room.get_solid_tilemaps()) {
+		const Rect test_tiles = solid_tilemap->get_tiles_overlap(dest);
+
+		for (int x = test_tiles.left; x < test_tiles.right; ++ x) {
+			for (int y = test_tiles.top; y < test_tiles.bottom; ++ y) {
+				const Tile& tile = solid_tilemap->get_tile(x, y);
+
+				result |= tile.get_attributes();
+			}
+		}
+	}
+
+	return result;
 }
 
 void CollisionSystem::collision_object(CollisionObject& object1, CollisionObject& object2) const

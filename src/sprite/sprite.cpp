@@ -47,11 +47,27 @@ void Sprite::draw(Canvas& canvas, const Vector& pos, int layer, Flip flip)
 	drawing_context.set_flip(drawing_context.get_flip() ^ flip);
 	drawing_context.set_alpha(drawing_context.get_alpha() * m_alpha);
 
-	canvas.draw_surface(m_action->surfaces[m_frame_index],
-	                    pos - Vector(m_action->x_offset, m_action->y_offset),
-	                    m_angle,
-	                    m_color,
-	                    layer);
+	canvas.draw_surface(
+		m_action->surfaces[m_frame_index],
+		pos - Vector(m_action->x_offset, m_action->y_offset),
+		m_angle, m_color, layer
+	);
+
+	drawing_context.pop_transform();
+}
+
+void Sprite::draw_scaled(Canvas& canvas, const Rectf& dstrect, int layer, Flip flip)
+{
+	assert(m_action != nullptr);
+	update();
+
+	DrawingContext& drawing_context = canvas.get_drawing_context();
+	drawing_context.push_transform();
+
+	drawing_context.set_flip(drawing_context.get_flip() ^ flip);
+	drawing_context.set_alpha(drawing_context.get_alpha() * m_alpha);
+
+	canvas.draw_surface_scaled(m_action->surfaces[m_frame_index], dstrect, m_color, layer);
 
 	drawing_context.pop_transform();
 }

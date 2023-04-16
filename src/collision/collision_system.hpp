@@ -44,6 +44,8 @@ private:
 	void collision_static_tilemap_constraints(collision::Constraints* constraints, const Vector& movement, const Rectf& dest, CollisionObject& object) const;
 	void collision_static_tilemap_object(CollisionObject& object) const;
 
+	uint32_t collision_tile_attributes(const Rectf& dest) const;
+
 	void collision_object(CollisionObject& object1, CollisionObject& object2) const;
 
 public:

@@ -37,4 +37,14 @@ tile-start
 	images-end
 tile-end
 
+tile-start
+	id 5
+	attributes-start
+		goal 1
+	attributes-end
+	images-start
+		portal.png
+	images-end
+tile-end
+
 tileset-end

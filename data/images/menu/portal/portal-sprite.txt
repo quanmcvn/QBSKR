@@ -1,0 +1,37 @@
+sprite-start
+	action-start
+		fps 16
+		hitbox 0 0 0 0
+		images-start
+			nether-portal-0.png
+			nether-portal-1.png
+			nether-portal-2.png
+			nether-portal-3.png
+			nether-portal-4.png
+			nether-portal-5.png
+			nether-portal-6.png
+			nether-portal-7.png
+			nether-portal-8.png
+			nether-portal-9.png
+			nether-portal-10.png
+			nether-portal-11.png
+			nether-portal-12.png
+			nether-portal-13.png
+			nether-portal-14.png
+			nether-portal-15.png
+			nether-portal-16.png
+			nether-portal-17.png
+			nether-portal-18.png
+			nether-portal-19.png
+			nether-portal-20.png
+			nether-portal-21.png
+			nether-portal-22.png
+			nether-portal-23.png
+			nether-portal-24.png
+			nether-portal-25.png
+			nether-portal-26.png
+			nether-portal-27.png
+			nether-portal-28.png
+		images-end
+	action-end
+sprite-end

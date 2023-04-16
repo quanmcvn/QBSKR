@@ -1,6 +1,8 @@
 #ifndef HEADER_QBSKR_UTIL_CURRENTON_HPP
 #define HEADER_QBSKR_UTIL_CURRENTON_HPP
 
+#include <cassert>
+
 /**
  * Kind of like a singleton, but without handling the object construction itself
  */
@@ -12,6 +14,10 @@ private:
 protected:
 	Currenton()
 	{
+		// put inside if to make debug-able (put breakpoint in here)
+		if (s_current != nullptr) {
+			assert(s_current == nullptr);
+		}
 		s_current = this;
 	}
 

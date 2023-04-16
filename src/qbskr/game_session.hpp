@@ -21,6 +21,7 @@ private:
 	std::unique_ptr<Level> m_level;
 	bool m_game_pause;
 	float m_speed_before_pause;
+	bool m_is_finish;
 
 public:
 	GameSession(const std::string& level_filename);
@@ -31,6 +32,8 @@ public:
 
 	void toggle_pause();
 	void abort_level();
+
+	void finish_level();
 
 private:
 	void on_escape_press();

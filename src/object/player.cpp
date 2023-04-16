@@ -6,6 +6,7 @@
 #include "sprite/sprite_manager.hpp"
 #include "sprite/sprite.hpp"
 #include "object/camera.hpp"
+#include "qbskr/game_session.hpp"
 #include "qbskr/room.hpp"
 #include "math/util.hpp"
 #include "video/video_system.hpp"
@@ -25,6 +26,7 @@ Player::Player(int player_id, uint32_t weapon_id) :
 {
 	set_pos(Vector(0.0f, 0.0f));
 	m_collision_object.set_size(m_sprite->get_current_hitbox_width(), m_sprite->get_current_hitbox_height());
+	set_pos(Vector(0.0f, 0.0f) - get_bounding_box().get_middle());
 	if (weapon_id > 0) m_weapon = WeaponSet::current()->get_weapon(weapon_id).clone(this);
 }
 
@@ -85,9 +87,13 @@ HitResponse Player::collision(GameObject& other, const CollisionHit& /* hit */)
 	return CONTINUE;
 }
 
-void Player::collision_tile(uint32_t /* tile_attributes */)
+void Player::collision_tile(uint32_t tile_attributes)
 {
-	// NYI
+	if (tile_attributes & Tile::GOAL) {
+		if (m_controller->pressed(Control::ATTACK)) {
+			GameSession::current()->finish_level();
+		}
+	}
 }
 
 int Player::get_layer() const { return LAYER_OBJECTS + 1; }

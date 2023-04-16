@@ -41,6 +41,9 @@ Room::Room(std::unique_ptr<RoomData> room_data) :
 Room& Room::get() 
 {
 	if (s_current) return *s_current;
+	if (true) {
+		
+	}
 	assert(s_current != nullptr);
 	// make compiler happy 
 	return *s_current;
