@@ -6,14 +6,20 @@
 #include "sprite/sprite_manager.hpp"
 #include "sprite/sprite.hpp"
 #include "object/camera.hpp"
+#include "object/floating_text.hpp"
+#include "qbskr/color_scheme.hpp"
 #include "qbskr/game_session.hpp"
 #include "qbskr/room.hpp"
+#include "math/interpolate.hpp"
 #include "math/util.hpp"
 #include "video/video_system.hpp"
+#include "weapon/shooting_weapon/projectile/projectile.hpp"
+#include "weapon/hurt.hpp"
 #include "weapon/weapon_set.hpp"
 
 namespace {
 	const float WALK_SPEED = 100.0f;
+	const float DIE_ANIMATION_TIME = 2.0f;
 }
 
 Player::Player(int player_id, uint32_t weapon_id) :
@@ -22,7 +28,11 @@ Player::Player(int player_id, uint32_t weapon_id) :
 	m_direction(Direction::RIGHT),
 	m_physic(),
 	m_sprite(SpriteManager::current()->create("images/charactors/knight/knight_sprite.txt")),
-	m_weapon()
+	m_weapon(),
+	m_health(5),
+	m_die(),
+	m_hit_damage(),
+	m_die_animation_timer()
 {
 	set_pos(Vector(0.0f, 0.0f));
 	m_collision_object.set_size(m_sprite->get_current_hitbox_width(), m_sprite->get_current_hitbox_height());
@@ -39,7 +49,11 @@ Player::Player(const Player& other) :
 	m_direction(other.m_direction),
 	m_physic(other.m_physic),
 	m_sprite(other.m_sprite->clone()),
-	m_weapon(other.m_weapon->clone(this))
+	m_weapon(other.m_weapon->clone(this)),
+	m_health(other.m_health),
+	m_die(other.m_die),
+	m_hit_damage(),
+	m_die_animation_timer()
 {
 	set_pos(other.get_pos());
 	m_collision_object.set_size(m_sprite->get_current_hitbox_width(), m_sprite->get_current_hitbox_height());
@@ -47,25 +61,59 @@ Player::Player(const Player& other) :
 
 void Player::update(float dt_sec)
 {
+	if (m_die) {
+		set_group(COLLISION_GROUP_DISABLED);
+		return;
+	}
+
 	handle_input();
+
+	if (m_hit_damage.has_value()) {
+		m_health -= m_hit_damage.value();
+		Room::get().add<FloatingText>(get_bounding_box().get_middle(), m_hit_damage.value(), ColorScheme::HUD::damage_color);
+		m_hit_damage.reset();
+	}
+
+	if (m_health <= 0) m_die = true;
 
 	m_collision_object.set_movement(m_physic.get_movement(dt_sec));
 }
 
 void Player::draw(DrawingContext& drawing_context)
 {
+	if (m_die) {
+		if (!m_die_animation_timer.started()) {
+			m_die_animation_timer.start(DIE_ANIMATION_TIME, false);
+		}
+		// dim player
+		m_sprite->set_color(Color(.5f, .5f, .5f, 1.0f));
+		if (m_direction == Direction::RIGHT) {
+			m_sprite->set_angle(-90.0f);
+		} else {
+			m_sprite->set_angle(90.0f);
+		}
+		if (m_die_animation_timer.check()) {
+			GameSession::current()->abort_level();
+		}
+	} else {
+		if (m_weapon) m_weapon->draw(drawing_context);
+	}
+
 	std::string action_postfix;
 	action_postfix = (m_direction == Direction::RIGHT) ? "-right" : "-left";
 	
-	if (math::length(m_physic.get_velocity()) < 1.0f) {
-		m_sprite->set_action("idle" + action_postfix);
+	if (m_die) {
+		m_sprite->set_action("die" + action_postfix);
 	} else {
-		m_sprite->set_action("walk" + action_postfix);
+		if (math::length(m_physic.get_velocity()) < 1.0f) {
+			m_sprite->set_action("idle" + action_postfix);
+		} else {
+			m_sprite->set_action("walk" + action_postfix);
+		}
 	}
 
 	m_sprite->draw(drawing_context.get_canvas(), get_pos(), get_layer());
 
-	if (m_weapon) m_weapon->draw(drawing_context);
 }
 
 void Player::collision_solid(const CollisionHit& hit)
@@ -84,6 +132,13 @@ HitResponse Player::collision(GameObject& other, const CollisionHit& /* hit */)
 	if (dynamic_cast<BadGuy*>(&other)) {
 		return ABORT_MOVE;
 	}
+
+	if (auto projectile = dynamic_cast<Projectile*>(&other)) {
+		if (projectile->get_hurt_attributes() & HURT_PLAYER) {
+			m_hit_damage = projectile->get_damage();
+		}
+	}
+
 	return CONTINUE;
 }
 

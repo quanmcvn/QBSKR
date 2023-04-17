@@ -5,6 +5,7 @@
 #include "object/physic.hpp"
 #include "object/direction.hpp"
 #include "sprite/sprite_ptr.hpp"
+#include "util/timer.hpp"
 #include "weapon/weapon.hpp"
 
 class Controller;
@@ -29,6 +30,11 @@ private:
 	Physic m_physic;
 	SpritePtr m_sprite;
 	std::unique_ptr<Weapon> m_weapon;
+	int m_health;
+	bool m_die;
+	// if hit this frame
+	std::optional<int> m_hit_damage;
+	Timer m_die_animation_timer;
 
 public:
 	virtual void update(float dt_sec) override;

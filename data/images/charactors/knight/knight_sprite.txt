@@ -40,4 +40,17 @@ sprite-start
 		mirror-action idle-right
 	action-end
 
+	action-start
+		name die-right
+		hitbox 0 0 16 28
+		images-start
+			idle-0.png
+		images-end
+	action-end
+
+	action-start
+		name die-left
+		mirror-action die-right
+	action-end
+
 sprite-end
