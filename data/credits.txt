@@ -1,0 +1,79 @@
+credit-start
+	speed 12
+	content-start
+		text-start
+			type heading
+			string QBSKR Team?
+		text-end
+		blank
+		person-start
+			name quanmcvn
+			info Literally the only one
+		person-end
+
+		blank
+		blank
+		text-start
+			type heading
+			string Graphic
+		text-end
+		blank
+		person-start
+			name quanmcvn
+			info Borrowing other's original work
+		person-end
+
+		blank
+		blank
+		text-start
+			type heading
+			string Level design
+		text-end
+		blank
+		person-start
+			name quanmcvn
+			info Original this time
+		person-end
+
+		blank
+		blank
+		text-start
+			type heading
+			string Music
+		text-end
+		blank
+		person-start
+			name quanmcvn
+			info Stole
+		person-end
+
+		blank
+		blank
+		text-start
+			type heading
+			string Sound
+		text-end
+		blank
+		person-start
+			name quanmcvn
+			info Also stole
+		person-end
+
+		blank
+		blank
+		text-start
+			type heading
+			string Special thanks to
+		text-end
+		blank
+		person-start
+			name SuperTux
+			info 80%+ of core code design
+		person-end
+		blank
+		person-start
+			name and you, the player
+			info for trying this game
+		person-end
+	content-end
+credit-end

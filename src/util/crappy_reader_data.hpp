@@ -34,6 +34,8 @@
  *         1) change listing order
  *         2) this is not designed with {key : value} in mind, just value
  *   - Hardcoded a lot of functions
+ *   - Because use std::ifstream, std::stringstream as backbone,
+ *     this reader is line and whitespace sensitive
 */
 class CrappyReaderData final {
 public:

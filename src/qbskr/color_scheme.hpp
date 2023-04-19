@@ -19,6 +19,8 @@ public:
 
 	class Text final {
 	public:
+		static Color small_color;
+		static Color heading_color;
 		static Color normal_color;
 	};
 

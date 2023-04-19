@@ -38,9 +38,11 @@ CPP_FILES = main.cpp                                                  \
             math/util.cpp                                             \
             math/vector.cpp                                           \
             object/camera.cpp                                         \
+            object/credit_scroller.cpp                                \
             object/floating_text.cpp                                  \
             object/game_object_manager.cpp                            \
             object/game_object.cpp                                    \
+            object/info_box_line.cpp                                  \
             object/moving_object.cpp                                  \
             object/moving_sprite.cpp                                  \
             object/physic.cpp                                         \
@@ -53,6 +55,7 @@ CPP_FILES = main.cpp                                                  \
             qbskr/menu/main_menu.cpp                                  \
             qbskr/color_scheme.cpp                                    \
             qbskr/constants.cpp                                       \
+            qbskr/credit_screen.cpp                                   \
             qbskr/gameconfig.cpp                                      \
             qbskr/game_session.cpp                                    \
             qbskr/globals.cpp                                         \
@@ -76,6 +79,7 @@ CPP_FILES = main.cpp                                                  \
             util/crappy_reader.cpp                                    \
             util/line_iterator.cpp                                    \
             util/log.cpp                                              \
+            util/string_util.cpp                                      \
             util/timer.cpp                                            \
             util/uid_generator.cpp                                    \
             util/uid.cpp                                              \

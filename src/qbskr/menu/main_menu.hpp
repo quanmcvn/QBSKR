@@ -5,6 +5,7 @@
 
 enum MainMenuIDs {
 	MNID_STARTGAME,
+	MNID_CREDITS,
 	MNID_QUITMAINMENU,
 };
 

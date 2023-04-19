@@ -15,6 +15,7 @@ std::unique_ptr<MouseCursor> Resources::mouse_cursor;
 
 FontPtr Resources::fixed_font;
 FontPtr Resources::normal_font;
+FontPtr Resources::small_font;
 FontPtr Resources::big_font;
 
 void Resources::load()
@@ -24,6 +25,7 @@ void Resources::load()
 	const std::string font = "fonts/minecraft_font.ttf";
 	fixed_font = std::make_shared<TTFFont>(font, 8.0f, 1.25f);
 	normal_font = fixed_font;
+	small_font = std::make_shared<TTFFont>(font, 7.0f, 1.25f);
 	big_font = std::make_shared<TTFFont>(font, 12.0f, 1.25f);
 }
 
@@ -31,5 +33,6 @@ void Resources::unload()
 {
 	fixed_font.reset();
 	normal_font.reset();
+	small_font.reset();
 	big_font.reset();
 }

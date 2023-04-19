@@ -21,6 +21,8 @@ public:
 	static FontPtr fixed_font;
 	// used for menu
 	static FontPtr normal_font;
+	// used in credit
+	static FontPtr small_font;
 	// used for label
 	static FontPtr big_font;
 

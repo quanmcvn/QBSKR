@@ -1,7 +1,6 @@
 #include "weapon/shooting_weapon/projectile/projectile_set.hpp"
 
 #include <sstream>
-#include <filesystem>
 
 #include "util/crappy_reader.hpp"
 #include "util/log.hpp"
@@ -42,10 +41,8 @@ void ProjectileSet::parse(const std::string& filename)
 		throw std::runtime_error(msg.str());
 	}
 
-	std::string parent_path = std::filesystem::path(cr.get_dir()).parent_path().string() + '/';
-
 	for (const auto& child : crd->m_childs) {
-		if (child->m_data == "projectile") parse_projectile(child, parent_path);
+		if (child->m_data == "projectile") parse_projectile(child, crd->m_parent_path);
 	}
 
 	// // dummy value

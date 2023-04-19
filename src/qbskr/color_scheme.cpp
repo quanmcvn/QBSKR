@@ -8,6 +8,8 @@ Color ColorScheme::Menu::default_color(1.0f, 1.0f, 1.0f);
 Color ColorScheme::Menu::active_color(0.4f, 0.66f, 1.0f);
 Color ColorScheme::Menu::label_color(0.0f, 1.0f, 1.0f);
 
+Color ColorScheme::Text::small_color(1.0f, 1.0f, 1.0f);
+Color ColorScheme::Text::heading_color(1.f, 1.0f, 0.6f);
 Color ColorScheme::Text::normal_color(1.0f, 1.0f, 1.0f);
 
 Color ColorScheme::HUD::damage_color(1.0f, 0.0f, 0.0f);
