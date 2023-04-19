@@ -18,6 +18,15 @@ Color::Color(float red_, float green_, float blue_, float alpha_) :
 	alpha(alpha_)
 {}
 
+Color Color::from_rgb(uint8_t red_, uint8_t green_, uint8_t blue_)
+{
+	return Color(
+		static_cast<float>(red_) / 255.0f,
+		static_cast<float>(green_) / 255.0f,
+		static_cast<float>(blue_) / 255.0f
+	);
+}
+
 uint8_t Color::r8() const {return static_cast<uint8_t>(255.0f * red); }
 uint8_t Color::g8() const {return static_cast<uint8_t>(255.0f * green); }
 uint8_t Color::b8() const {return static_cast<uint8_t>(255.0f * blue); }

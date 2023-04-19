@@ -32,10 +32,6 @@ void WaitingScreen::update(float /* dt_sec */, const Controller& /* controller *
 void WaitingScreen::draw(Compositor& compositor)
 {
 	DrawingContext& drawing_context = compositor.make_context();
-	drawing_context.get_canvas().draw_filled_rect(drawing_context.get_viewport(), Color(.25f, 0.5f, 0.5f), LAYER_FOREGROUND);
-	drawing_context.push_transform();
-
+	drawing_context.get_canvas().draw_filled_rect(drawing_context.get_viewport(), Color(0.0f, 0.0f, 0.0f), LAYER_FOREGROUND);
 	m_sprite->draw_scaled(drawing_context.get_canvas(), drawing_context.get_viewport(), LAYER_FOREGROUND + 1);
-	
-	drawing_context.pop_transform();
 }

@@ -19,6 +19,9 @@ public:
 	float red, green, blue, alpha;
 
 public:
+	static Color from_rgb(uint8_t red_, uint8_t green_, uint8_t blue_);
+
+public:
 	Color(float red_, float green_, float blue_, float alpha_ = 1.0f);
 
 	uint8_t r8() const;

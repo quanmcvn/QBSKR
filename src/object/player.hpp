@@ -30,6 +30,7 @@ private:
 	Physic m_physic;
 	SpritePtr m_sprite;
 	std::unique_ptr<Weapon> m_weapon;
+	int m_max_health;
 	int m_health;
 	bool m_die;
 	// if hit this frame
