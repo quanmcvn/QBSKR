@@ -57,7 +57,8 @@ namespace {
 LevelData::LevelData(const std::string& filename) :
 	m_rooms_number_random_info(),
 	m_rooms_info(),
-	m_room_data_set()
+	m_room_data_set(),
+	m_next_level()
 {
 	CrappyReader cr(filename);
 	while (cr.parse("level")) {}
@@ -93,6 +94,10 @@ LevelData::LevelData(const std::string& filename) :
 		throw std::runtime_error("No room-data-set-filename in level file");
 	}
 	m_room_data_set = std::make_unique<RoomDataSet>(crd->m_parent_path + room_data_set_filename);
+
+	if (!crd->get("next-level", m_next_level)) {
+		throw std::runtime_error("No next-level in level file");
+	}
 
 	for (size_t i = 0; i < m_room_data_set->m_room_datas.size(); ++ i) {
 		const auto& room_data = m_room_data_set->m_room_datas[i];
@@ -211,5 +216,8 @@ std::unique_ptr<Level> LevelData::make_level() const
 		dir_prev = dir_now;
 		prev_bounding_box = bounding_box;
 	}
+
+	level->set_next_level(m_next_level);
+
 	return level;
 }

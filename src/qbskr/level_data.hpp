@@ -27,6 +27,7 @@ private:
 	// which ids has room type
 	std::map<RoomType, std::vector<uint32_t>> m_rooms_info;
 	std::unique_ptr<RoomDataSet> m_room_data_set;
+	std::string m_next_level;
 
 public:
 	LevelData(const std::string& filename);

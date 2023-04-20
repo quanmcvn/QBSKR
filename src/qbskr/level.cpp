@@ -5,7 +5,8 @@
 #include "video/drawing_context.hpp"
 
 Level::Level() :
-	m_rooms()
+	m_rooms(),
+	m_next_level()
 {}
 
 Level::~Level()
@@ -71,3 +72,6 @@ void Level::activate()
 		}
 	}
 }
+
+std::string Level::get_next_level() const { return m_next_level; }
+void Level::set_next_level(const std::string& next_level) { m_next_level = next_level; }

@@ -17,6 +17,7 @@ private:
 
 private:
 	std::vector<std::unique_ptr<Room>> m_rooms;
+	std::string m_next_level;
 
 public:
 	void update(float dt_sec);
@@ -25,6 +26,8 @@ public:
 	void add_room(std::unique_ptr<Room> room);
 	// activate the 'start' room
 	void activate();
+	std::string get_next_level() const;
+	void set_next_level(const std::string& next_level);
 };
 
 #endif

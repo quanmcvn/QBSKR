@@ -3,6 +3,7 @@
 #include "control/controller.hpp"
 #include "gui/menu_manager.hpp"
 #include "gui/menu_set.hpp"
+#include "qbskr/credit_screen.hpp"
 #include "qbskr/globals.hpp"
 #include "qbskr/level_data_set.hpp"
 #include "qbskr/level_data.hpp"
@@ -69,15 +70,28 @@ void GameSession::finish_level()
 	if (!m_is_finish) {
 		m_is_finish = true;
 		ScreenManager::current()->pop_screen();
-		ScreenManager::current()->push_screen(
-			std::make_unique<WaitingScreen>([] () {
-				ScreenManager::current()->push_screen(
-					std::make_unique<GameSession>("levels/level-1/level-1-level.txt"),
-					std::make_unique<ScreenFade>(Vector(static_cast<float>(SCREEN_WIDTH), static_cast<float>(SCREEN_HEIGHT)) / 2.0f, 0.5f)
-				);
-			}),
-			std::make_unique<ScreenFade>(Vector(static_cast<float>(SCREEN_WIDTH), static_cast<float>(SCREEN_HEIGHT)) / 2.0f, 0.5f)
-		);
+		if (m_level->get_next_level() == "credits") {
+			ScreenManager::current()->push_screen(
+				std::make_unique<CreditScreen>("credits.txt"),
+				std::make_unique<ScreenFade>(Vector(static_cast<float>(SCREEN_WIDTH), static_cast<float>(SCREEN_HEIGHT)) / 2.0f, 0.5f)
+			);
+		} else {
+			// store the next_level here
+			// prevent segfault
+			std::string next_level = m_level->get_next_level();
+			ScreenManager::current()->push_screen(
+				// pass by value since next_level will be expired soon
+				// don't know if there is a move but eh
+				// DO NOT CHANGE UNLESS YOU KNOW WHAT'S HAPPENING
+				std::make_unique<WaitingScreen>([next_level] () {
+					ScreenManager::current()->push_screen(
+						std::make_unique<GameSession>(next_level),
+						std::make_unique<ScreenFade>(Vector(static_cast<float>(SCREEN_WIDTH), static_cast<float>(SCREEN_HEIGHT)) / 2.0f, 0.5f)
+					);
+				}),
+				std::make_unique<ScreenFade>(Vector(static_cast<float>(SCREEN_WIDTH), static_cast<float>(SCREEN_HEIGHT)) / 2.0f, 0.5f)
+			);
+		}
 	}
 }
 

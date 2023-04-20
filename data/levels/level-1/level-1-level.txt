@@ -3,4 +3,5 @@ level-start
 		normal 1 1
 	room-numbers-end
 	room-data-set-filename level-1-room-data-set.txt
+	next-level credits
 level-end
