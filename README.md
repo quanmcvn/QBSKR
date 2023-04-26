@@ -14,7 +14,11 @@ Download (or clone) the code and open the executable
 If it doesn't work:
 
 - Install [`MinGW`](https://nuwen.net/mingw.html)
-- Install [`SDL2`][SDL_release_link], [`SDL2-image`][SDL_image_release_link], [`SDL2-mixer`][SDL_mixer_release_link], [`SDL2-ttf`][SDL_ttf_release_link], set the variable `SDL2_*_PATH` in `Makefile` acordingly.
+- Install [`SDL2`](https://github.com/libsdl-org/SDL/releases),
+[`SDL2-image`](https://github.com/libsdl-org/SDL_image/releases),
+[`SDL2-mixer`](https://github.com/libsdl-org/SDL_mixer/releases),
+[`SDL2-ttf`](https://github.com/libsdl-org/SDL_ttf/releases),
+set the variable `SDL2_*_PATH` in `Makefile` acordingly.
 
 then
 ```
@@ -39,12 +43,7 @@ then
 $ make
 ```
 
-**NOTE**: Other OS not tested.
-
-[SDL_release_link]: (https://github.com/libsdl-org/SDL/releases)
-[SDL_image_release_link]: (https://github.com/libsdl-org/SDL_image/releases)
-[SDL_mixer_release_link]: (https://github.com/libsdl-org/SDL_mixer/releases)
-[SDL_ttf_release_link]: (https://github.com/libsdl-org/SDL_ttf/releases)
+**NOTE**: Other OS not considered yet.
 
 ## How to Play
 WASD or arrow keys to move, left mouse button to attack and interact with menu, enter keys to also interact with menu
