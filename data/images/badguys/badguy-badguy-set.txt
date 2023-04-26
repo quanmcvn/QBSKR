@@ -21,7 +21,7 @@ badguy-set-start
 		id 2
 		badguy-type balbusour
 		badguy-specific-start
-			health 600
+			health 200
 		badguy-specific-end
 	badguy-end
 

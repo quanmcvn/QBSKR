@@ -23,10 +23,14 @@ void Resources::load()
 	mouse_cursor = std::make_unique<MouseCursor>(SpriteManager::current()->create("images/menu/mouse-cursor-sprite.txt"));
 
 	const std::string font = "fonts/minecraft_font.ttf";
-	fixed_font = std::make_shared<TTFFont>(font, 8.0f, 1.25f);
-	normal_font = fixed_font;
-	small_font = std::make_shared<TTFFont>(font, 7.0f, 1.25f);
-	big_font = std::make_shared<TTFFont>(font, 12.0f, 1.25f);
+	fixed_font.reset();
+	normal_font.reset();
+	small_font.reset();
+	big_font.reset();
+	fixed_font = std::make_shared<TTFFont>(font, 8, 1.25f);
+	normal_font = std::make_shared<TTFFont>(font, 8, 1.25f);
+	small_font = std::make_shared<TTFFont>(font, 7, 1.25f);
+	big_font = std::make_shared<TTFFont>(font, 12, 1.25f);
 }
 
 void Resources::unload()

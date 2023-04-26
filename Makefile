@@ -113,37 +113,62 @@ CPP_FILES = main.cpp                                                  \
 #CC specifies which compiler we're using
 CC = g++
 
-### Hardcoding paths
-### if want compile then can't 
+ifdef OS
+    # only Windows define %OS% aparrently (https://stackoverflow.com/a/4511164)
+    ### Hardcoding paths
+    ### if want compile then can't 
+    SDL2_PATH = D:/Libraries/SDL2/x86_64-w64-mingw32
+    SDL2_IMAGE_PATH = D:/Libraries/SDL2_image/x86_64-w64-mingw32
+    SDL2_MIXER_PATH = D:/Libraries/SDL2_mixer/x86_64-w64-mingw32
+    SDL2_TTF_PATH = D:/Libraries/SDL2_ttf/x86_64-w64-mingw32
 
-SDL2_PATH = D:/Libraries/SDL2/x86_64-w64-mingw32
-SDL2_IMAGE_PATH = D:/Libraries/SDL2_image/x86_64-w64-mingw32
-SDL2_MIXER_PATH = D:/Libraries/SDL2_mixer/x86_64-w64-mingw32
-SDL2_TTF_PATH = D:/Libraries/SDL2_ttf/x86_64-w64-mingw32
+    # For myself
+    INCLUDE_PATHS = -I$(SDL2_PATH)/include/SDL2          \
+                    -I$(SDL2_IMAGE_PATH)/include/SDL2    \
+                    -I$(SDL2_MIXER_PATH)/include/SDL2    \
+                    -I$(SDL2_TTF_PATH)/include/SDL2      \
+                    -I./src                              \
+    
+    # For myself
+    LIBRARY_PATHS = -L$(SDL2_PATH)/lib                   \
+                    -L$(SDL2_IMAGE_PATH)/lib             \
+                    -L$(SDL2_MIXER_PATH)/lib             \
+                    -L$(SDL2_TTF_PATH)/lib               \
 
-#INCLUDE_PATHS specifies the additional include paths we'll need
-INCLUDE_PATHS = -I$(SDL2_PATH)/include/SDL2          \
-                -I$(SDL2_IMAGE_PATH)/include/SDL2    \
-                -I$(SDL2_MIXER_PATH)/include/SDL2    \
-                -I$(SDL2_TTF_PATH)/include/SDL2      \
-                -I./src                              \
+    # For Windows
+    LINKER_FLAGS = -lmingw32              \
+                   -lSDL2main             \
+                   -lSDL2                 \
+                   -lSDL2_image           \
+                   -lSDL2_mixer           \
+                   -lSDL2_ttf             \
 
-#LIBRARY_PATHS specifies the additional library paths we'll need
-LIBRARY_PATHS = -L$(SDL2_PATH)/lib                   \
-                -L$(SDL2_IMAGE_PATH)/lib             \
-                -L$(SDL2_MIXER_PATH)/lib             \
-                -L$(SDL2_TTF_PATH)/lib               \
+else
+    # from here assume it's Linux
+    # otherwise not considered
+
+    #Include paths for Linux (Ubuntu 22.04)
+    # "-I/usr/include/SDL2/" = fix to so that I don't have to changed every #include <SDL.h>
+    INCLUDE_PATHS = -I/usr/include/SDL2/  \
+                    -I./src/              \
+
+    #Library paths for Linux (Ubuntu 22.04)
+    # = none
+    LIBRARY_PATHS = 
+
+    #Linker flags for Linux (Ubuntu 22.04)
+    LINKER_FLAGS = -lSDL2main             \
+                   -lSDL2                 \
+                   -lSDL2_image           \
+                   -lSDL2_mixer           \
+                   -lSDL2_ttf             \
+
+endif
+
+
 
 #COMPILER_FLAGS specifies the additional compilation options we're using
 COMPILER_FLAGS = -std=c++17 -Wall -Wextra
-
-#LINKER_FLAGS specifies the libraries we're linking against
-LINKER_FLAGS = -lmingw32           \
-               -lSDL2main          \
-               -lSDL2              \
-               -lSDL2_image        \
-               -lSDL2_mixer        \
-               -lSDL2_ttf          \
 
 GFLAGS = -g
 
@@ -153,7 +178,7 @@ OBJDIR := bin/obj
 OBJS := $(addprefix $(OBJDIR)/, $(OBJ_FILES))
 
 #OBJ_NAME specifies the name of our exectuable
-OBJ_NAME = QBSKR
+OBJ_NAME = QBSKR.exe
 ### Move the executable to ./data to (partial) fix the "../data/"
 OBJ_NAME := $(addprefix ./data/, $(OBJ_NAME))
 

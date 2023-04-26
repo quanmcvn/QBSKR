@@ -14,6 +14,11 @@ KeyboardConfig::KeyboardConfig() :
 	m_keymap[SDLK_ESCAPE]    = {0, Control::ESCAPE};
 	m_keymap[SDLK_RETURN]    = {0, Control::MENU_SELECT};
 	m_keymap[SDLK_KP_ENTER]  = {0, Control::MENU_SELECT};
+
+	m_keymap[SDLK_LEFT]         = {0, Control::LEFT};
+	m_keymap[SDLK_RIGHT]        = {0, Control::RIGHT};
+	m_keymap[SDLK_UP]           = {0, Control::UP};
+	m_keymap[SDLK_DOWN]         = {0, Control::DOWN};
 }
 
 SDL_Keycode KeyboardConfig::reversemap_key(int player, Control control) const

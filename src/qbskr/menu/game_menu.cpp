@@ -6,7 +6,7 @@
 
 GameMenu::GameMenu()
 {
-	add_label("AAAAAAA");
+	add_label("Paused");
 	add_horizontal_line();
 	add_entry(MNID_CONTINUE, "Continue");
 	add_horizontal_line();

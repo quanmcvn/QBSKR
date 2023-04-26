@@ -17,6 +17,16 @@
 #include "util/log.hpp"
 #include "video/video_system.hpp"
 
+ConfigSubSystem::ConfigSubSystem()
+{
+	g_config = std::make_unique<Config>(std::string("./gameconfig.txt"));
+}
+
+ConfigSubSystem::~ConfigSubSystem()
+{
+	g_config.reset();
+}
+
 SDLSubSystem::SDLSubSystem() 
 {
 	Uint32 flags = SDL_INIT_VIDEO | SDL_INIT_AUDIO;
@@ -55,42 +65,45 @@ SDLSubSystem::~SDLSubSystem()
 }
 
 Main::Main() :
+	m_config_subsystem(),
 	m_sdl_subsystem(),
 	m_input_manager(),
 	m_video_system(),
 	m_sprite_manager(),
 	m_ttf_surface_manager(),
 	m_sound_manager(),
+	m_resources(),
 	m_weapon_set(),
 	m_projectile_set(),
 	m_badguy_set(),
 	m_tile_set(),
 	m_level_data_set(),
-	m_resources(),
 	m_screen_manager()
 {}
 
 Main::~Main()
 {
 	m_screen_manager.reset();
-	m_resources.reset();
 	m_level_data_set.reset();
 	m_tile_set.reset();
 	m_badguy_set.reset();
 	m_projectile_set.reset();
 	m_weapon_set.reset();
+	m_resources.reset();
 	m_sound_manager.reset();
 	m_ttf_surface_manager.reset();
 	m_sprite_manager.reset();
 	m_video_system.reset();
 	m_input_manager.reset();
 	m_sdl_subsystem.reset();
+	m_config_subsystem.reset();
 }
 
 int Main::run(int /* argc */, char** /* argv */)
 {
 	int result = 0;
 	try {
+		m_config_subsystem = std::make_unique<ConfigSubSystem>();
 		m_sdl_subsystem = std::make_unique<SDLSubSystem>();
 		m_input_manager = std::make_unique<InputManager>(g_config->keyboard_config, g_config->mouse_button_config);
 		m_video_system = VideoSystem::create(VideoSystem::VIDEO_SDL);

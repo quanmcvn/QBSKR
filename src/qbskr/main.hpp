@@ -16,6 +16,19 @@
 #include "weapon/weapon_set.hpp"
 #include "weapon/shooting_weapon/projectile/projectile_set.hpp"
 
+/**
+ * Class to make g_config not auto init at global
+ * Have no other use
+*/
+class ConfigSubSystem final {
+public:
+	ConfigSubSystem();
+	~ConfigSubSystem();
+};
+
+/**
+ * Class to automate init and quit SDLs
+*/
 class SDLSubSystem final {
 public:
 	SDLSubSystem();
@@ -32,18 +45,19 @@ private:
 	Main& operator=(const Main&) = delete;
 
 private:
+	std::unique_ptr<ConfigSubSystem> m_config_subsystem;
 	std::unique_ptr<SDLSubSystem> m_sdl_subsystem;
 	std::unique_ptr<InputManager> m_input_manager;
 	std::unique_ptr<VideoSystem> m_video_system;
 	std::unique_ptr<SpriteManager> m_sprite_manager;
 	std::unique_ptr<TTFSurfaceManager> m_ttf_surface_manager;
 	std::unique_ptr<SoundManager> m_sound_manager;
+	std::unique_ptr<Resources> m_resources;
 	std::unique_ptr<WeaponSet> m_weapon_set;
 	std::unique_ptr<ProjectileSet> m_projectile_set;
 	std::unique_ptr<BadGuySet> m_badguy_set;
 	std::unique_ptr<TileSet> m_tile_set;
 	std::unique_ptr<LevelDataSet> m_level_data_set;
-	std::unique_ptr<Resources> m_resources;
 	std::unique_ptr<ScreenManager> m_screen_manager;
 
 public:

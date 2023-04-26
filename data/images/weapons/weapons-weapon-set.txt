@@ -7,7 +7,7 @@ weapon-set-start
 		weapon-specific-start
 			projectile-id 1
 			-- "theoretical" projectiles/sec
-			projectiles-per-sec 1000
+			projectiles-per-sec 4
 			projectile-spawn-pos-start
 				x 10
 				y 0
