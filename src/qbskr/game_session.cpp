@@ -3,6 +3,7 @@
 #include "control/controller.hpp"
 #include "gui/menu_manager.hpp"
 #include "gui/menu_set.hpp"
+#include "object/player.hpp"
 #include "qbskr/credit_screen.hpp"
 #include "qbskr/globals.hpp"
 #include "qbskr/level_data_set.hpp"
@@ -61,8 +62,11 @@ void GameSession::toggle_pause()
 
 void GameSession::abort_level()
 {
-	MenuManager::current()->clear_menu_stack();
-	ScreenManager::current()->pop_screen(std::make_unique<ScreenFade>(Vector(static_cast<float>(SCREEN_WIDTH), static_cast<float>(SCREEN_HEIGHT)) / 2.0f, 0.5f));
+	if (!m_is_finish) {
+		m_is_finish = true;
+		MenuManager::current()->clear_menu_stack();
+		ScreenManager::current()->pop_screen(std::make_unique<ScreenFade>(Vector(static_cast<float>(SCREEN_WIDTH), static_cast<float>(SCREEN_HEIGHT)) / 2.0f, 0.5f));
+	} 
 }
 
 void GameSession::finish_level()
@@ -99,6 +103,13 @@ void GameSession::on_escape_press()
 {
 	if (ScreenManager::current()->has_pending_fade()) {
 		// dont let player open menu when switching screen
+		return;
+	}
+
+	if (Room::get().get_players()[0]->is_dying()) {
+		// don't let player open menu when dying
+		// instead abort level right away
+		abort_level();
 		return;
 	}
 

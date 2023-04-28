@@ -36,6 +36,7 @@ private:
 	// if hit this frame
 	std::optional<int> m_hit_damage;
 	Timer m_die_animation_timer;
+	bool m_is_switching_weapon;
 
 public:
 	virtual void update(float dt_sec) override;
@@ -48,6 +49,8 @@ public:
 public:
 	int get_id() const;
 	void set_id(int id);
+
+	bool is_dying() const;
 
 private:
 	void handle_input();

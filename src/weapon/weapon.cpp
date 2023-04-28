@@ -5,9 +5,10 @@
 #include "weapon/hurt.hpp"
 
 Weapon::Weapon(const std::string& sprite_name) :
-	MovingSprite(Vector(0.0f, 0.0f), sprite_name, LAYER_WEAPONS, COLLISION_GROUP_DISABLED),
+	MovingSprite(Vector(0.0f, 0.0f), sprite_name, LAYER_WEAPONS, COLLISION_GROUP_MOVING),
 	m_parent(),
-	m_hurt_attributes()
+	m_hurt_attributes(),
+	m_pos_offset()
 {}
 
 void Weapon::update(float /* dt_sec */)

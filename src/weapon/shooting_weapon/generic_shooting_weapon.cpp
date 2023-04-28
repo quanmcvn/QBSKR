@@ -66,10 +66,12 @@ uint32_t GenericShootingWeapon::get_projectile_id() const { return m_projectile_
 
 void GenericShootingWeapon::play_shoot_sound() const { if (!m_sound_file.empty()) SoundManager::current()->play_sound(m_sound_file); }
 
-std::unique_ptr<Weapon> GenericShootingWeapon::clone(MovingObject* parent) const
+std::unique_ptr<Weapon> GenericShootingWeapon::clone(MovingObject* parent, const Vector& pos) const
 {
 	auto weapon = std::make_unique<GenericShootingWeapon>(m_sprite_name);
 	weapon->change_parent(parent);
+	weapon->set_pos(pos);
+	weapon->m_pos_offset = m_pos_offset;
 	weapon->m_projectile_id = m_projectile_id;
 	weapon->m_timer.start_true(m_timer.get_period(), true);
 	weapon->m_projectile_spawn_pos = m_projectile_spawn_pos;

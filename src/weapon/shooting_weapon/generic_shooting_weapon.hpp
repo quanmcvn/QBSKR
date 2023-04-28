@@ -34,7 +34,7 @@ public:
 	virtual Vector get_projectile_spawn_pos() const override;
 	virtual uint32_t get_projectile_id() const override;
 	void play_shoot_sound() const override;
-	virtual std::unique_ptr<Weapon> clone(MovingObject* parent) const override;
+	virtual std::unique_ptr<Weapon> clone(MovingObject* parent, const Vector& pos) const override;
 };
 
 #endif

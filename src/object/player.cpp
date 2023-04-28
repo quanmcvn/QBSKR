@@ -35,12 +35,15 @@ Player::Player(int player_id, uint32_t weapon_id) :
 	m_health(m_max_health),
 	m_die(),
 	m_hit_damage(),
-	m_die_animation_timer()
+	m_die_animation_timer(),
+	m_is_switching_weapon()
 {
 	set_pos(Vector(0.0f, 0.0f));
+	m_sprite->set_action("idle-right");
 	m_collision_object.set_size(m_sprite->get_current_hitbox_width(), m_sprite->get_current_hitbox_height());
 	set_pos(Vector(0.0f, 0.0f) - get_bounding_box().get_middle());
-	if (weapon_id > 0) m_weapon = WeaponSet::current()->get_weapon(weapon_id).clone(this);
+	m_weapon = WeaponSet::current()->get_weapon(weapon_id).clone(this, get_pos());
+	m_weapon->set_pos_offset(get_bounding_box().get_middle() - m_weapon->get_bounding_box().get_middle());
 }
 
 Player::~Player()
@@ -57,7 +60,8 @@ Player::Player(const Player& other) :
 	m_health(other.m_health),
 	m_die(other.m_die),
 	m_hit_damage(),
-	m_die_animation_timer()
+	m_die_animation_timer(),
+	m_is_switching_weapon()
 {
 	set_pos(other.get_pos());
 	m_collision_object.set_size(m_sprite->get_current_hitbox_width(), m_sprite->get_current_hitbox_height());
@@ -71,6 +75,12 @@ void Player::update(float dt_sec)
 	}
 
 	handle_input();
+
+	if (true) {
+		if (m_controller->pressed(Control::MENU_SELECT)) {
+			Room::get().add_object(WeaponSet::current()->get_weapon(3).clone(nullptr));
+		}
+	}
 
 	if (m_hit_damage.has_value()) {
 		m_health -= m_hit_damage.value();
@@ -129,7 +139,7 @@ void Player::draw(DrawingContext& drawing_context)
 	// remove translation caused by camera
 	// HUD for player is fixed on screen
 	drawing_context.set_translation(Vector(0.0f, 0.0f));
-	// note that scale is also applied to HUD
+	// note that scale/magnification is also applied to HUD
 
 	auto& canvas = drawing_context.get_canvas();
 
@@ -138,6 +148,7 @@ void Player::draw(DrawingContext& drawing_context)
 	// I found 6 : 1 is a quite good ratio
 	const float HEALTH_BAR_HEIGHT = HEALTH_BAR_WIDTH / 6;
 	
+	// draw the 'board' for HUD
 	canvas.draw_filled_rect(Rectf(
 			Vector(5, 5),
 			Sizef(70, 20)
@@ -190,8 +201,26 @@ HitResponse Player::collision(GameObject& other, const CollisionHit& /* hit */)
 	}
 
 	if (auto projectile = dynamic_cast<Projectile*>(&other)) {
-		if (projectile->get_hurt_attributes() & HURT_PLAYER) {
-			m_hit_damage = projectile->get_damage();
+		if (projectile->is_valid() && projectile->get_hurt_attributes() & HURT_PLAYER) {
+			if (!m_hit_damage.has_value()) {
+				m_hit_damage = projectile->get_damage();
+			} else {
+				m_hit_damage.value() += projectile->get_damage();
+			}
+			projectile->remove_me();
+		}
+	}
+
+	if (auto weapon = dynamic_cast<Weapon*>(&other)) {
+		if (weapon->is_valid() && m_controller->pressed(Control::ATTACK)) {
+			if (!m_is_switching_weapon) {
+				Room::get().add_object(m_weapon->clone(nullptr, get_pos()));
+				m_weapon.reset();
+				m_weapon = weapon->clone(this, get_pos());
+				m_weapon->set_pos_offset(get_bounding_box().get_middle() - m_weapon->get_bounding_box().get_middle());
+				weapon->remove_me();
+				m_is_switching_weapon = true;
+			}
 		}
 	}
 
@@ -212,9 +241,15 @@ int Player::get_layer() const { return LAYER_OBJECTS + 1; }
 int Player::get_id() const { return m_id; }
 void Player::set_id(int id) { m_id = id; m_controller = &(InputManager::current()->get_controller(m_id)); }
 
+bool Player::is_dying() const { return m_die; }
+
 void Player::handle_input()
 {
 	handle_movement_input();
+
+	if (m_controller->released(Control::ATTACK)) {
+		m_is_switching_weapon = false;
+	}
 
 	if (m_weapon) handle_weapon();
 }
@@ -259,9 +294,11 @@ void Player::handle_weapon()
 		m_direction = Direction::RIGHT;
 	}
 
-	if (m_controller->hold(Control::ATTACK)) {
-		SoundManager::current()->play_sound("sounds/player/shoot.wav");
-		m_weapon->attack();
+	if (!m_is_switching_weapon) {
+		if (m_controller->hold(Control::ATTACK)) {
+			SoundManager::current()->play_sound("sounds/player/shoot.wav");
+			m_weapon->attack();
+		}
 	}
 }
 

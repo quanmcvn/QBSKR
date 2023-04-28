@@ -16,6 +16,7 @@ protected:
 	// have to be MovingObject* instead of MovingObject&
 	MovingObject* m_parent;
 	// see src/weapon/hurt.hpp
+	// every weapon has a bitmask 'hurt_attributes' to determine what it will hurt
 	uint32_t m_hurt_attributes;
 	// position offset with respect to m_parent
 	// this->pos = m_parent->get_pos() + m_pos_offset
@@ -29,8 +30,11 @@ public:
 	virtual void update(float dt_sec) override;
 	virtual void draw(DrawingContext& drawing_context) override;
 	virtual void attack(int times = 1) = 0;
+	// the reason for virtual is design choice
+	// maybe a joke weapon that it doesn't hurt anything (water gun?)
+	// or a weapon that hurt both player and badguy
 	virtual void recalculate_hurt_attributes();
-	virtual std::unique_ptr<Weapon> clone(MovingObject* parent) const = 0;
+	virtual std::unique_ptr<Weapon> clone(MovingObject* parent, const Vector& pos = Vector(0.0f, 0.0f)) const = 0;
 
 public:
 	void change_parent(MovingObject* parent);

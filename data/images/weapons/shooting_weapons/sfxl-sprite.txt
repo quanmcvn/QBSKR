@@ -1,0 +1,12 @@
+sprite-start
+
+	action-start
+		name normal
+		fps 1
+		hitbox 0 0 24 12
+		images-start
+			sfxl.png
+		images-end
+	action-end
+
+sprite-end

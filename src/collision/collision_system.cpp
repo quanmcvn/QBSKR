@@ -180,7 +180,7 @@ namespace {
 
 void CollisionSystem::update()
 {
-	// calculate destitaion of objects
+	// calculate destination of objects
 	for (const auto& object : m_objects) {
 		const Vector& mov = object->get_movement();
 
