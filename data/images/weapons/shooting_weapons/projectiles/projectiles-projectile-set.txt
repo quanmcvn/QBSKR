@@ -39,6 +39,7 @@ projectile-set-start
 		projectile-specific-start
 			speed 1000
 			damage 4
+			crit-chance 5
 			sprite-filename sfxl-bullet-sprite.txt
 		projectile-specific-end
 	projectile-end

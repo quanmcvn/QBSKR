@@ -26,6 +26,9 @@ std::unique_ptr<GenericProjectile> GenericProjectile::from_reader(const CrappyRe
 	crd->get("damage", damage);
 	damage = std::max(damage, 1);
 
+	float crit_chance = 0.0f;
+	crd->get("crit-chance", crit_chance);
+
 	std::string sprite_filename;
 	if (!crd->get("sprite-filename", sprite_filename)) {
 		throw std::runtime_error("Missing sprite-filename in projectile-specific");
@@ -35,6 +38,7 @@ std::unique_ptr<GenericProjectile> GenericProjectile::from_reader(const CrappyRe
 	generic_projectile->m_physic.set_velocity(Vector(speed, 0.0f));
 	generic_projectile->m_bounce_wall_count = bounce_wall_count;
 	generic_projectile->m_damage = damage;
+	generic_projectile->m_crit_chance = crit_chance;
 
 	return generic_projectile;
 }
@@ -98,6 +102,7 @@ std::unique_ptr<Projectile> GenericProjectile::clone(const Vector& pos, uint32_t
 	Vector velocity = Vector(math::length(m_physic.get_velocity()), 0.0f);
 	projectile->m_physic.set_velocity(math::rotate(velocity, angle));
 	projectile->m_damage = m_damage;
+	projectile->m_crit_chance = m_crit_chance;
 
 	return projectile;
 }

@@ -1,5 +1,6 @@
 #include "badguy/badguy.hpp"
 
+#include "math/random.hpp"
 #include "qbskr/room.hpp"
 #include "weapon/shooting_weapon/projectile/projectile.hpp"
 #include "weapon/hurt.hpp"
@@ -41,7 +42,11 @@ HitResponse BadGuy::collision(GameObject& other, const CollisionHit& /* hit */)
 {
 	if (auto projectile = dynamic_cast<Projectile*>(&other)) {
 		if (projectile->get_hurt_attributes() & HURT_BADGUY) {
-			m_hit_damage = projectile->get_damage();
+			if (g_game_random.test_lucky_percent(projectile->get_crit_chance())) {
+				m_hit_damage = projectile->get_damage() * 2;
+			} else {
+				m_hit_damage = projectile->get_damage();
+			}
 		}
 	}
 

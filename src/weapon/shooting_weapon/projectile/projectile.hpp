@@ -18,6 +18,7 @@ protected:
 	uint32_t m_hurt_attributes;
 	Physic m_physic;
 	int m_damage;
+	float m_crit_chance;
 
 public:
 	Projectile(const std::string& sprite_name);
@@ -39,6 +40,7 @@ public:
 	uint32_t get_hurt_attributes() const;
 	void set_hurt_attributes(uint32_t hurt_attributes);
 	int get_damage() const;
+	float get_crit_chance() const;
 };
 
 #endif
