@@ -32,4 +32,14 @@ projectile-set-start
 			sprite-filename badguy-bullet-2-sprite.txt
 		projectile-specific-end
 	projectile-end
+
+	projectile-start
+		id 4
+		projectile-type generic-projectile
+		projectile-specific-start
+			speed 1000
+			damage 4
+			sprite-filename sfxl-bullet-sprite.txt
+		projectile-specific-end
+	projectile-end
 projectile-set-end

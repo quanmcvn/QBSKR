@@ -1,0 +1,8 @@
+sprite-start
+	action-start
+		hitbox 0 0 13 5
+		images-start
+			sfxl-bullet.png
+		images-end
+	action-end
+sprite-end

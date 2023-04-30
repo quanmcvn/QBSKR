@@ -3,6 +3,7 @@
 #include <stdexcept>
 
 #include "audio/sound_manager.hpp"
+#include "math/random.hpp"
 #include "util/crappy_reader_data.hpp"
 #include "weapon/shooting_weapon/projectile/projectile_set.hpp"
 #include "weapon/shooting_weapon/projectile/projectile.hpp"
@@ -12,7 +13,8 @@ GenericShootingWeapon::GenericShootingWeapon(const std::string& sprite_name) :
 	m_projectile_id(0),
 	m_timer(),
 	m_projectile_spawn_pos(Vector(0, 0)),
-	m_sound_file()
+	m_sound_file(),
+	m_inaccuracy()
 {}
 
 std::unique_ptr<GenericShootingWeapon> GenericShootingWeapon::from_reader(const CrappyReaderData* crd)
@@ -42,11 +44,15 @@ std::unique_ptr<GenericShootingWeapon> GenericShootingWeapon::from_reader(const 
 	std::string sound_file;
 	crd->get("shoot-sound-file", sound_file);
 
+	float inaccuracy = 10.0f;
+	crd->get("inaccuracy", inaccuracy);
+
 	auto weapon = std::make_unique<GenericShootingWeapon>(crd->m_parent_path + sprite_filename);
 	weapon->m_projectile_id = projectile_id;
 	weapon->m_timer.start_true(1.0f / projectiles_per_sec, true);
 	weapon->m_projectile_spawn_pos = projectile_spawn_pos;
 	weapon->m_sound_file = sound_file;
+	weapon->m_inaccuracy = inaccuracy;
 
 	return weapon;
 }
@@ -66,6 +72,11 @@ uint32_t GenericShootingWeapon::get_projectile_id() const { return m_projectile_
 
 void GenericShootingWeapon::play_shoot_sound() const { if (!m_sound_file.empty()) SoundManager::current()->play_sound(m_sound_file); }
 
+float GenericShootingWeapon::get_shoot_angle() const
+{
+	return g_game_random.randf(get_angle() - m_inaccuracy / 2, get_angle() + m_inaccuracy / 2);
+}
+
 std::unique_ptr<Weapon> GenericShootingWeapon::clone(MovingObject* parent, const Vector& pos) const
 {
 	auto weapon = std::make_unique<GenericShootingWeapon>(m_sprite_name);
@@ -76,6 +87,7 @@ std::unique_ptr<Weapon> GenericShootingWeapon::clone(MovingObject* parent, const
 	weapon->m_timer.start_true(m_timer.get_period(), true);
 	weapon->m_projectile_spawn_pos = m_projectile_spawn_pos;
 	weapon->m_sound_file = m_sound_file;
+	weapon->m_inaccuracy = m_inaccuracy;
 
 	return weapon;
 }

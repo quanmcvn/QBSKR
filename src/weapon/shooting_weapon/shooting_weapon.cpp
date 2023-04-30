@@ -11,7 +11,7 @@ ShootingWeapon::ShootingWeapon(const std::string& sprite_name) :
 void ShootingWeapon::attack(int times)
 {
 	if (check_timer()) {
-		for (int i = 0; i < times; ++ i) shoot_projectile(get_angle());
+		for (int i = 0; i < times; ++ i) shoot_projectile(get_shoot_angle());
 		play_shoot_sound();
 	}
 }
@@ -27,4 +27,9 @@ void ShootingWeapon::shoot_projectile(float angle) const
 	if (Room::get().is_free_of_tiles(projectile_spawn_bounding_box) && Room::get().inside(projectile_spawn_bounding_box)) {
 		Room::get().add_object(projectile.clone(get_projectile_spawn_pos(), get_hurt_attributes(), angle));
 	}
+}
+
+float ShootingWeapon::get_shoot_angle() const
+{
+	return get_angle();
 }

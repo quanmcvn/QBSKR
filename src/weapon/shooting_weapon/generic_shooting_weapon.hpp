@@ -20,6 +20,7 @@ private:
 	Timer m_timer;
 	Vector m_projectile_spawn_pos;
 	std::string m_sound_file;
+	float m_inaccuracy;
 
 public:
 	GenericShootingWeapon(const std::string& sprite_name);
@@ -33,7 +34,8 @@ public:
 	virtual bool check_timer() override;
 	virtual Vector get_projectile_spawn_pos() const override;
 	virtual uint32_t get_projectile_id() const override;
-	void play_shoot_sound() const override;
+	virtual void play_shoot_sound() const override;
+	virtual float get_shoot_angle() const override;
 	virtual std::unique_ptr<Weapon> clone(MovingObject* parent, const Vector& pos) const override;
 };
 

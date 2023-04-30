@@ -23,6 +23,7 @@ public:
 	virtual Vector get_projectile_spawn_pos() const = 0;
 	virtual uint32_t get_projectile_id() const = 0;
 	virtual void play_shoot_sound() const = 0;
+	virtual float get_shoot_angle() const;
 };
 
 #endif
