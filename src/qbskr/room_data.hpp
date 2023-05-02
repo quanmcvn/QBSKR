@@ -2,17 +2,21 @@
 #define HEADER_QBSKR_QBSKR_ROOM_DATA_HPP
 
 #include <memory>
+#include <vector>
 
-#include "object/tile_map.hpp"
+#include "math/vector.hpp"
 
 class CrappyReaderData;
+class TileMap;
+class Room;
 
 enum class RoomType {
 	START,
 	BRIDGE,
 	GOAL,
 
-	NORMAL
+	NORMAL,
+	LOOT
 };
 
 /**
@@ -35,12 +39,14 @@ private:
 	RoomData& operator=(const RoomData&) = delete;
 
 private:
+	Room* m_parent;
 	RoomType m_type;
 	std::unique_ptr<TileMap> m_tilemap;
 	std::vector<uint32_t> m_badguys;
 	int m_turns;
 	int m_min_per_turn;
 	int m_max_per_turn;
+	bool m_loot_spawned;
 
 public:
 	// this constructor steal the tilemap given, sorry
@@ -49,6 +55,17 @@ public:
 
 public:
 	static std::unique_ptr<RoomData> from_reader(const CrappyReaderData* crd);
+
+private:
+	// do update to the parent room
+	void update();
+
+public:
+	void spawn_badguy();
+	// is all badguy dead?
+	bool is_turn_cleared() const;
+	// is all badguy dead and all turn cleared?
+	bool is_room_cleared() const;
 
 public:
 	std::unique_ptr<RoomData> clone(const Vector& pos) const;

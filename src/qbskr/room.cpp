@@ -2,11 +2,7 @@
 
 #include <limits>
 
-#include "badguy/badguy_set.hpp"
-#include "badguy/badguy.hpp"
-#include "badguy/balbusour.hpp"
 #include "collision/collision_system.hpp"
-#include "math/random.hpp"
 #include "object/camera.hpp"
 #include "object/moving_object.hpp"
 #include "object/player.hpp"
@@ -33,6 +29,7 @@ Room::Room(std::unique_ptr<RoomData> room_data) :
 	room_up(),
 	room_down()
 {
+	m_room_data->m_parent = this;
 	// stealing tilemap from room_data, sorry
 	add_object(std::move(m_room_data->m_tilemap));
 	flush_game_objects();
@@ -52,14 +49,8 @@ void Room::update(float dt_sec)
 {
 	GameObjectManager::update(dt_sec);
 	m_collision_system->update();
-	if (!get_players().empty()) {
-		if (!is_room_cleared()) {
-			close_room();
-			spawn_badguy();
-		}
-	}
+	m_room_data->update();
 	flush_game_objects();
-	if (is_room_cleared()) open_room();
 }
 
 void Room::draw(DrawingContext& drawing_context)
@@ -195,65 +186,9 @@ std::vector<Player*> Room::get_players() const
 	return ret;
 }
 
-void Room::spawn_badguy()
-{
-	if (m_room_data->m_turns <= 0) return;
-	if (m_room_data->m_badguys.empty()) return;
-	if (!is_turn_cleared()) return;
-
-	-- m_room_data->m_turns;
-	int badguy_spawns = g_game_random.rand_inclusive(m_room_data->m_min_per_turn, m_room_data->m_max_per_turn);
-	
-	// spawn badguy randomly
-	// try at most 100 times
-	// if fail then give up
-	// potentially bad
-	const int MAX_TRIES = 100;
-	const Rectf bounding_box = get_bounding_box();
-	for (int i = 0; i < badguy_spawns; ++ i) {
-		int spawn_id = m_room_data->m_badguys[g_game_random.rand(0, m_room_data->m_badguys.size())];
-		Vector spawn_pos;
-		Rectf badguy_bounding_box = BadGuySet::current()->get_badguy(spawn_id).get_bounding_box();
-		
-		if (dynamic_cast<const Balbusour*>(&BadGuySet::current()->get_badguy(spawn_id))) {
-			// special spawn rule for Balbusour: spawn in the middle of the room
-			spawn_pos = bounding_box.get_middle() - (badguy_bounding_box.get_middle() - badguy_bounding_box.p1());
-		} else {
-			for (int tries = 0; tries < MAX_TRIES; ++ tries) {
-				spawn_pos = Vector(g_game_random.randf(bounding_box.get_left(), bounding_box.get_right()), g_game_random.randf(bounding_box.get_top(), bounding_box.get_bottom()));
-				badguy_bounding_box.set_pos(spawn_pos);
-				if (inside(badguy_bounding_box) && is_free_of_tiles(badguy_bounding_box)) break;
-			}
-
-			if (!(inside(badguy_bounding_box) && is_free_of_tiles(badguy_bounding_box))) {
-				log_warning << "Can't spawn badguy id '" << spawn_id << "'" << std::endl;
-				continue;
-			}
-		}
-
-		add_object(BadGuySet::current()->get_badguy(spawn_id).clone(spawn_pos));
-	}
-}
-
-bool Room::is_turn_cleared() const
-{
-	// if all of gameobjects are either (not badguy or (is badguy and dead))
-	// = if all of badguy (if cast-down-able) is dead
-	// note that can't use get_objects_by_type_index()
-	// since it use typeid, and typeid is exact match, not considering inheritance
-	return std::all_of(get_objects().begin(), get_objects().end(), 
-		[] (const std::unique_ptr<GameObject>& object) {
-			auto badguy_ptr = dynamic_cast<BadGuy*>(object.get());
-			if (!badguy_ptr) return true;
-			return badguy_ptr->is_dead();
-		}
-	);
-}
-
-bool Room::is_room_cleared() const
-{
-	return (m_room_data->m_turns <= 0) && is_turn_cleared();
-}
+void Room::spawn_badguy() { m_room_data->spawn_badguy(); }
+bool Room::is_turn_cleared() const { return m_room_data->is_turn_cleared(); }
+bool Room::is_room_cleared() const { return m_room_data->is_room_cleared(); }
 
 RoomType Room::get_room_type() const { return m_room_data->m_type; }
 

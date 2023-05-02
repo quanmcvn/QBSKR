@@ -73,6 +73,7 @@ public:
 	void spawn_badguy();
 	// is all badguy dead?
 	bool is_turn_cleared() const;
+	// is all badguy dead and all turn cleared?
 	bool is_room_cleared() const;
 	RoomType get_room_type() const;
 	// misleading name

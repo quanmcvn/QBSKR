@@ -32,4 +32,10 @@ room-data-set-start
 		tilemap-filename normal-1-tilemap.txt
 	room-data-end
 
+	room-data-start
+		id 5
+		room-type loot
+		tilemap-filename loot-0-tilemap.txt
+	room-data-end
+
 room-data-set-end

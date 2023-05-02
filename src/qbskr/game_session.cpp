@@ -15,6 +15,9 @@
 #include "video/compositor.hpp"
 #include "video/video_system.hpp"
 
+GameSession::~GameSession()
+{}
+
 GameSession::GameSession(const std::string& level_filename) :
 	m_level(LevelDataSet::current()->get_level_data(level_filename).make_level()),
 	m_game_pause(false),

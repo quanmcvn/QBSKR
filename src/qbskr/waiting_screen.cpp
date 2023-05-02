@@ -7,6 +7,9 @@
 #include "video/compositor.hpp"
 #include "video/drawing_context.hpp"
 
+WaitingScreen::~WaitingScreen()
+{}
+
 WaitingScreen::WaitingScreen(std::function<void()> callback) :
 	m_callback(std::move(callback)),
 	m_wait_timer(),

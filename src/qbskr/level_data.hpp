@@ -2,12 +2,15 @@
 #define HEADER_QBSKR_QBSKR_LEVEL_DATA_HPP
 
 #include <map>
+#include <string>
 
+#include "object/direction.hpp"
 #include "qbskr/room_data_set.hpp"
 #include "qbskr/room_data.hpp"
 
 class DrawingContext;
 class Level;
+class Rectf;
 
 /**
  *  Class to hold level's data
@@ -35,6 +38,10 @@ public:
 public:
 	// make a level based on data
 	std::unique_ptr<Level> make_level() const;
+
+private:
+	// internal use
+	std::unique_ptr<Room> make_room(Level* level, Room* prev_room, const Rectf& prev_bounding_box, const Vector& center_pos, Direction direction, int room_id) const;
 };
 
 #endif

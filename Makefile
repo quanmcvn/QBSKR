@@ -38,6 +38,7 @@ CPP_FILES = main.cpp                                                  \
             math/util.cpp                                             \
             math/vector.cpp                                           \
             object/camera.cpp                                         \
+            object/chest.cpp                                          \
             object/credit_scroller.cpp                                \
             object/floating_text.cpp                                  \
             object/game_object_manager.cpp                            \
@@ -114,9 +115,9 @@ CPP_FILES = main.cpp                                                  \
 CC = g++
 
 ifdef OS
-    # only Windows define %OS% aparrently (https://stackoverflow.com/a/4511164)
+    # only Windows define %OS% apparrently (https://stackoverflow.com/a/4511164)
     ### Hardcoding paths
-    ### if want compile then can't 
+    ### if want compile then replace this
     SDL2_PATH = D:/Libraries/SDL2/x86_64-w64-mingw32
     SDL2_IMAGE_PATH = D:/Libraries/SDL2_image/x86_64-w64-mingw32
     SDL2_MIXER_PATH = D:/Libraries/SDL2_mixer/x86_64-w64-mingw32
@@ -183,7 +184,7 @@ OBJ_NAME = QBSKR.exe
 OBJ_NAME := $(addprefix ./data/, $(OBJ_NAME))
 
 $(OBJDIR)/%.o : src/%.cpp
-	@mkdir -p $(@D)
+	-@mkdir -p $(@D)
 	$(CC) -c $(GFLAGS) $(INCLUDE_PATHS) $(COMPILER_FLAGS) $< -o $@
 
 #This is the target that compiles our executable
@@ -196,11 +197,9 @@ $(OBJ_NAME) : $(OBJS)
 $(OBJS): | $(OBJDIR)
 
 $(OBJDIR) :
-	@mkdir -p $(OBJDIR)
+	-@mkdir -p $(OBJDIR)
 
 .PHONY : clean
-### idk why it can execute shell/bash (idk what it is even more)
-### anyway...
 clean:
-	rm -rf ./bin/obj/
-	rm ./data/QBSKR.exe
+	-rm -rf ./bin/obj/
+	-rm ./data/QBSKR.exe

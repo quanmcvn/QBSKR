@@ -12,12 +12,16 @@ class RoomData;
 /**
  *  Class to hold RoomData for cloning
 */
-class RoomDataSet {
+class RoomDataSet final {
 private:
 	friend class LevelData;
 
 public:
 	~RoomDataSet();
+
+private:
+	RoomDataSet(const RoomDataSet&) = delete;
+	RoomDataSet& operator=(const RoomDataSet&) = delete;
 
 private:
 	std::vector<std::unique_ptr<RoomData>> m_room_datas;

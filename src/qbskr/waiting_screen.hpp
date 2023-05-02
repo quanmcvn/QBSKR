@@ -9,6 +9,9 @@
 #include "util/timer.hpp"
 
 class WaitingScreen final : public Screen {
+public:
+	~WaitingScreen() override;
+
 private:
 	WaitingScreen(const WaitingScreen&) = delete;
 	WaitingScreen& operator=(const WaitingScreen&) = delete;

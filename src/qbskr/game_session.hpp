@@ -13,6 +13,9 @@ class Level;
  *  Run the in-game gameplay
 */
 class GameSession final : public Screen, public Currenton<GameSession> {
+public:
+	~GameSession() override;
+
 private:
 	GameSession(const GameSession&) = delete;
 	GameSession& operator=(const GameSession&) = delete;

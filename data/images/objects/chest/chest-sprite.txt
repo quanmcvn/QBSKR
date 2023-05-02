@@ -1,0 +1,15 @@
+sprite-start
+	action-start
+		name close
+		fps 1
+		hitbox 0 0 20 20
+		images chest-close.png
+	action-end
+
+	action-start
+		name open
+		fps 1
+		hitbox 9 0 16 16
+		images chest-open.png
+	action-end
+sprite-end
