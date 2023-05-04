@@ -25,4 +25,21 @@ badguy-set-start
 		badguy-specific-end
 	badguy-end
 
+	badguy-start
+		id 3
+		badguy-type generic-badguy
+		badguy-specific-start
+			health 12
+			weapon-id 4
+			weapon-pos-offset-start
+				x -6
+				y 5
+			weapon-pos-offset-end
+			attack-per-sec .25
+			-- note that this is per-frame
+			attack-chance 0.04
+			sprite-filename goblin-mask/goblin-mask-sprite.txt
+		badguy-specific-end
+	badguy-end
+
 badguy-set-end

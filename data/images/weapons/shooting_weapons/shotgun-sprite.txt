@@ -1,0 +1,12 @@
+sprite-start
+
+	action-start
+		name normal
+		fps 1
+		hitbox 0 0 0 0
+		images-start
+			shotgun-0.png
+		images-end
+	action-end
+
+sprite-end

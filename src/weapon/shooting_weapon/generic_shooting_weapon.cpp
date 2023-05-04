@@ -2,7 +2,6 @@
 
 #include <stdexcept>
 
-#include "audio/sound_manager.hpp"
 #include "math/random.hpp"
 #include "util/crappy_reader_data.hpp"
 #include "weapon/shooting_weapon/projectile/projectile_set.hpp"
@@ -11,10 +10,7 @@
 GenericShootingWeapon::GenericShootingWeapon(const std::string& sprite_name) :
 	ShootingWeapon(sprite_name),
 	m_projectile_id(0),
-	m_timer(),
-	m_projectile_spawn_pos(Vector(0, 0)),
-	m_sound_file(),
-	m_inaccuracy()
+	m_projectile_spawn_pos(Vector(0, 0))
 {}
 
 std::unique_ptr<GenericShootingWeapon> GenericShootingWeapon::from_reader(const CrappyReaderData* crd)
@@ -27,8 +23,11 @@ std::unique_ptr<GenericShootingWeapon> GenericShootingWeapon::from_reader(const 
 	float projectile_speed = 1.0f;
 	crd->get("projectile-speed", projectile_speed);
 
-	float projectiles_per_sec = 1.0f;
-	crd->get("projectiles-per-sec", projectiles_per_sec);
+	float attack_per_sec = 1.0f;
+	crd->get("attack-per-sec", attack_per_sec);
+
+	int projectiles_per_attack = 1;
+	crd->get("projectiles-per-attack", projectiles_per_attack);
 
 	Vector projectile_spawn_pos = Vector(0, 0);
 	if (const CrappyReaderData* crd_projectile_spawn_pos = crd->get_child("projectile-spawn-pos")) {
@@ -49,18 +48,17 @@ std::unique_ptr<GenericShootingWeapon> GenericShootingWeapon::from_reader(const 
 
 	auto weapon = std::make_unique<GenericShootingWeapon>(crd->m_parent_path + sprite_filename);
 	weapon->m_projectile_id = projectile_id;
-	weapon->m_timer.start_true(1.0f / projectiles_per_sec, true);
+	weapon->m_timer.start_true(1.0f / attack_per_sec, true);
 	weapon->m_projectile_spawn_pos = projectile_spawn_pos;
 	weapon->m_sound_file = sound_file;
 	weapon->m_inaccuracy = inaccuracy;
+	weapon->m_projectiles_per_attack = projectiles_per_attack;
 
 	return weapon;
 }
 
 std::string GenericShootingWeapon::class_name() { return "generic-shooting-weapon"; }
 std::string GenericShootingWeapon::get_class_name() const { return class_name(); }
-
-bool GenericShootingWeapon::check_timer() { return m_timer.check(); }
 
 Vector GenericShootingWeapon::get_projectile_spawn_pos() const
 {
@@ -69,8 +67,6 @@ Vector GenericShootingWeapon::get_projectile_spawn_pos() const
 }
 
 uint32_t GenericShootingWeapon::get_projectile_id() const { return m_projectile_id; }
-
-void GenericShootingWeapon::play_shoot_sound() const { if (!m_sound_file.empty()) SoundManager::current()->play_sound(m_sound_file); }
 
 float GenericShootingWeapon::get_shoot_angle() const
 {
@@ -88,6 +84,7 @@ std::unique_ptr<Weapon> GenericShootingWeapon::clone(MovingObject* parent, const
 	weapon->m_projectile_spawn_pos = m_projectile_spawn_pos;
 	weapon->m_sound_file = m_sound_file;
 	weapon->m_inaccuracy = m_inaccuracy;
+	weapon->m_projectiles_per_attack = m_projectiles_per_attack;
 
 	return weapon;
 }

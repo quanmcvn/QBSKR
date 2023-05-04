@@ -1,0 +1,46 @@
+sprite-start
+
+	action-start
+		name idle-right
+		fps 6
+		hitbox 0 0 11 16
+		images-start
+			idle-0.png
+			idle-1.png
+		images-end
+	action-end
+
+	action-start
+		name idle-left
+		mirror-action idle-right
+	action-end
+
+	action-start
+		name die-right
+		fps 1
+		hitbox 0 0 11 16
+		images-start
+			idle-0.png
+		images-end
+	action-end
+
+	action-start
+		name die-left
+		mirror-action die-right
+	action-end
+
+	action-start
+		name knockback-right
+		fps 0.33
+		hitbox 0 0 11 16
+		images-start
+			knockback-0.png
+		images-end
+	action-end
+
+	action-start
+		name knockback-left
+		mirror-action knockback-right
+	action-end
+
+sprite-end

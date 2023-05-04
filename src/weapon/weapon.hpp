@@ -29,7 +29,7 @@ public:
 public:
 	virtual void update(float dt_sec) override;
 	virtual void draw(DrawingContext& drawing_context) override;
-	virtual void attack(int times = 1) = 0;
+	virtual void attack() = 0;
 	// the reason for virtual is design choice
 	// maybe a joke weapon that it doesn't hurt anything (water gun?)
 	// or a weapon that hurt both player and badguy
