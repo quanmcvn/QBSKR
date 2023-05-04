@@ -58,16 +58,19 @@ CPP_FILES = main.cpp                                                  \
             qbskr/constants.cpp                                       \
             qbskr/credit_screen.cpp                                   \
             qbskr/gameconfig.cpp                                      \
+            qbskr/game_manager.cpp                                    \
             qbskr/game_session.cpp                                    \
             qbskr/globals.cpp                                         \
             qbskr/level_data_set.cpp                                  \
             qbskr/level_data.cpp                                      \
             qbskr/level.cpp                                           \
             qbskr/main.cpp                                            \
+            qbskr/player_status.cpp                                   \
             qbskr/resources.cpp                                       \
             qbskr/room_data_set.cpp                                   \
             qbskr/room_data.cpp                                       \
             qbskr/room.cpp                                            \
+            qbskr/savegame.cpp                                        \
             qbskr/screen_fade.cpp                                     \
             qbskr/screen_manager.cpp                                  \
             qbskr/screen.cpp                                          \

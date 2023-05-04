@@ -7,6 +7,7 @@
 #include "util/currenton.hpp"
 
 class Level;
+class Savegame;
 
 /**
  *  This class holds a level
@@ -25,9 +26,10 @@ private:
 	bool m_game_pause;
 	float m_speed_before_pause;
 	bool m_is_finish;
+	Savegame& m_savegame;
 
 public:
-	GameSession(const std::string& level_filename);
+	GameSession(const std::string& level_filename, Savegame& savegame);
 
 public:
 	virtual void update(float dt_sec, const Controller& controller) override;
@@ -37,6 +39,8 @@ public:
 	void abort_level();
 
 	void finish_level();
+
+	Savegame& get_savegame();
 
 private:
 	void on_escape_press();

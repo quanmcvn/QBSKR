@@ -4,6 +4,7 @@
 #include "gui/menu_manager.hpp"
 #include "gui/menu_set.hpp"
 #include "qbskr/credit_screen.hpp"
+#include "qbskr/game_manager.hpp"
 #include "qbskr/game_session.hpp"
 #include "qbskr/globals.hpp"
 #include "qbskr/level.hpp"
@@ -26,13 +27,7 @@ void MainMenu::item_do_menu_action(MenuItem& item)
 {
 	switch (item.get_id()) {
 		case MNID_STARTGAME:
-			ScreenManager::current()->push_screen(
-				std::make_unique<GameSession>("levels/level-0/level-0-level.txt"),
-				std::make_unique<ScreenFade>(
-					Vector(static_cast<float>(SCREEN_WIDTH), static_cast<float>(SCREEN_HEIGHT)) / 2.0f, 
-					0.5f
-				)
-			);
+			GameManager::current()->start_level("levels/level-0/level-0-level.txt");
 			MenuManager::current()->clear_menu_stack();
 			break;
 

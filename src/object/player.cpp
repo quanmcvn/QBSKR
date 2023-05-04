@@ -67,8 +67,6 @@ Player::Player(const Player& other) :
 	m_collision_object.set_size(m_sprite->get_current_hitbox_width(), m_sprite->get_current_hitbox_height());
 }
 
-#include "object/chest.hpp"
-
 void Player::update(float dt_sec)
 {
 	if (m_die) {
@@ -77,12 +75,6 @@ void Player::update(float dt_sec)
 	}
 
 	handle_input();
-
-	// if (true) {
-	// 	if (m_controller->pressed(Control::MENU_SELECT)) {
-	// 		Room::get().add<Chest>(Room::get().get_bounding_box().get_middle());
-	// 	}
-	// }
 
 	if (m_hit_damage.has_value()) {
 		m_health -= m_hit_damage.value();

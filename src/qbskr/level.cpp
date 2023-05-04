@@ -2,6 +2,9 @@
 
 #include "object/camera.hpp"
 #include "object/player.hpp"
+#include "qbskr/game_session.hpp"
+#include "qbskr/player_status.hpp"
+#include "qbskr/savegame.hpp"
 #include "video/drawing_context.hpp"
 
 Level::Level() :
@@ -62,7 +65,7 @@ void Level::activate()
 {
 	for (const auto& room : m_rooms) {
 		if (room->get_room_type() == RoomType::START) {
-			room->add<Player>(0, 1);
+			room->add_object(GameSession::current()->get_savegame().get_status().get_player());
 			room->add<Camera>();
 			room->flush_game_objects();
 			room->activate();

@@ -19,7 +19,7 @@
 
 ConfigSubSystem::ConfigSubSystem()
 {
-	g_config = std::make_unique<Config>(std::string("./gameconfig.txt"));
+	g_config = std::make_unique<Config>(std::string("gameconfig.txt"));
 }
 
 ConfigSubSystem::~ConfigSubSystem()
@@ -78,12 +78,14 @@ Main::Main() :
 	m_badguy_set(),
 	m_tile_set(),
 	m_level_data_set(),
+	m_game_manager(),
 	m_screen_manager()
 {}
 
 Main::~Main()
 {
 	m_screen_manager.reset();
+	m_game_manager.reset();
 	m_level_data_set.reset();
 	m_tile_set.reset();
 	m_badguy_set.reset();
@@ -116,6 +118,7 @@ int Main::run(int /* argc */, char** /* argv */)
 		m_tile_set = std::make_unique<TileSet>();
 		m_level_data_set = std::make_unique<LevelDataSet>();
 		m_resources = std::make_unique<Resources>();
+		m_game_manager = std::make_unique<GameManager>();
 		m_screen_manager = std::make_unique<ScreenManager>(*m_video_system, *m_input_manager);
 
 		SDL_ShowCursor(SDL_DISABLE);

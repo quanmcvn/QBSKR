@@ -6,6 +6,7 @@
 #include "control/input_manager.hpp"
 #include "object/player.hpp"
 #include "object/tile_set.hpp"
+#include "qbskr/game_manager.hpp"
 #include "qbskr/level_data_set.hpp"
 #include "qbskr/resources.hpp"
 #include "qbskr/screen_manager.hpp"
@@ -58,6 +59,7 @@ private:
 	std::unique_ptr<BadGuySet> m_badguy_set;
 	std::unique_ptr<TileSet> m_tile_set;
 	std::unique_ptr<LevelDataSet> m_level_data_set;
+	std::unique_ptr<GameManager> m_game_manager;
 	std::unique_ptr<ScreenManager> m_screen_manager;
 
 public:
