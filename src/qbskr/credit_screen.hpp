@@ -24,6 +24,7 @@ public:
 
 public:
 	virtual void setup() override;
+	virtual void leave() override;
 	virtual void update(float dt_sec, const Controller& controller) override;
 	virtual void draw(Compositor& compositor) override;
 

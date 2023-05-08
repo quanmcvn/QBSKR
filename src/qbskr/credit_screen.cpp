@@ -2,6 +2,7 @@
 
 #include <sstream>
 
+#include "audio/sound_manager.hpp"
 #include "object/credit_scroller.hpp"
 #include "object/info_box_line.hpp"
 #include "util/crappy_reader.hpp"
@@ -36,7 +37,12 @@ CreditScreen::CreditScreen(const std::string& filename) :
 
 void CreditScreen::setup()
 {
-	// NYI
+	SoundManager::current()->pause_music();
+}
+
+void CreditScreen::leave()
+{
+	SoundManager::current()->resume_music();
 }
 
 void CreditScreen::update(float dt_sec, const Controller& /* controller */)

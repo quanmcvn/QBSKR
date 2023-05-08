@@ -37,6 +37,10 @@ public:
 	void load_music(const std::string& filename);
 	void play_music(const std::string& filename, int loops = -1);
 
+	void pause_music();
+	void resume_music();
+	void toggle_music();
+
 	// between 0-100
 	void set_sound_volume(int volume);
 	int get_sound_volume() const;

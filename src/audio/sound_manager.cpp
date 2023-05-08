@@ -59,6 +59,26 @@ void SoundManager::play_music(const std::string& filename, int loops)
 	m_mix_musics[filename]->play(loops);
 }
 
+void SoundManager::pause_music() 
+{
+	Mix_PauseMusic();
+}
+
+void SoundManager::resume_music() 
+{
+	Mix_ResumeMusic();
+}
+
+void SoundManager::toggle_music() 
+{
+	if (Mix_PausedMusic()) {
+		Mix_ResumeMusic();
+	} else {
+		Mix_PauseMusic();
+	}
+}
+
+
 void SoundManager::set_sound_volume(int volume)
 {
 	m_sound_volume = volume;
