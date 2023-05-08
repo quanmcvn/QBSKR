@@ -9,6 +9,8 @@ Config::Config() :
 	window_size(640, 480),
 	magnification(1.0f),
 	debug(false),
+	sound_volume(50),
+	music_volume(50),
 	keyboard_config(),
 	mouse_button_config()
 {}
@@ -41,6 +43,16 @@ Config::Config(const std::string& filename) :
 	if (!crd->get("magnification", magnification)) {
 		log_warning << "Cound't found magnification in config, now using default: "
 		            << magnification << std::endl;
+	}
+
+	if (!crd->get("sound-volume", sound_volume)) {
+		log_warning << "Cound't found sound-volume in config, now using default: "
+		            << sound_volume << std::endl;
+	}
+
+	if (!crd->get("music-volume", music_volume)) {
+		log_warning << "Cound't found music-volume in config, now using default: "
+		            << music_volume << std::endl;
 	}
 
 	if (!crd->get("debug", debug)) {

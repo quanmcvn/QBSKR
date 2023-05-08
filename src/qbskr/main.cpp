@@ -123,7 +123,12 @@ int Main::run(int /* argc */, char** /* argv */)
 
 		SDL_ShowCursor(SDL_DISABLE);
 
+		m_sound_manager->set_sound_volume(g_config->sound_volume);
+		m_sound_manager->set_music_volume(g_config->music_volume);
+
 		g_game_random.seed(std::chrono::system_clock::now().time_since_epoch().count());
+
+		SoundManager::current()->play_music("music/western_shooting_theme.mp3");
 
 		ScreenManager::current()->push_screen(std::make_unique<TitleScreen>());
 		ScreenManager::current()->run();

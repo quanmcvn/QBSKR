@@ -2,6 +2,7 @@
 
 #include "qbskr/menu/game_menu.hpp"
 #include "qbskr/menu/main_menu.hpp"
+#include "qbskr/menu/options_menu.hpp"
 #include "util/log.hpp"
 
 MenuSet::MenuSet()
@@ -12,6 +13,9 @@ std::unique_ptr<Menu> MenuSet::create(MenuId menu_id)
 	switch (menu_id) {
 		case MAIN_MENU:
 			return std::make_unique<MainMenu>();
+		
+		case OPTIONS_MENU:
+			return std::make_unique<OptionsMenu>();
 		
 		case GAME_MENU:
 			return std::make_unique<GameMenu>();

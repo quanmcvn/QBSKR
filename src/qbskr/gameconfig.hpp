@@ -21,6 +21,9 @@ public:
 
 	bool debug;
 
+	int sound_volume;
+	int music_volume;
+
 	KeyboardConfig keyboard_config;
 	MouseButtonConfig mouse_button_config;
 

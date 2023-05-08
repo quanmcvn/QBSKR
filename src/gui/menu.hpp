@@ -11,8 +11,11 @@
 class Controller;
 class DrawingContext;
 class ItemAction;
+class ItemBack;
 class ItemHorizontalLine;
 class ItemLabel;
+class ItemGoTo;
+class ItemStringSelect;
 class MenuItem;
 union SDL_Event;
 
@@ -76,6 +79,9 @@ public:
 	ItemHorizontalLine& add_horizontal_line();
 	ItemAction& add_entry(int id, const std::string& text);
 	ItemLabel& add_label(const std::string& text);
+	ItemBack& add_back(const std::string& text, int id = -1);
+	ItemGoTo& add_submenu(const std::string& text, int submenu, int id = -1);
+	ItemStringSelect& add_string_select(int id, const std::string& text, int& selected, const std::vector<std::string>& strings);
 
 protected:
 	// recalculate the width

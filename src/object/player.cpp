@@ -213,6 +213,7 @@ HitResponse Player::collision(GameObject& other, const CollisionHit& /* hit */)
 				m_weapon = weapon->clone(this, get_pos());
 				m_weapon->set_pos_offset(get_bounding_box().get_middle() - m_weapon->get_bounding_box().get_middle());
 				weapon->remove_me();
+				SoundManager::current()->play_sound("sounds/player/switch_weapon.wav");
 				m_is_switching_weapon = true;
 			}
 		}
@@ -290,7 +291,6 @@ void Player::handle_weapon()
 
 	if (!m_is_switching_weapon) {
 		if (m_controller->hold(Control::ATTACK)) {
-			SoundManager::current()->play_sound("sounds/player/shoot.wav");
 			m_weapon->attack();
 		}
 	}

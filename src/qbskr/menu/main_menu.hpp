@@ -3,12 +3,6 @@
 
 #include "gui/menu.hpp"
 
-enum MainMenuIDs {
-	MNID_STARTGAME,
-	MNID_CREDITS,
-	MNID_QUITMAINMENU,
-};
-
 /**
  *  Title screen menu
 */

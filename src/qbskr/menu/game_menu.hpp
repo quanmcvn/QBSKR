@@ -3,11 +3,6 @@
 
 #include "gui/menu.hpp"
 
-enum GameMenuIDs {
-	MNID_CONTINUE,
-	MNID_ABORTLEVEL
-};
-
 /**
  *  In-game menu
 */

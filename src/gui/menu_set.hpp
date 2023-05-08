@@ -23,6 +23,7 @@ public:
 	enum MenuId {
 		NO_MENU,
 		MAIN_MENU,
+		OPTIONS_MENU,
 		GAME_MENU
 	};
 

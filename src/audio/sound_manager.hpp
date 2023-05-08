@@ -27,7 +27,8 @@ private:
 	std::map<std::string, SDLMixChunkPtr> m_mix_chunks;
 	std::map<std::string, SDLMixMusicPtr> m_mix_musics;
 
-	float m_music_volume;
+	int m_sound_volume;
+	int m_music_volume;
 
 public:
 	void load_sound(const std::string& filename);
@@ -37,8 +38,12 @@ public:
 	void play_music(const std::string& filename, int loops = -1);
 
 	// between 0-100
-	void set_volume_music(float volume);
-	float get_volume_music() const;
+	void set_sound_volume(int volume);
+	int get_sound_volume() const;
+
+	// between 0-100
+	void set_music_volume(int volume);
+	int get_music_volume() const;
 };
 
 #endif

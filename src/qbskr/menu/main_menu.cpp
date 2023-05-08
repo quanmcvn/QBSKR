@@ -12,6 +12,12 @@
 #include "qbskr/screen_fade.hpp"
 #include "video/video_system.hpp"
 
+enum MainMenuIDs {
+	MNID_STARTGAME,
+	MNID_CREDITS,
+	MNID_QUITMAINMENU,
+};
+
 MainMenu::MainMenu()
 {
 	set_center_pos(static_cast<float>(SCREEN_WIDTH) / 2.0f, static_cast<float>(SCREEN_HEIGHT) / 2.0f);
@@ -19,6 +25,7 @@ MainMenu::MainMenu()
 	add_label("QBSKR");
 	add_horizontal_line();
 	add_entry(MNID_STARTGAME, "Start Game");
+	add_submenu("Options", MenuSet::OPTIONS_MENU);
 	add_entry(MNID_CREDITS, "Credits");
 	add_entry(MNID_QUITMAINMENU, "Quit Game");
 }

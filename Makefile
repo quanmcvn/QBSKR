@@ -21,8 +21,11 @@ CPP_FILES = main.cpp                                                  \
             control/mouse_button_manager.cpp                          \
             control/mouse_motion_manager.cpp                          \
             gui/item_action.cpp                                       \
+            gui/item_back.cpp                                         \
+            gui/item_goto.cpp                                         \
             gui/item_horizontal_line.cpp                              \
             gui/item_label.cpp                                        \
+            gui/item_string_select.hpp                                \
             gui/menu_item.cpp                                         \
             gui/menu_manager.cpp                                      \
             gui/menu_set.cpp                                          \
@@ -54,6 +57,7 @@ CPP_FILES = main.cpp                                                  \
             object/tile.cpp                                           \
             qbskr/menu/game_menu.cpp                                  \
             qbskr/menu/main_menu.cpp                                  \
+            qbskr/menu/options_menu.cpp                               \
             qbskr/color_scheme.cpp                                    \
             qbskr/constants.cpp                                       \
             qbskr/credit_screen.cpp                                   \

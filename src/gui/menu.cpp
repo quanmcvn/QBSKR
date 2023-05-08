@@ -4,8 +4,11 @@
 
 #include "control/controller.hpp"
 #include "gui/item_action.hpp"
+#include "gui/item_back.hpp"
+#include "gui/item_goto.hpp"
 #include "gui/item_horizontal_line.hpp"
 #include "gui/item_label.hpp"
+#include "gui/item_string_select.hpp"
 #include "gui/menu_manager.hpp"
 #include "gui/menu_item.hpp"
 #include "gui/mouse_cursor.hpp"
@@ -162,6 +165,30 @@ ItemAction& Menu::add_entry(int id, const std::string& text)
 ItemLabel& Menu::add_label(const std::string& text)
 {
 	auto item = std::make_unique<ItemLabel>(text);
+	auto& item_ref = *item;
+	add_item(std::move(item));
+	return item_ref;
+}
+
+ItemBack& Menu::add_back(const std::string& text, int id)
+{
+	auto item = std::make_unique<ItemBack>(text, id);
+	auto& item_ref = *item;
+	add_item(std::move(item));
+	return item_ref;
+}
+
+ItemGoTo& Menu::add_submenu(const std::string& text, int submenu, int id)
+{
+	auto item = std::make_unique<ItemGoTo>(text, submenu, id);
+	auto& item_ref = *item;
+	add_item(std::move(item));
+	return item_ref;
+}
+
+ItemStringSelect& Menu::add_string_select(int id, const std::string& text, int& selected, const std::vector<std::string>& strings)
+{
+	auto item = std::make_unique<ItemStringSelect>(text, strings, selected, id);
 	auto& item_ref = *item;
 	add_item(std::move(item));
 	return item_ref;
