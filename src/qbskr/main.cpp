@@ -15,11 +15,12 @@
 #include "qbskr/screen_manager.hpp"
 #include "qbskr/title_screen.hpp"
 #include "util/log.hpp"
+#include "video/sdl/sdl_surface_creator.hpp"
 #include "video/video_system.hpp"
 
 ConfigSubSystem::ConfigSubSystem()
 {
-	g_config = std::make_unique<Config>(std::string("gameconfig.txt"));
+	g_config = std::make_unique<Config>();
 }
 
 ConfigSubSystem::~ConfigSubSystem()
@@ -122,6 +123,9 @@ int Main::run(int /* argc */, char** /* argv */)
 		m_screen_manager = std::make_unique<ScreenManager>(*m_video_system, *m_input_manager);
 
 		SDL_ShowCursor(SDL_DISABLE);
+
+		SDLSurfacePtr icon = SDLSurfaceCreator::from_file("images/menu/icon.png");
+		VideoSystem::current()->set_icon(*icon);
 
 		m_sound_manager->set_sound_volume(g_config->sound_volume);
 		m_sound_manager->set_music_volume(g_config->music_volume);

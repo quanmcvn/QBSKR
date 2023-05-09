@@ -28,7 +28,7 @@ public:
 	MouseButtonConfig mouse_button_config;
 
 public:
-	Config(const std::string& filename);
+	void save();
 };
 
 #endif

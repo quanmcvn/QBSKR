@@ -20,6 +20,9 @@ private:
 protected:
 	std::unique_ptr<SDL_Window, decltype(&SDL_DestroyWindow)> m_sdl_window;
 
+public:
+	virtual void set_icon(const SDL_Surface& icon) override;
+
 protected:
 	// currently hardcoded flag = 0 for SDL_Window
 	// also hardcoded size of window

@@ -25,3 +25,8 @@ void SDLBasedVideoSystem::create_sdl_window() {
 		throw std::runtime_error(msg.str());
 	}
 }
+
+void SDLBasedVideoSystem::set_icon(const SDL_Surface& icon)
+{
+	SDL_SetWindowIcon(m_sdl_window.get(), const_cast<SDL_Surface*>(&icon));
+}

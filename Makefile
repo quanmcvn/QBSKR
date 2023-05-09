@@ -85,6 +85,7 @@ CPP_FILES = main.cpp                                                  \
             sprite/sprite.cpp                                         \
             util/crappy_reader_data.cpp                               \
             util/crappy_reader.cpp                                    \
+            util/crappy_writer.cpp                                    \
             util/line_iterator.cpp                                    \
             util/log.cpp                                              \
             util/string_util.cpp                                      \

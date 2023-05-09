@@ -49,6 +49,7 @@ public:
 	virtual void apply_config() = 0;
 	// swap (flip (?)) the backbuffer to frontbuffer
 	virtual void present() = 0;
+	virtual void set_icon(const SDL_Surface& icon) = 0;
 };
 
 #endif

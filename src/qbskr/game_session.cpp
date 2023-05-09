@@ -87,6 +87,7 @@ void GameSession::finish_level()
 				std::make_unique<CreditScreen>("credits.txt"),
 				std::make_unique<ScreenFade>(Vector(static_cast<float>(SCREEN_WIDTH), static_cast<float>(SCREEN_HEIGHT)) / 2.0f, 0.5f)
 			);
+			m_savegame.reset_player_status();
 		} else {
 			GameManager::current()->start_level(m_level->get_next_level(), true);
 		}

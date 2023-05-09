@@ -93,6 +93,7 @@ void OptionsMenu::item_do_menu_action(MenuItem& item)
 				std::stringstream ss(sound_volumes[selected_sound_volume]);
 				ss >> g_config->sound_volume;
 				SoundManager::current()->set_sound_volume(g_config->sound_volume);
+				g_config->save();
 			}
 			break;
 
@@ -101,6 +102,7 @@ void OptionsMenu::item_do_menu_action(MenuItem& item)
 				std::stringstream ss(music_volumes[selected_music_volume]);
 				ss >> g_config->music_volume;
 				SoundManager::current()->set_music_volume(g_config->music_volume);
+				g_config->save();
 			}
 			break;
 
