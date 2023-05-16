@@ -62,3 +62,8 @@ WASD or arrow keys to move, left mouse button to attack and interact with menu, 
 
 ### Images
 [DungeonTilesetII_v1.4 By 0x72](https://0x72.itch.io/dungeontileset-ii)
+
+## Demos
+
+<p align="center"> <img src="data/images/menu/demo/demo2.png"> </p>
+<p align="center"> <img src="data/images/menu/demo/demo3.png"> </p>
