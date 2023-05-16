@@ -1,6 +1,11 @@
 # QBSKR (Quanmcvn's Bad Soul Knight Replica)
 > Inspired by Soul Knight, in C++ with SDL2 (and with help of SuperTux's open sourced code).
 
+<p align="center">
+	<img src="data/images/menu/demo/demo1.png">
+</p>
+
+
 ## Intallation
 The executable is called `QBSKR` in `data/`
 
